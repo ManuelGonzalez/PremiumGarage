@@ -1,0 +1,10 @@
+<div *ngIf="(auth.userObs | async)?.uid">
+  <app-header></app-header>
+  <div id="wrapper">
+    <app-menu></app-menu>
+    <div id="content-wrapper">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

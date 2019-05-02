@@ -1,0 +1,100 @@
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active">Gestion de Usuarios</li>
+  </ol>
+
+  <div class="text-right">
+    <button mat-mini-fab color="primary"
+            data-toggle="modal" data-target="#createUserModal"
+            matTooltip="Agregar usuarios">
+      <mat-icon>+</mat-icon>
+    </button>
+    <br>
+  </div>
+  <div class="table-responsive">
+    <mat-form-field >
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Documento. </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="first_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre. </th>
+        <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="last_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido. </th>
+        <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion. </th>
+        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono. </th>
+        <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo. </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+
+</div>
+
+<!-- Create User Modal-->
+<div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Guardar Usuario</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Documento" name="id" [(ngModel)]="user.id">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nombre" name="first_name" [(ngModel)]="user.first_name">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Apellido" name="last_name" [(ngModel)]="user.last_name">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <textarea matInput placeholder="Direccion" name="addres" [(ngModel)]="user.address"></textarea>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Telefono" name="phone" [(ngModel)]="user.phone">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Email" name="email" [(ngModel)]="user.email">
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createUser()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,30 @@
+<div class="container" *ngIf="!(auth.userObs | async)?.uid">
+  <div class="card card-login mx-auto mt-5">
+    <div class="card-header">Login</div>
+    <div class="card-body">
+      <form (submit)="login($event, email.value, password.value)">
+        <div class="example-container">
+          <mat-form-field>
+            <input matInput #email type="email" id="email" class="form-control" placeholder="correo" required="required">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput #password type="password" id="password" class="form-control" placeholder="contraseña" required="required">
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me">
+              Remember Password
+            </label>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
+      </form>
+      <div class="text-center">
+        <a class="d-block small mt-3" href="register.html">Register an Account</a>
+        <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+      </div>
+    </div>
+  </div>
+</div>
