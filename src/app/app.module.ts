@@ -24,10 +24,20 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AuthService} from './services/auth.service';
 import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
-import {MatButtonModule, MatIconModule, MatInputModule, MatSnackBarModule, MatTableModule, MatTooltipModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatInputModule,
+  MatSelectModule,
+  MatSnackBarModule,
+  MatTableModule,
+  MatTooltipModule
+} from '@angular/material';
 import { UserComponent } from './components/user/user.component';
 import { InConstructionComponent } from './components/in-construction/in-construction.component';
 import {MessagingService} from './services/messaging.service';
+import {Services} from '@angular/core/src/view';
+import {GeoService} from './services/geo.service';
 
 export const environment = {
   production: false,
@@ -118,11 +128,13 @@ const appRoutes:Routes = [
     MatIconModule,
     MatTooltipModule,
     MatInputModule,
+    MatSelectModule,
     MatTableModule
   ],
   providers: [
     UserService,
     AuthService,
+    GeoService,
     MessagingService,
     AuthGuard
   ],

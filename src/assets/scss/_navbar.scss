@@ -60,6 +60,7 @@
 }
 
 .sidebar {
+  height: 100%;
   width: $sidebar-collapsed-width !important;
   background-color: $gray-900;
   min-height: calc(100vh - #{$navbar-base-height});
@@ -82,6 +83,7 @@
 
 @media (min-width: 768px) {
   .sidebar {
+    height: 100%;
     width: $sidebar-base-width !important;
 
     .nav-item {

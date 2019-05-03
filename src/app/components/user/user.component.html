@@ -21,32 +21,32 @@
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
 
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Documento. </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="first_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre. </th>
-        <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+      <ng-container matColumnDef="cuil">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuil </th>
+        <td mat-cell *matCellDef="let element"> {{element.cuil}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="last_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido. </th>
-        <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion. </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
         <td mat-cell *matCellDef="let element"> {{element.address}} </td>
       </ng-container>
 
       <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono. </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
         <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
       </ng-container>
 
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo. </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
         <td mat-cell *matCellDef="let element"> {{element.email}} </td>
       </ng-container>
 
@@ -70,29 +70,94 @@
       </div>
       <div class="modal-body">
         <form class="example-form">
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Documento" name="id" [(ngModel)]="user.id">
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Nombre" name="first_name" [(ngModel)]="user.first_name">
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Apellido" name="last_name" [(ngModel)]="user.last_name">
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Direccion" name="addres" [(ngModel)]="user.address"></textarea>
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Telefono" name="phone" [(ngModel)]="user.phone">
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Email" name="email" [(ngModel)]="user.email">
-          </mat-form-field>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Documento" name="id" [(ngModel)]="user.id" (focusout)="serarchUser(user.id)">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Cuil" name="cuil" [(ngModel)]="user.cuil">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombre" name="name" [(ngModel)]="user.name">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Direccion" name="addres" [(ngModel)]="user.address"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Provincias</mat-label>
+                <select matNativeControl required name="province" [(ngModel)]="user.province" (ngModelChange)="setLocales()">
+                  <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Provincias</mat-label>
+                <select matNativeControl required name="locale" [(ngModel)]="user.locale">
+                  <option *ngFor="let loc of locales" value="{{loc.id}}">{{loc.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="CP" name="postalCode" [(ngModel)]="user.postalCode">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Ocupacion" name="occupation" [(ngModel)]="user.occupation">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Telefono" name="phone" [(ngModel)]="user.phone">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Email" name="email" [(ngModel)]="user.email">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nacionalidad" name="nationality" [(ngModel)]="user.nationality">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+              <mat-label>Estado Civil</mat-label>
+              <select matNativeControl required name="civilStatus" [(ngModel)]="user.civilStatus">
+                <option *ngFor="let cs of civilStatus" value="{{cs}}">{{cs}}</option>
+              </select>
+            </mat-form-field>
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createUser()">Logout</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createUser()">Guardar</button>
       </div>
     </div>
   </div>

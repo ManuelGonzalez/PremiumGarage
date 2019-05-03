@@ -4,13 +4,19 @@
   "name": "Premium Garage",
   "scope": "/",
   "display": "fullscreen",
-  "start_url": "https://premiumgarage-c0f80.firebaseapp.com",
-  "short_name": "Angular PWA Platzi",
+  "start_url": "index.html?launcher=true",
+  "short_name": "GP Devoto",
   "theme_color": "transparent",
   "description": "Sistema de gestion para concesionarios",
   "orientation": "any",
   "background_color": "transparent",
-  "prefer_related_applications": false,
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.google.bigdataservice.apps.premiumgarage"
+    }
+  ],
   "gcm_sender_id": "103953800507",
   "icons": [
     {

@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {GeoService} from '../../services/geo.service';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-user',
@@ -11,18 +13,26 @@ import {MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 export class UserComponent implements OnInit {
 
   user: any = {};
+  cuilData: any ={};
+  userData: any = [];
   users: any[]= [];
+  provinces: any[]= [];
+  selectedProvince: any={};
+  locales: any[]= [];
   dataSource;
-  displayedColumns: string[] = ['id', 'first_name', 'last_name', 'address', 'phone', 'email'];
+  displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email'];
+  civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
 
   constructor(public userService: UserService,
+              public geoService: GeoService,
               private snackbar: MatSnackBar) {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
-      console.log(this.users);
-      console.log(this.dataSource);
     });
+    this.geoService.getProvinces().valueChanges().subscribe(fbProv=>{
+      this.provinces=fbProv;
+    })
   }
 
   @ViewChild(MatSort) sort: MatSort;
@@ -38,7 +48,7 @@ export class UserComponent implements OnInit {
 
   createUser(){
     this.userService.createOrUpdateUser(this.user).then(res=>{
-      this.snackbar.open('El usuario: '+this.user.first_name + ' ' + this.user.last_name + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
         duration: 3000
       });
       this.user={};
@@ -49,4 +59,27 @@ export class UserComponent implements OnInit {
     })
   }
 
+  setLocales(){
+    this.selectedProvince=this.provinces.find(p=>p.id==this.user.province);
+    this.locales=this.selectedProvince.ciudades;
+  }
+
+  serarchUser(id) {
+    this.userService.getUser(id).valueChanges().subscribe(fbUser=>{
+      if(fbUser!==null){
+        this.user=fbUser;
+      }else{
+        if(id){
+          this.userService.getUserCuil(id).toPromise().then(cuilData=>{
+            this.cuilData=cuilData;
+            this.userService.getUserData(this.cuilData.data[0]).subscribe(resp=>{
+              this.userData=resp;
+              this.user.name=this.userData.Contribuyente.nombre;
+              this.user.cuil=this.userData.Contribuyente.idPersona;
+            })
+          })
+        }
+      }
+    });
+  }
 }
