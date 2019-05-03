@@ -14,10 +14,12 @@ export class AppComponent implements OnInit{
   logedin = false;
   loading = true;
 
-  constructor(private swUpdate: SwUpdate, private messagingService: MessagingService, private auth: AuthService){
-    this.messagingService.getPermission();
-    this.messagingService.receiveMessage();
-    this.message=this.messagingService.currentMessage;
+  constructor(private swUpdate: SwUpdate, /*private messagingService: MessagingService,*/ private auth: AuthService){
+    /*if (this.messagingService.isSupoorted){
+      this.messagingService.getPermission();
+      this.messagingService.receiveMessage();
+      this.message=this.messagingService.currentMessage;
+    }*/
     this.auth.afAuth.authState.subscribe(log=>{
       this.logedin=log!==null;
     });

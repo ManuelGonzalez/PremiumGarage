@@ -10,6 +10,7 @@ import * as firebase from 'firebase';
 export class MessagingService {
 
   messaging = firebase.messaging();
+  isSupoorted=firebase.messaging.isSupported();
   currentMessage = new BehaviorSubject(null);
 
   constructor(private db: AngularFireDatabase, private afAuth: AngularFireAuth) { }
