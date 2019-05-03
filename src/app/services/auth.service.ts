@@ -15,7 +15,6 @@ export class AuthService {
     public afAuth: AngularFireAuth,
     private snackbar: MatSnackBar) {
 
-    console.log(afAuth.authState);
     this.userObs = afAuth.authState;
 
   }
@@ -50,7 +49,7 @@ export class AuthService {
     return this.afAuth.auth
   }
 
-  get authenticated(): boolean {
+  public get authenticated(): boolean {
     return this.afAuth.authState !== null;
   }
 

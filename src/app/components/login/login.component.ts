@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit() {
-
   }
 
   login(event,email,password) {

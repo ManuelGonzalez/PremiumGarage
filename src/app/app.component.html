@@ -1,2 +1,6 @@
-<app-dashboard></app-dashboard>
-<app-login></app-login>
+<div *ngIf="logedin&&!loading">
+  <app-dashboard></app-dashboard>
+</div>
+<div *ngIf="!logedin&&!loading">
+  <app-login></app-login>
+</div>

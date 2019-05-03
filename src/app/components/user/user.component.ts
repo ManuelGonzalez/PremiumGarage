@@ -20,6 +20,7 @@ export class UserComponent implements OnInit {
   selectedProvince: any={};
   locales: any[]= [];
   dataSource;
+  isUpdate=false;
   displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email'];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
 
@@ -47,6 +48,11 @@ export class UserComponent implements OnInit {
   }
 
   createUser(){
+    if (this.isUpdate){
+      this.user.lastUpdate=Date.now();
+    }else{
+      this.user.creationDate=Date.now();
+    }
     this.userService.createOrUpdateUser(this.user).then(res=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
         duration: 3000
@@ -68,8 +74,10 @@ export class UserComponent implements OnInit {
     this.userService.getUser(id).valueChanges().subscribe(fbUser=>{
       if(fbUser!==null){
         this.user=fbUser;
+        this.isUpdate=true;
       }else{
         if(id){
+          this.isUpdate=false;
           this.userService.getUserCuil(id).toPromise().then(cuilData=>{
             this.cuilData=cuilData;
             this.userService.getUserData(this.cuilData.data[0]).subscribe(resp=>{
