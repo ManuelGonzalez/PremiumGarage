@@ -65,3 +65,9 @@ body, html {
     stroke-dashoffset: -124px;
   }
 }
+
+@media (max-width: 576px) {
+  .mat-paginator-range-label{
+    display: none;
+  }
+}

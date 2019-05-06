@@ -39,6 +39,7 @@ import {MessagingService} from './services/messaging.service';
 import {GeoService} from './services/geo.service';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import {CookieService} from 'ngx-cookie-service';
+import { UserLoginComponent } from './components/user-login/user-login.component';
 
 export const environment = {
   production: false,
@@ -80,6 +81,19 @@ const appRoutes:Routes = [
     ]
   },
   {
+    path: 'user-login',
+    canActivate: [AuthGuard],
+    component: UserLoginComponent,
+    children:[
+      /*
+      {
+        path: ':name',
+        component: UserComponent
+      }
+      */
+    ]
+  },
+  {
     path: 'in-construction',
     canActivate: [AuthGuard],
     component: InConstructionComponent,
@@ -110,7 +124,8 @@ const appRoutes:Routes = [
     HomeComponent,
     UserComponent,
     InConstructionComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    UserLoginComponent
   ],
   imports: [
     BrowserModule,

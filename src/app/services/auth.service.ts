@@ -30,9 +30,18 @@ export class AuthService {
   login(event, email, password){
     event.preventDefault();
     this.afAuth.auth.signInWithEmailAndPassword(email, password).then((res) => {
-      this.cookieService.set( 'user', res.user.email);
-      this.snackbar.open('Bienvenido: '+res.user.email, 'Logged In', {
-        duration: 3000
+      this.afAuth.user.subscribe(user=>{
+        if(user.emailVerified){
+          this.cookieService.set( 'user', res.user.email);
+          this.snackbar.open('Bienvenido: '+res.user.email, 'Logged In', {
+            duration: 3000
+          });
+        }else{
+          this.logout();
+          this.snackbar.open('Debes verificar tu email: '+res.user.email, 'Logged In', {
+            duration: 3000
+          });
+        }
       });
     }).catch((error: any) => {
       if (error) {
@@ -61,6 +70,35 @@ export class AuthService {
 
   public get authenticated(): boolean {
     return this.afAuth.authState !== null;
+  }
+
+  createUserLogin(email:string,password:string,name:string){
+    this.afAuth.auth.createUserWithEmailAndPassword(email,password).then(res=>{
+      res.user.updateProfile({
+        displayName: name
+      });
+      const config={
+        url: 'https://premiumgarage-c0f80.firebaseapp.com/'
+      };
+      res.user.sendEmailVerification(config).then(res=>{
+        this.snackbar.open( 'El usuario se ha creado con exito, verifique su correo para activar su cuenta.',
+          'Error', {
+          duration: 5000
+        });
+      }).catch((error: any) => {
+        if (error) {
+          this.snackbar.open( error.toLocaleString(),'Error', {
+            duration: 3000
+          });
+        }
+      });
+    }).catch((error: any) => {
+      if (error) {
+        this.snackbar.open( error.toLocaleString(),'Error', {
+          duration: 3000
+        });
+      }
+    });
   }
 
 }

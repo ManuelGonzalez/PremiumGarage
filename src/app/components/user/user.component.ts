@@ -22,7 +22,6 @@ export class UserComponent implements OnInit {
   isUpdate=false;
   displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email'];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
-  showSpinner: boolean = true;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

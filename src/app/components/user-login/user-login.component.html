@@ -1,0 +1,66 @@
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active">Gestion de Usuarios</li>
+  </ol>
+
+  <div class="text-right">
+    <button mat-mini-fab color="primary"
+            data-toggle="modal" data-target="#createUserLoginModal"
+            matTooltip="Crear nuevo usuarios">
+      <mat-icon>+</mat-icon>
+    </button>
+    <br>
+  </div>
+
+
+</div>
+
+<!-- Create User Modal-->
+<div class="modal fade" id="createUserLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Guardar Usuario</h5>
+        <button class="close" type="button" data-dismiss="modal" (click)="blankUser()" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="example-form" autocomplete="off">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nombre" required name="name" [(ngModel)]="userLogin.name">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Email" required type="email" name="email" [(ngModel)]="userLogin.email">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Contraseña" required type="password" name="password" [(ngModel)]="userLogin.password">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Repetir Contraseña" required type="password">
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="blankUser()">Cancelar</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createUserLogin()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
