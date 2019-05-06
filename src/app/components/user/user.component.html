@@ -15,44 +15,50 @@
     <br>
   </div>
   <div class="table-responsive">
-    <mat-form-field >
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-    </mat-form-field>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+    <loading-spinner *ngIf="users.length==0"></loading-spinner>
+    <div *ngIf="users.length>0">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+      </mat-form-field>
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
 
-      <ng-container matColumnDef="cuil">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuil </th>
-        <td mat-cell *matCellDef="let element"> {{element.cuil}} </td>
-      </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
+        <ng-container matColumnDef="cuil">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuil </th>
+          <td mat-cell *matCellDef="let element"> {{element.cuil}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
-        <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
-      </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
+          <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-      </ng-container>
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
+          <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 
 
@@ -64,35 +70,35 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Guardar Usuario</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <button class="close" type="button" data-dismiss="modal" (click)="blankUser()" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form class="example-form">
+        <form class="example-form" autocomplete="off">
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Documento" name="id" [(ngModel)]="user.id" (focusout)="serarchUser(user.id)">
+                <input matInput placeholder="Documento" required name="id" [(ngModel)]="user.id" (focusout)="serarchUser(user.id)">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Cuil" name="cuil" [(ngModel)]="user.cuil">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nombre" name="name" [(ngModel)]="user.name">
+                <input matInput placeholder="Cuil" required name="cuil" [(ngModel)]="user.cuil">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Direccion" name="addres" [(ngModel)]="user.address"></textarea>
+                <input matInput placeholder="Nombre" required name="name" [(ngModel)]="user.name">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Direccion" required name="addres" [(ngModel)]="user.address"></textarea>
               </mat-form-field>
             </div>
           </div>
@@ -117,31 +123,31 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="CP" name="postalCode" [(ngModel)]="user.postalCode">
+                <input matInput placeholder="CP" required name="postalCode" [(ngModel)]="user.postalCode">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Ocupacion" name="occupation" [(ngModel)]="user.occupation">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Telefono" name="phone" [(ngModel)]="user.phone">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Email" name="email" [(ngModel)]="user.email">
+                <input matInput placeholder="Ocupacion" required name="occupation" [(ngModel)]="user.occupation">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nacionalidad" name="nationality" [(ngModel)]="user.nationality">
+                <input matInput placeholder="Telefono" required name="phone" [(ngModel)]="user.phone">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Email" required type="email" name="email" [(ngModel)]="user.email">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nacionalidad" required name="nationality" [(ngModel)]="user.nationality">
               </mat-form-field>
             </div>
             <div class="col">
@@ -156,7 +162,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="blankUser()">Cancelar</button>
         <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createUser()">Guardar</button>
       </div>
     </div>

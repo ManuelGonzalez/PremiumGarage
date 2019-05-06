@@ -27,7 +27,7 @@ import { HomeComponent } from './components/home/home.component';
 import {
   MatButtonModule,
   MatIconModule,
-  MatInputModule,
+  MatInputModule, MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule,
   MatTableModule,
@@ -36,8 +36,9 @@ import {
 import { UserComponent } from './components/user/user.component';
 import { InConstructionComponent } from './components/in-construction/in-construction.component';
 import {MessagingService} from './services/messaging.service';
-import {Services} from '@angular/core/src/view';
 import {GeoService} from './services/geo.service';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import {CookieService} from 'ngx-cookie-service';
 
 export const environment = {
   production: false,
@@ -108,7 +109,8 @@ const appRoutes:Routes = [
     NotFoundComponent,
     HomeComponent,
     UserComponent,
-    InConstructionComponent
+    InConstructionComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -129,6 +131,7 @@ const appRoutes:Routes = [
     MatTooltipModule,
     MatInputModule,
     MatSelectModule,
+    MatPaginatorModule,
     MatTableModule
   ],
   providers: [
@@ -136,7 +139,8 @@ const appRoutes:Routes = [
     AuthService,
     GeoService,
     MessagingService,
-    AuthGuard
+    AuthGuard,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

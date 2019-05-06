@@ -3,7 +3,7 @@
   <i class="fas fa-angle-up"></i>
 </a>
 
-<footer class="sticky-footer">
+<footer class="sticky-footer d-none d-sm-block">
   <div class="container my-auto">
     <div class="copyright text-center my-auto">
       <span>Copyright © Big Data Service 2019</span>
@@ -16,15 +16,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cerrar Sesion</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-body">Deseas cerrar la sesion?</div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="auth.logout()">Logout</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="auth.logout()">Si</button>
       </div>
     </div>
   </div>

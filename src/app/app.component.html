@@ -1,6 +1,6 @@
 <div *ngIf="logedin&&!loading">
   <app-dashboard></app-dashboard>
 </div>
-<div *ngIf="!logedin&&!loading">
+<div *ngIf="!loading&&!logedin&&!getLoginCookie()">
   <app-login></app-login>
 </div>

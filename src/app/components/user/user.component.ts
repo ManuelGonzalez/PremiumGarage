@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
-import {MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {GeoService} from '../../services/geo.service';
 import {FormControl} from '@angular/forms';
 
@@ -23,6 +22,10 @@ export class UserComponent implements OnInit {
   isUpdate=false;
   displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email'];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
+  showSpinner: boolean = true;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public userService: UserService,
               public geoService: GeoService,
@@ -30,17 +33,17 @@ export class UserComponent implements OnInit {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource = new MatTableDataSource(this.users);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
     this.geoService.getProvinces().valueChanges().subscribe(fbProv=>{
       this.provinces=fbProv;
     })
   }
 
-  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.users);
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
@@ -63,6 +66,10 @@ export class UserComponent implements OnInit {
         duration: 3000
       });
     })
+  }
+
+  blankUser(){
+    this.user={};
   }
 
   setLocales(){
