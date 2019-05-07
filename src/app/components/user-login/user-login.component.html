@@ -15,6 +15,28 @@
     <br>
   </div>
 
+  <form class="example-form" autocomplete="off">
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Nombre" required name="displayName" #name [(ngModel)]="currenUser.displayName">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Email" required type="email" name="email" #email [(ngModel)]="currenUser.email">
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Telefono" name="phoneNumber" #phone [(ngModel)]="currenUser.phoneNumber">
+        </mat-form-field>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="updateUserLogin(name.value,email.value,phone.value)">Actualizar</button>
+  </form>
 
 </div>
 

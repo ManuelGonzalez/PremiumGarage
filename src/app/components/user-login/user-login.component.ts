@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
+import {User} from 'firebase';
 
 @Component({
   selector: 'app-user-login',
@@ -9,8 +10,13 @@ import {AuthService} from '../../services/auth.service';
 export class UserLoginComponent implements OnInit {
 
   userLogin: any = {};
+  currenUser: any = {};
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.authService.user.subscribe(user=>{
+      this.currenUser=user;
+    })
+  }
 
   ngOnInit() {
   }
@@ -20,8 +26,11 @@ export class UserLoginComponent implements OnInit {
   }
 
   createUserLogin(){
-
     this.authService.createUserLogin(this.userLogin.email,this.userLogin.password,this.userLogin.name);
+    this.userLogin={};
+  }
 
+  updateUserLogin(name,email,phone){
+    this.authService.updateUser(name,email,phone)
   }
 }

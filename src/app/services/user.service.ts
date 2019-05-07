@@ -36,12 +36,6 @@ export class UserService {
     this.afDB.database.ref('/users/'+user.id).remove();
   }
 
-  private extractData(res: Response) {
-    let bodyRes = res;
-    console.log(res);
-    return bodyRes || { };
-  }
-
   getUserData(id) {
     return this.http.get(endpoint + '/GetFullContribuyente/?cuit='+id)
   }

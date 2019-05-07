@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   locales: any[]= [];
   dataSource;
   isUpdate=false;
-  displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email'];
+  displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email','actions'];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -57,18 +57,22 @@ export class UserComponent implements OnInit {
     }
     this.userService.createOrUpdateUser(this.user).then(res=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
-        duration: 3000
+        duration: 5000
       });
       this.user={};
     }).catch(err=>{
       this.snackbar.open(err.toLocaleString(), 'Error', {
-        duration: 3000
+        duration: 5000
       });
     })
   }
 
   blankUser(){
     this.user={};
+  }
+
+  setUser(user){
+    this.user=user;
   }
 
   setLocales(){

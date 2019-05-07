@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {AuthService} from './services/auth.service';
 import {Observable} from 'rxjs';
+import {MatSnackBar} from '@angular/material';
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private snackbar: MatSnackBar) {}
 
 
   canActivate(
@@ -19,7 +20,9 @@ export class AuthGuard implements CanActivate {
       .map(user => !!user)
       .do(loggedIn => {
         if (!loggedIn) {
-          console.log("access denied");
+          this.snackbar.open('Acceso denegado.', 'Not Allow', {
+            duration: 5000
+          });
         }
       })
 

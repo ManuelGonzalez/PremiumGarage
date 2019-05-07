@@ -19,6 +19,11 @@ export class LoginComponent implements OnInit{
     this.auth.login(event,email,password);
   }
 
+  resetPassword(email) {
+    this.auth.resetPassword(email)
+  }
+
+
   logout() {
     this.auth.logout();
   }

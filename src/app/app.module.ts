@@ -25,7 +25,7 @@ import {AuthService} from './services/auth.service';
 import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import {
-  MatButtonModule,
+  MatButtonModule, MatButtonToggleModule,
   MatIconModule,
   MatInputModule, MatPaginatorModule,
   MatSelectModule,
@@ -141,6 +141,7 @@ const appRoutes:Routes = [
     AngularFireModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatSnackBarModule,
     MatIconModule,
     MatTooltipModule,

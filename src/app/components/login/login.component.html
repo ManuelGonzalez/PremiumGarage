@@ -22,8 +22,32 @@
         <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
       </form>
       <div class="text-center">
-        <a class="d-block small mt-3" href="register.html">Register an Account</a>
-        <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+        <a class="d-block small" href="#" data-toggle="modal" data-target="#resetPasswordModal">Recuperar contraseña</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create User Modal-->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Restablecer Contraseña</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="example-form" autocomplete="off">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Email" required type="email" name="resetEmail" #resetEmail>
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="resetPassword(resetEmail.value)">Enviar</button>
       </div>
     </div>
   </div>
