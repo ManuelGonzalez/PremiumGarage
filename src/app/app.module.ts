@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 /*firebase*/
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -25,9 +25,10 @@ import {AuthService} from './services/auth.service';
 import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import {
+  MatAutocompleteModule,
   MatButtonModule, MatButtonToggleModule,
   MatIconModule,
-  MatInputModule, MatPaginatorModule,
+  MatInputModule, MatMenuModule, MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule,
   MatTableModule,
@@ -40,6 +41,11 @@ import {GeoService} from './services/geo.service';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import {CookieService} from 'ngx-cookie-service';
 import { UserLoginComponent } from './components/user-login/user-login.component';
+import { AutoComponent } from './components/auto/auto.component';
+import { ContactComponent } from './components/contact/contact.component';
+import {CardService} from './services/cards.service';
+import {ContactService} from './services/contact.service';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 export const environment = {
   production: false,
@@ -81,6 +87,32 @@ const appRoutes:Routes = [
     ]
   },
   {
+    path: 'autos',
+    canActivate: [AuthGuard],
+    component: AutoComponent,
+    children:[
+      /*
+      {
+        path: ':name',
+        component: UserComponent
+      }
+      */
+    ]
+  },
+  {
+    path: 'contacts',
+    canActivate: [AuthGuard],
+    component: ContactComponent,
+    children:[
+      /*
+      {
+        path: ':name',
+        component: UserComponent
+      }
+      */
+    ]
+  },
+  {
     path: 'user-login',
     canActivate: [AuthGuard],
     component: UserLoginComponent,
@@ -108,7 +140,7 @@ const appRoutes:Routes = [
   },
   {
     path: '**',
-    component: NotFoundComponent
+    component: HomeComponent
   }
 ];
 
@@ -125,12 +157,15 @@ const appRoutes:Routes = [
     UserComponent,
     InConstructionComponent,
     LoadingSpinnerComponent,
-    UserLoginComponent
+    UserLoginComponent,
+    AutoComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     RouterModule.forRoot(appRoutes),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),
@@ -140,6 +175,7 @@ const appRoutes:Routes = [
     AngularFireStorageModule,
     AngularFireModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatSnackBarModule,
@@ -148,11 +184,15 @@ const appRoutes:Routes = [
     MatInputModule,
     MatSelectModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule,
+    MatAutocompleteModule
   ],
   providers: [
     UserService,
     AuthService,
+    CardService,
+    ContactService,
     GeoService,
     MessagingService,
     AuthGuard,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ContactService} from '../../services/contact.service';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  contacts: any[];
+
+  constructor(private contactService: ContactService) {
+    this.contactService.getContacts().valueChanges().subscribe(fbConts=>{
+      this.contacts=fbConts;
+    });
+  }
 
   ngOnInit() {
   }

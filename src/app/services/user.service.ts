@@ -33,7 +33,7 @@ export class UserService {
   }
 
   public deleteUser(user){
-    this.afDB.database.ref('/users/'+user.id).remove();
+    return this.afDB.database.ref('/users/'+user.id).remove();
   }
 
   getUserData(id) {

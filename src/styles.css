@@ -71,3 +71,8 @@ body, html {
     display: none;
   }
 }
+
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 1000000 !important;
+}

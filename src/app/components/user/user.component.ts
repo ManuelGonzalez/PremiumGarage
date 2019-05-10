@@ -2,7 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {GeoService} from '../../services/geo.service';
-import {FormControl} from '@angular/forms';
+import { MediaObserver, MediaChange } from '@angular/flex-layout';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -22,13 +23,16 @@ export class UserComponent implements OnInit {
   isUpdate=false;
   displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email','actions'];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
+  currentScreenWidth: string = '';
+  flexMediaWatcher: Subscription;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public userService: UserService,
               public geoService: GeoService,
-              private snackbar: MatSnackBar) {
+              private snackbar: MatSnackBar,
+              private mediaObserver: MediaObserver) {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
@@ -38,12 +42,25 @@ export class UserComponent implements OnInit {
     });
     this.geoService.getProvinces().valueChanges().subscribe(fbProv=>{
       this.provinces=fbProv;
-    })
+    });
+    this.flexMediaWatcher = mediaObserver.media$.subscribe((change: MediaChange) => {
+      if (change.mqAlias !== this.currentScreenWidth) {
+        this.currentScreenWidth = change.mqAlias;
+        this.setupTable();
+      }
+    });
   }
 
 
   ngOnInit() {
   }
+
+  setupTable() {
+    if (this.currentScreenWidth === 'xs') { // only display internalId on larger screens
+      this.displayedColumns = ['id', 'name','actions'];
+      this.displayedColumns.shift(); // remove 'internalId'
+    }
+  };
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -78,6 +95,18 @@ export class UserComponent implements OnInit {
   setLocales(){
     this.selectedProvince=this.provinces.find(p=>p.id==this.user.province);
     this.locales=this.selectedProvince.ciudades;
+  }
+
+  deleteUser(){
+    this.userService.deleteUser(this.user).then(resp=>{
+      this.snackbar.open('El usuario: '+ this.user.name + ' a sido eliminado', 'Delete', {
+        duration: 5000
+      });
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    });
   }
 
   serarchUser(id) {

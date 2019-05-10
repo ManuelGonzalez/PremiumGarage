@@ -54,19 +54,25 @@
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ations </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
           <td mat-cell *matCellDef="let element">
-            <mat-button-toggle-group #group="matButtonToggleGroup">
-              <mat-button-toggle>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <i class="fas fa-bars"></i>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
                 <i class="fas fa-eye"></i>
-              </mat-button-toggle>
-              <mat-button-toggle data-toggle="modal" data-target="#createUserModal" (click)="setUser(element)">
+                <span>Detalle</span>
+              </button>
+              <button mat-menu-item data-toggle="modal" data-target="#createUserModal" (click)="setUser(element)">
                 <i class="fas fa-pen"></i>
-              </mat-button-toggle>
-              <mat-button-toggle>
+                <span>Editar</span>
+              </button>
+              <button mat-menu-item data-toggle="modal" data-target="#deleteUserModal" (click)="setUser(element)">
                 <i class="fas fa-trash"></i>
-              </mat-button-toggle>
-            </mat-button-toggle-group>
+                <span>Eliminar</span>
+              </button>
+            </mat-menu>
           </td>
         </ng-container>
 
@@ -181,6 +187,25 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="blankUser()">Cancelar</button>
         <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createUser()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete User Modal-->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleDeleteUserModalLabel">Eliminar Usuario</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Deseas eliminar al usuario {{user.name}}</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="deleteUser()">Si</button>
       </div>
     </div>
   </div>

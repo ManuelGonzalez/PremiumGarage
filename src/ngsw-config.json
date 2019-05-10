@@ -25,9 +25,10 @@
     }
   ],
   "dataGroups": [{
-    "name": "firebaseAPI",
+    "name": "GPDevotoAPI",
     "urls": [
-      "https://premiumgarage-c0f80.firebaseio.com/**"
+      "https://premiumgarage-c0f80.firebaseio.com/**",
+      "https://afip.tangofactura.com/Index/**"
     ],
     "cacheConfig": {
       "strategy": "freshness",
