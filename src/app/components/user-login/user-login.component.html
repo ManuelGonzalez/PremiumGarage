@@ -31,11 +31,11 @@
       </div>
       <div class="col">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Telefono" name="phoneNumber" #phone [(ngModel)]="currenUser.phoneNumber">
+          <input matInput placeholder="Contraseña" type="password" name="phoneNumber" #password [(ngModel)]="currenUser.password">
         </mat-form-field>
       </div>
     </div>
-    <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="updateUserLogin(name.value,email.value,phone.value)">Actualizar</button>
+    <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="updateUserLogin(name.value,email.value,password.value)">Actualizar</button>
   </form>
 
 </div>

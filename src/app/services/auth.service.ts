@@ -120,10 +120,14 @@ export class AuthService {
     });
   }
 
-  updateUser(name,email,phone){
-    this.afAuth.auth.currentUser.updateProfile({
-      displayName: name
-    }).then(()=>{
+  updateUser(name,email,password){
+    Promise.all([
+      this.afAuth.auth.currentUser.updateProfile({
+        displayName: name
+      }),
+      this.afAuth.auth.currentUser.updateEmail(email),
+      this.afAuth.auth.currentUser.updatePassword(password)
+    ]).then(()=>{
       this.snackbar.open( 'El usuario se ha actualizado con exito.',
         'Update', {
           duration: 5000

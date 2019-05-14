@@ -30,7 +30,7 @@ export class UserLoginComponent implements OnInit {
     this.userLogin={};
   }
 
-  updateUserLogin(name,email,phone){
-    this.authService.updateUser(name,email,phone)
+  updateUserLogin(name,email,password){
+    this.authService.updateUser(name,email,password)
   }
 }
