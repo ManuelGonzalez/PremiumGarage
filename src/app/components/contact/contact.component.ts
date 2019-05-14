@@ -117,6 +117,10 @@ export class ContactComponent implements OnInit {
 
   }
 
+  setContact(contact){
+    this.contact=contact;
+  }
+
   blankData(){
     this.user={};
     this.userRef={};
@@ -156,6 +160,19 @@ export class ContactComponent implements OnInit {
           })
         }
       }
+    });
+  }
+
+  deleteContact(){
+    this.contactService.deleteContact(this.contact).then(()=>{
+      this.snackbar.open('El contacto: '+ this.contact.name + ' a sido eliminado', 'Delete', {
+        duration: 5000
+      });
+      this.blankData();
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
     });
   }
 

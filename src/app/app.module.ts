@@ -41,11 +41,12 @@ import {GeoService} from './services/geo.service';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import {CookieService} from 'ngx-cookie-service';
 import { UserLoginComponent } from './components/user-login/user-login.component';
-import { AutoComponent } from './components/auto/auto.component';
 import { ContactComponent } from './components/contact/contact.component';
 import {CardService} from './services/cards.service';
 import {ContactService} from './services/contact.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { VehicleComponent } from './components/vehicle/vehicle.component';
+import {VehicleService} from './services/vehicle.service';
 
 export const environment = {
   production: false,
@@ -77,66 +78,31 @@ const appRoutes:Routes = [
     path: 'users',
     canActivate: [AuthGuard],
     component: UserComponent,
-    children:[
-      /*
-      {
-        path: ':name',
-        component: UserComponent
-      }
-      */
-    ]
+    children:[]
   },
   {
-    path: 'autos',
+    path: 'vehicles',
     canActivate: [AuthGuard],
-    component: AutoComponent,
-    children:[
-      /*
-      {
-        path: ':name',
-        component: UserComponent
-      }
-      */
-    ]
+    component: VehicleComponent,
+    children:[]
   },
   {
     path: 'contacts',
     canActivate: [AuthGuard],
     component: ContactComponent,
-    children:[
-      /*
-      {
-        path: ':name',
-        component: UserComponent
-      }
-      */
-    ]
+    children:[]
   },
   {
     path: 'user-login',
     canActivate: [AuthGuard],
     component: UserLoginComponent,
-    children:[
-      /*
-      {
-        path: ':name',
-        component: UserComponent
-      }
-      */
-    ]
+    children:[]
   },
   {
     path: 'in-construction',
     canActivate: [AuthGuard],
     component: InConstructionComponent,
-    children:[
-      /*
-      {
-        path: ':name',
-        component: UserComponent
-      }
-      */
-    ]
+    children:[]
   },
   {
     path: '**',
@@ -158,8 +124,8 @@ const appRoutes:Routes = [
     InConstructionComponent,
     LoadingSpinnerComponent,
     UserLoginComponent,
-    AutoComponent,
-    ContactComponent
+    ContactComponent,
+    VehicleComponent
   ],
   imports: [
     BrowserModule,
@@ -191,6 +157,7 @@ const appRoutes:Routes = [
   providers: [
     UserService,
     AuthService,
+    VehicleService,
     CardService,
     ContactService,
     GeoService,

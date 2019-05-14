@@ -102,6 +102,7 @@ export class UserComponent implements OnInit {
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido eliminado', 'Delete', {
         duration: 5000
       });
+      this.blankUser();
     }).catch(err=>{
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
