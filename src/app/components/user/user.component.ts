@@ -4,6 +4,10 @@ import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/m
 import {GeoService} from '../../services/geo.service';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import {Subscription} from 'rxjs';
+import {Upload} from '../../models/upload';
+import {UploadService} from '../../services/upload.service';
+import * as _ from "lodash";
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-user',
@@ -25,14 +29,17 @@ export class UserComponent implements OnInit {
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
   currentScreenWidth: string = '';
   flexMediaWatcher: Subscription;
+  selectedFiles: FileList;
+  currentUpload: Upload;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public userService: UserService,
-              public geoService: GeoService,
+  constructor(private userService: UserService,
+              private geoService: GeoService,
               private snackbar: MatSnackBar,
-              private mediaObserver: MediaObserver) {
+              private mediaObserver: MediaObserver,
+              private upSvc: UploadService) {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
@@ -71,6 +78,14 @@ export class UserComponent implements OnInit {
       this.user.lastUpdate=Date.now();
     }else{
       this.user.creationDate=Date.now();
+    }
+    if (this.selectedFiles){
+      if(this.user.files){
+        this.user.files = this.user.files.concat($.map(this.selectedFiles, function(val) {return val.name;}));
+      }else{
+        this.user.files = $.map(this.selectedFiles, function(val) { return val.name; });
+      }
+      this.uploadMulti();
     }
     this.userService.createOrUpdateUser(this.user).then(res=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
@@ -129,5 +144,18 @@ export class UserComponent implements OnInit {
         }
       }
     });
+  }
+
+  detectFiles(event) {
+    this.selectedFiles = event.target.files;
+  }
+
+  uploadMulti() {
+    let files = this.selectedFiles;
+    let filesIndex = _.range(files.length);
+    _.each(filesIndex, (idx) => {
+      this.currentUpload = new Upload(files[idx]);
+      this.upSvc.pushUpload(this.currentUpload)}
+    )
   }
 }
