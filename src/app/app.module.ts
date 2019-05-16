@@ -26,15 +26,15 @@ import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatButtonToggleModule,
+  MatButtonModule, MatButtonToggleModule, MatCardModule,
   MatIconModule,
   MatInputModule, MatMenuModule, MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule,
-  MatTableModule,
+  MatTableModule, MatTabsModule,
   MatTooltipModule
 } from '@angular/material';
-import { UserComponent } from './components/user/user.component';
+import {SafePipe, UserComponent} from './components/user/user.component';
 import { InConstructionComponent } from './components/in-construction/in-construction.component';
 import {MessagingService} from './services/messaging.service';
 import {GeoService} from './services/geo.service';
@@ -125,7 +125,8 @@ const appRoutes:Routes = [
     LoadingSpinnerComponent,
     UserLoginComponent,
     ContactComponent,
-    VehicleComponent
+    VehicleComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
@@ -152,7 +153,9 @@ const appRoutes:Routes = [
     MatPaginatorModule,
     MatTableModule,
     MatMenuModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatTabsModule,
+    MatCardModule
   ],
   providers: [
     UserService,

@@ -15,7 +15,7 @@ export class UploadService {
   private basePath:string = '/uploads';
   uploads: FirebaseListObservable<Upload[]>;
 
-  pushUpload(upload: Upload) {
+  pushUpload(upload: Upload,path: string) {
     let storageRef = firebase.storage().ref();
     let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file);
 
@@ -30,18 +30,27 @@ export class UploadService {
       },
       () => {
         // upload success
-        //upload.url = uploadTask.snapshot.downloadURL;
-        upload.name = upload.file.name;
-        this.saveFileData(upload)
+        uploadTask.snapshot.ref.getDownloadURL().then(resp=>{
+          upload.url = resp;
+          upload.name = UploadService.formatFileName(upload.file.name);
+          upload.type=upload.file.type;
+          this.saveFileData(upload,path)
+        });
       }
     );
   }
 
-
+  static formatFileName(name: string): string{
+    return Date.now()+"."+name.split(".")[1];
+  }
 
   // Writes the file details to the realtime db
-  private saveFileData(upload: Upload) {
-    this.db.list(`${this.basePath}/`).push(upload);
+  private saveFileData(upload: Upload,path: string) {
+    this.db.list(`${this.basePath}/${path}`).push(upload);
+  }
+
+  getFiles(path: string) {
+    return this.db.list(`${this.basePath}/${path}`)
   }
 
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {UploadService} from './upload.service';
+import {Upload} from '../models/upload';
 
 const endpoint = 'https://afip.tangofactura.com/Index/';
 const httpOptions = {
@@ -18,7 +20,7 @@ export class UserService {
   userData:any={};
   cuilData: any={};
 
-  constructor(public afDB: AngularFireDatabase, private http: HttpClient) { }
+  constructor(public afDB: AngularFireDatabase, private http: HttpClient, private uploadServices: UploadService) { }
 
   public getUsers(){
     return this.afDB.list('/users/');
@@ -42,5 +44,13 @@ export class UserService {
 
   getUserCuil(id) {
     return this.http.get(endpoint + '/GetCuitsPorDocumento/?NumeroDocumento='+id)
+  }
+
+  pushUserFiles(upload: Upload,id: string){
+    this.uploadServices.pushUpload(upload,"users/"+id);
+  }
+
+  getUserFiles(id: string){
+    return this.uploadServices.getFiles("users/"+id).valueChanges()
   }
 }

@@ -1,13 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {GeoService} from '../../services/geo.service';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import {Subscription} from 'rxjs';
 import {Upload} from '../../models/upload';
-import {UploadService} from '../../services/upload.service';
 import * as _ from "lodash";
-import * as $ from 'jquery';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user',
@@ -20,6 +19,7 @@ export class UserComponent implements OnInit {
   cuilData: any ={};
   userData: any = [];
   users: any[]= [];
+  files: any[]= [];
   provinces: any[]= [];
   selectedProvince: any={};
   locales: any[]= [];
@@ -39,7 +39,7 @@ export class UserComponent implements OnInit {
               private geoService: GeoService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
-              private upSvc: UploadService) {
+              private sanitizer: DomSanitizer) {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
@@ -79,14 +79,7 @@ export class UserComponent implements OnInit {
     }else{
       this.user.creationDate=Date.now();
     }
-    if (this.selectedFiles){
-      if(this.user.files){
-        this.user.files = this.user.files.concat($.map(this.selectedFiles, function(val) {return val.name;}));
-      }else{
-        this.user.files = $.map(this.selectedFiles, function(val) { return val.name; });
-      }
-      this.uploadMulti();
-    }
+    this.uploadMulti(this.user.id);
     this.userService.createOrUpdateUser(this.user).then(res=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
         duration: 5000
@@ -105,6 +98,9 @@ export class UserComponent implements OnInit {
 
   setUser(user){
     this.user=user;
+    this.userService.getUserFiles(user.id).subscribe(files=>{
+      this.files=files
+    })
   }
 
   setLocales(){
@@ -150,12 +146,20 @@ export class UserComponent implements OnInit {
     this.selectedFiles = event.target.files;
   }
 
-  uploadMulti() {
+  uploadMulti(id) {
     let files = this.selectedFiles;
     let filesIndex = _.range(files.length);
     _.each(filesIndex, (idx) => {
       this.currentUpload = new Upload(files[idx]);
-      this.upSvc.pushUpload(this.currentUpload)}
+      this.userService.pushUserFiles(this.currentUpload,id)}
     )
+  }
+}
+
+@Pipe({ name: 'safe' })
+export class SafePipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizer) {}
+  transform(url) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }
