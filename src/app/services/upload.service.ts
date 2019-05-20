@@ -12,45 +12,57 @@ export class UploadService {
 
   constructor(private af: AngularFireModule, private db: AngularFireDatabase) { }
 
-  private basePath:string = '/uploads';
+  private basePath = '/uploads/';
   uploads: FirebaseListObservable<Upload[]>;
 
-  pushUpload(upload: Upload,path: string) {
-    let storageRef = firebase.storage().ref();
-    let uploadTask = storageRef.child(`${this.basePath}/${upload.file.name}`).put(upload.file);
+  static formatFileName(name: string): string {
+    return Date.now() + '.' + name.split('.')[1];
+  }
+
+  pushUpload(upload: Upload, path: string) {
+    const storageRef = firebase.storage().ref();
+    const name = UploadService.formatFileName(upload.file.name);
+    const uploadTask = storageRef.child(`${this.basePath}${name}`).put(upload.file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) =>  {
         // upload in progress
-        upload.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        upload.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       },
       (error) => {
         // upload failed
-        console.log(error)
+        console.log(error);
       },
       () => {
         // upload success
-        uploadTask.snapshot.ref.getDownloadURL().then(resp=>{
+        uploadTask.snapshot.ref.getDownloadURL().then(resp => {
+          upload.id = name.split('.')[0];
           upload.url = resp;
-          upload.name = UploadService.formatFileName(upload.file.name);
-          upload.type=upload.file.type;
-          this.saveFileData(upload,path)
+          upload.name = name;
+          upload.type = upload.file.type;
+          this.saveFileData(upload, path);
         });
       }
     );
   }
 
-  static formatFileName(name: string): string{
-    return Date.now()+"."+name.split(".")[1];
+  // Writes the file details to the realtime db
+  private saveFileData(upload: Upload, path: string) {
+    this.db.list(`${this.basePath}${path}`).push(upload);
   }
 
-  // Writes the file details to the realtime db
-  private saveFileData(upload: Upload,path: string) {
-    this.db.list(`${this.basePath}/${path}`).push(upload);
+  deleteUpload(path: string){
+    const storageRef = firebase.storage().ref();
+    return storageRef.child(`${this.basePath}${path}`).delete()
+  }
+
+  deleteFileData(path: string) {
+    debugger;
+    return this.db.list(`${this.basePath}${path}`).remove();
   }
 
   getFiles(path: string) {
-    return this.db.list(`${this.basePath}/${path}`)
+    return this.db.list(`${this.basePath}${path}`);
   }
 
 }

@@ -53,4 +53,12 @@ export class UserService {
   getUserFiles(id: string){
     return this.uploadServices.getFiles("users/"+id).valueChanges()
   }
+
+  deleteUserFile(id: string, upload: Upload){
+    debugger;
+    return Promise.all([
+      this.uploadServices.deleteUpload(`/${upload.name}`),
+      this.uploadServices.deleteFileData(`users/${id}/${upload.id}`),
+    ])
+  }
 }

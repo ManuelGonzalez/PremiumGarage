@@ -16,6 +16,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 export class UserComponent implements OnInit {
 
   user: any = {};
+  file: any = {};
   cuilData: any ={};
   userData: any = [];
   users: any[]= [];
@@ -103,6 +104,10 @@ export class UserComponent implements OnInit {
     })
   }
 
+  setFile(file){
+    this.file=file;
+  }
+
   setLocales(){
     this.selectedProvince=this.provinces.find(p=>p.id==this.user.province);
     this.locales=this.selectedProvince.ciudades;
@@ -111,6 +116,19 @@ export class UserComponent implements OnInit {
   deleteUser(){
     this.userService.deleteUser(this.user).then(resp=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido eliminado', 'Delete', {
+        duration: 5000
+      });
+      this.blankUser();
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    });
+  }
+
+  deleteFile(){
+    this.userService.deleteUserFile(this.user.id, this.file).then(resp=>{
+      this.snackbar.open('El archivo: a sido eliminado', 'Delete', {
         duration: 5000
       });
       this.blankUser();
