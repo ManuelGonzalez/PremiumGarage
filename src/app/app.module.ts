@@ -26,7 +26,7 @@ import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatButtonToggleModule, MatCardModule,
+  MatButtonModule, MatButtonToggleModule, MatCardModule, MatDialogModule,
   MatIconModule,
   MatInputModule, MatMenuModule, MatPaginatorModule,
   MatSelectModule,
@@ -34,7 +34,7 @@ import {
   MatTableModule, MatTabsModule,
   MatTooltipModule
 } from '@angular/material';
-import {SafePipe, UserComponent} from './components/user/user.component';
+import {UserComponent} from './components/user/user.component';
 import { InConstructionComponent } from './components/in-construction/in-construction.component';
 import {MessagingService} from './services/messaging.service';
 import {GeoService} from './services/geo.service';
@@ -47,6 +47,8 @@ import {ContactService} from './services/contact.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
 import {VehicleService} from './services/vehicle.service';
+import {SafePipe} from './pipes/safe.pipe';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 export const environment = {
   production: false,
@@ -126,7 +128,8 @@ const appRoutes:Routes = [
     UserLoginComponent,
     ContactComponent,
     VehicleComponent,
-    SafePipe
+    SafePipe,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -155,7 +158,11 @@ const appRoutes:Routes = [
     MatMenuModule,
     MatAutocompleteModule,
     MatTabsModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent
   ],
   providers: [
     UserService,

@@ -48,7 +48,7 @@ export class UploadService {
 
   // Writes the file details to the realtime db
   private saveFileData(upload: Upload, path: string) {
-    this.db.list(`${this.basePath}${path}`).push(upload);
+    this.db.list(`${this.basePath}${path}`).query.ref.child(upload.id).set(upload)
   }
 
   deleteUpload(path: string){
@@ -57,7 +57,6 @@ export class UploadService {
   }
 
   deleteFileData(path: string) {
-    debugger;
     return this.db.list(`${this.basePath}${path}`).remove();
   }
 

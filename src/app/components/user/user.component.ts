@@ -1,12 +1,13 @@
-import {Component, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
-import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {GeoService} from '../../services/geo.service';
-import { MediaObserver, MediaChange } from '@angular/flex-layout';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {Subscription} from 'rxjs';
 import {Upload} from '../../models/upload';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import {DomSanitizer} from '@angular/platform-browser';
+import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-user',
@@ -32,15 +33,19 @@ export class UserComponent implements OnInit {
   flexMediaWatcher: Subscription;
   selectedFiles: FileList;
   currentUpload: Upload;
+  numberFiles = 0;
+  loadFiles=false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('myInput') myInputVariable: ElementRef;
 
   constructor(private userService: UserService,
               private geoService: GeoService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              public dialog: MatDialog) {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
@@ -80,12 +85,14 @@ export class UserComponent implements OnInit {
     }else{
       this.user.creationDate=Date.now();
     }
-    this.uploadMulti(this.user.id);
-    this.userService.createOrUpdateUser(this.user).then(res=>{
+    Promise.all([
+      this.uploadMulti(this.user.id),
+      this.userService.createOrUpdateUser(this.user),
+    ]).then(res=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
         duration: 5000
       });
-      this.user={};
+      this.blankUser()
     }).catch(err=>{
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
@@ -95,6 +102,12 @@ export class UserComponent implements OnInit {
 
   blankUser(){
     this.user={};
+    this.myInputVariable.nativeElement.value = "";
+    this.numberFiles = 0;
+    var that = this;
+    setTimeout(function(this){
+      that.loadFiles = false;
+    },5000);
   }
 
   setUser(user){
@@ -162,9 +175,11 @@ export class UserComponent implements OnInit {
 
   detectFiles(event) {
     this.selectedFiles = event.target.files;
+    this.numberFiles = event.target.files.length;
   }
 
   uploadMulti(id) {
+    this.loadFiles=true;
     let files = this.selectedFiles;
     let filesIndex = _.range(files.length);
     _.each(filesIndex, (idx) => {
@@ -172,12 +187,30 @@ export class UserComponent implements OnInit {
       this.userService.pushUserFiles(this.currentUpload,id)}
     )
   }
+
+  openDialogDeleteFile(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: "Deseas eliminar el archivo?"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteFile()
+      }
+    });
+  }
+
+  openDialogDeleteUser(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: `Deseas eliminar el al usuario: ${this.user.name}?`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteUser();
+      }
+    });
+  }
+
 }
 
-@Pipe({ name: 'safe' })
-export class SafePipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {}
-  transform(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-}
