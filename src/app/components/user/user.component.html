@@ -9,6 +9,7 @@
   <div class="text-right">
     <button mat-mini-fab color="primary"
             data-toggle="modal" data-target="#createUserModal"
+            (click)="blankUser()"
             matTooltip="Agregar usuarios">
       <mat-icon>+</mat-icon>
     </button>
@@ -250,7 +251,7 @@
           <div class="progress">
             <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
           </div>
-          Progress: {{currentUpload?.name}} | {{currentUpload?.progress}}% Complete
+          Progreso: {{currentUpload?.progress}}% Completado
         </div>
         <hr>
         <div class="input-group mb-3">
@@ -265,7 +266,7 @@
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
         <button
           class="btn btn-primary" type="button"
-          [disabled]="!selectedFiles"
+          [disabled]="numberFiles==0"
           (click)="createUser()">
           Subir Archivos
         </button>

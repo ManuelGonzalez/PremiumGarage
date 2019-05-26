@@ -92,19 +92,24 @@ export class UserComponent implements OnInit {
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
         duration: 5000
       });
-      this.blankUser()
     }).catch(err=>{
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
-    })
+    }).finally(()=>{
+      this.blanckInputfiles();
+    });
   }
 
   blankUser(){
     this.user={};
+    this.blanckInputfiles();
+  }
+
+  blanckInputfiles(){
     this.myInputVariable.nativeElement.value = "";
     this.numberFiles = 0;
-    var that = this;
+    let that = this;
     setTimeout(function(this){
       that.loadFiles = false;
     },5000);
@@ -127,7 +132,10 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser(){
-    this.userService.deleteUser(this.user).then(resp=>{
+    Promise.all([
+      this.userService.deleteUser(this.user),
+      this.userService.deleteAllUserFile(this.user.id)
+    ]).then(resp=>{
       this.snackbar.open('El usuario: '+ this.user.name + ' a sido eliminado', 'Delete', {
         duration: 5000
       });
@@ -144,7 +152,6 @@ export class UserComponent implements OnInit {
       this.snackbar.open('El archivo: a sido eliminado', 'Delete', {
         duration: 5000
       });
-      this.blankUser();
     }).catch(err=>{
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000

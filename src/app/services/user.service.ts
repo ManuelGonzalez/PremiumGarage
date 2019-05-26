@@ -17,8 +17,8 @@ const httpOptions = {
 })
 export class UserService {
 
-  userData:any={};
-  cuilData: any={};
+  currentFiles:any[]=[];
+  currentFile:any={};
 
   constructor(public afDB: AngularFireDatabase, private http: HttpClient, private uploadServices: UploadService) { }
 
@@ -56,8 +56,17 @@ export class UserService {
 
   deleteUserFile(id: string, upload: Upload){
     return Promise.all([
-      this.uploadServices.deleteUpload(`/${upload.name}`),
+      this.uploadServices.deleteUpload(`users/${id}/${upload.name}`),
       this.uploadServices.deleteFileData(`users/${id}/${upload.id}`),
     ])
+  }
+
+  deleteAllUserFile(id: string){
+    this.getUserFiles(id).subscribe(files=>{
+      this.currentFiles=files;
+      this.currentFiles.map(file=>{
+        this.deleteUserFile(id,file);
+      });
+    });
   }
 }

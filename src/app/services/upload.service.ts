@@ -22,7 +22,7 @@ export class UploadService {
   pushUpload(upload: Upload, path: string) {
     const storageRef = firebase.storage().ref();
     const name = UploadService.formatFileName(upload.file.name);
-    const uploadTask = storageRef.child(`${this.basePath}${name}`).put(upload.file);
+    const uploadTask = storageRef.child(`${this.basePath}${path}/${name}`).put(upload.file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) =>  {
@@ -52,6 +52,11 @@ export class UploadService {
   }
 
   deleteUpload(path: string){
+    const storageRef = firebase.storage().ref();
+    return storageRef.child(`${this.basePath}${path}`).delete()
+  }
+
+  deleteAllUploads(path: string){
     const storageRef = firebase.storage().ref();
     return storageRef.child(`${this.basePath}${path}`).delete()
   }
