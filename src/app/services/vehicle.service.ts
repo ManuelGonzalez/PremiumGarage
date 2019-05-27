@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
+import {Upload} from '../models/upload';
+import {UploadService} from './upload.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleService {
 
-  constructor(public afDB: AngularFireDatabase) { }
+  currentFiles: any[] = [];
+
+  constructor(public afDB: AngularFireDatabase, private uploadServices: UploadService) { }
 
   public getVehicles(){
     return this.afDB.list('/vehicles/');
@@ -22,6 +26,30 @@ export class VehicleService {
 
   public deleteVehicle(vehicle){
     return this.afDB.database.ref('/vehicles/'+vehicle.id).remove();
+  }
+
+  pushVehicleFiles(upload: Upload,id: string){
+    this.uploadServices.pushUpload(upload,"vehicles/"+id);
+  }
+
+  getVehicleFiles(id: string){
+    return this.uploadServices.getFiles("vehicles/"+id).valueChanges()
+  }
+
+  deleteVehicleFile(id: string, upload: Upload){
+    return Promise.all([
+      this.uploadServices.deleteUpload(`vehicles/${id}/${upload.name}`),
+      this.uploadServices.deleteFileData(`vehicles/${id}/${upload.id}`),
+    ])
+  }
+
+  deleteAllUserFile(id: string){
+    this.getVehicleFiles(id).subscribe(files=>{
+      this.currentFiles=files;
+      this.currentFiles.map(file=>{
+        this.deleteVehicleFile(id,file);
+      });
+    });
   }
   
 }

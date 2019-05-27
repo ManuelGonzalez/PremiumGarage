@@ -6,7 +6,6 @@ import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {Subscription} from 'rxjs';
 import {Upload} from '../../models/upload';
 import * as _ from 'lodash';
-import {DomSanitizer} from '@angular/platform-browser';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -44,7 +43,6 @@ export class UserComponent implements OnInit {
               private geoService: GeoService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
-              private sanitizer: DomSanitizer,
               public dialog: MatDialog) {
     this.userService.getUsers().valueChanges().subscribe(fbUsers=>{
       this.users=fbUsers;

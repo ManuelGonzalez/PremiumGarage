@@ -1,10 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CardService} from '../../services/cards.service';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {VehicleService} from '../../services/vehicle.service';
-import {MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import * as _ from 'lodash';
+import {Upload} from '../../models/upload';
+import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-vehicle',
@@ -23,11 +26,18 @@ export class VehicleComponent implements OnInit {
   selectedBrand: any = {};
   isUpdate=false;
   displayedColumns: string[] = ['id', 'modelo', 'year' ,'establishment', 'addressReg', 'phoneReg', 'actions'];
+  selectedFiles: FileList;
+  currentUpload: Upload;
+  numberFiles = 0;
+  loadFiles=false;
+  file: any = {};
+  files: any[]= [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('myInput') myInputVariable: ElementRef;
 
-  constructor(private cardService: CardService, private vehicleService: VehicleService, private snackbar: MatSnackBar) {
+  constructor(private cardService: CardService, private vehicleService: VehicleService, private snackbar: MatSnackBar, public dialog: MatDialog) {
     this.vehicleService.getVehicles().valueChanges().subscribe(fbVeh=>{
       this.vehicles=fbVeh;
       this.dataSource = new MatTableDataSource(this.vehicles);
@@ -41,17 +51,10 @@ export class VehicleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.models.filter(option => option.toLowerCase().includes(filterValue));
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   setModels(){
@@ -64,6 +67,7 @@ export class VehicleComponent implements OnInit {
 
   blankVehicle(){
     this.vehicle={};
+    this.blanckInputfiles();
   }
 
   searchVehicle(id){
@@ -78,6 +82,9 @@ export class VehicleComponent implements OnInit {
   setVehicle(vehicle){
     this.isUpdate=true;
     this.vehicle=vehicle;
+    this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files=>{
+      this.files=files
+    })
   }
 
   createVehicle(){
@@ -86,7 +93,10 @@ export class VehicleComponent implements OnInit {
     }else{
       this.vehicle.creationDate=Date.now();
     }
-    this.vehicleService.createOrUpdateVehicle(this.vehicle).then(()=>{
+    Promise.all([
+      this.uploadMulti(this.vehicle.id),
+      this.vehicleService.createOrUpdateVehicle(this.vehicle),
+    ]).then(()=>{
       this.snackbar.open('El vehiculo: '+ this.vehicle.id + ' a sido guardado con exito', 'Save', {
         duration: 5000
       });
@@ -95,6 +105,8 @@ export class VehicleComponent implements OnInit {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
+    }).finally(()=>{
+      this.blanckInputfiles();
     });
   }
 
@@ -108,6 +120,70 @@ export class VehicleComponent implements OnInit {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
+    });
+  }
+
+  detectFiles(event) {
+    this.selectedFiles = event.target.files;
+    this.numberFiles = event.target.files.length;
+  }
+
+  uploadMulti(id) {
+    this.loadFiles=true;
+    let files = this.selectedFiles;
+    let filesIndex = _.range(files.length);
+    _.each(filesIndex, (idx) => {
+      this.currentUpload = new Upload(files[idx]);
+      this.vehicleService.pushVehicleFiles(this.currentUpload,id)}
+    )
+  }
+
+  deleteFile(){
+    this.vehicleService.deleteVehicleFile(this.vehicle.id, this.file).then(resp=>{
+      this.snackbar.open('El archivo: a sido eliminado', 'Delete', {
+        duration: 5000
+      });
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    });
+  }
+
+  setFile(file){
+    this.file=file;
+  }
+
+  blanckInputfiles(){
+    this.myInputVariable.nativeElement.value = "";
+    this.numberFiles = 0;
+    let that = this;
+    setTimeout(function(this){
+      that.loadFiles = false;
+    },5000);
+  }
+
+  openDialogDeleteFile(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: "Deseas eliminar el archivo?"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteFile()
+      }
+    });
+  }
+
+  openDialogDeleteVehicle(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: `Deseas eliminar el vehiculo: ${this.vehicle.id}?`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteVehicle();
+      }
     });
   }
 
