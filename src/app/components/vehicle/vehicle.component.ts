@@ -2,12 +2,13 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CardService} from '../../services/cards.service';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {VehicleService} from '../../services/vehicle.service';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import * as _ from 'lodash';
 import {Upload} from '../../models/upload';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'app-vehicle',
@@ -25,7 +26,9 @@ export class VehicleComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   selectedBrand: any = {};
   isUpdate=false;
-  displayedColumns: string[] = ['id', 'modelo', 'year' ,'establishment', 'addressReg', 'phoneReg', 'actions'];
+  displayedColumns: string[] = [];
+  currentScreenWidth: string = '';
+  flexMediaWatcher: Subscription;
   selectedFiles: FileList;
   currentUpload: Upload;
   numberFiles = 0;
@@ -37,7 +40,11 @@ export class VehicleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('myInput') myInputVariable: ElementRef;
 
-  constructor(private cardService: CardService, private vehicleService: VehicleService, private snackbar: MatSnackBar, public dialog: MatDialog) {
+  constructor(private cardService: CardService,
+              private vehicleService: VehicleService,
+              private snackbar: MatSnackBar,
+              private mediaObserver: MediaObserver,
+              public dialog: MatDialog) {
     this.vehicleService.getVehicles().valueChanges().subscribe(fbVeh=>{
       this.vehicles=fbVeh;
       this.dataSource = new MatTableDataSource(this.vehicles);
@@ -47,6 +54,12 @@ export class VehicleComponent implements OnInit {
     });
     this.cardService.getBrands().valueChanges().subscribe(fbBrands=>{
       this.brands=fbBrands;
+    });
+    this.flexMediaWatcher = mediaObserver.media$.subscribe((change: MediaChange) => {
+      if (change.mqAlias !== this.currentScreenWidth) {
+        this.currentScreenWidth = change.mqAlias;
+        this.setupTable();
+      }
     });
   }
 
@@ -64,6 +77,26 @@ export class VehicleComponent implements OnInit {
     this.selectedBrand=this.brands.find(p=>p.id==this.vehicle.brand);
     this.models=this.selectedBrand.modelos;
   }
+
+  setupTable() {
+    switch (this.currentScreenWidth) {
+      case 'xs':
+        this.displayedColumns = ['id', 'modelo', 'year', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      case 'sm':
+        this.displayedColumns = ['id', 'modelo', 'year', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      case 'md':
+        this.displayedColumns = ['id', 'modelo', 'year' ,'establishment', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      default:
+        this.displayedColumns = ['id', 'modelo', 'year' ,'establishment', 'addressReg', 'phoneReg', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+    }
+  };
 
   blankVehicle(){
     this.vehicle={};

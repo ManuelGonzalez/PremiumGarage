@@ -26,7 +26,7 @@ export class UserComponent implements OnInit {
   locales: any[]= [];
   dataSource;
   isUpdate=false;
-  displayedColumns: string[] = ['id', 'cuil', 'name', 'address', 'phone', 'email','actions'];
+  displayedColumns: string[] = [];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
   currentScreenWidth: string = '';
   flexMediaWatcher: Subscription;
@@ -67,9 +67,22 @@ export class UserComponent implements OnInit {
   }
 
   setupTable() {
-    if (this.currentScreenWidth === 'xs') { // only display internalId on larger screens
-      this.displayedColumns = ['id', 'name','actions'];
-      this.displayedColumns.shift(); // remove 'internalId'
+    switch (this.currentScreenWidth) {
+      case 'xs':
+        this.displayedColumns = ['id', 'name', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      case 'sm':
+        this.displayedColumns = ['id', 'name', 'email', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      case 'md':
+        this.displayedColumns = ['id', 'name', 'phone', 'email', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      default:
+        this.displayedColumns = ['id', 'cuil', 'name', 'address', 'phone', 'email', 'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
     }
   };
 

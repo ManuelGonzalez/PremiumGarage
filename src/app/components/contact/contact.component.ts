@@ -28,8 +28,8 @@ export class ContactComponent implements OnInit {
   cuilData: any ={};
   userData: any ={};
   dataSource;
-  displayedColumns: string[] = ['id', 'name', 'refName' ,'actions'];
-  ofert: string[] = ['Dinero', 'Auto', 'Ambos'];
+  displayedColumns: string[] = [];
+  offers: string[] = ['Dinero', 'Auto', 'Ambos'];
   currentScreenWidth: string = '';
   flexMediaWatcher: Subscription;
 
@@ -56,28 +56,30 @@ export class ContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
   }
 
   setupTable() {
-    if (this.currentScreenWidth === 'xs') { // only display internalId on larger screens
-      this.displayedColumns = ['id', 'name','actions'];
-      this.displayedColumns.shift(); // remove 'internalId'
+    switch (this.currentScreenWidth) {
+      case 'xs':
+        this.displayedColumns = ['id', 'name' ,'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      case 'sm':
+        this.displayedColumns = ['id', 'name', 'offer' ,'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      case 'md':
+        this.displayedColumns = ['id', 'name', 'offer', 'refName' ,'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
+        break;
+      default:
+        this.displayedColumns = ['id', 'name', 'offer', 'refName' ,'actions'];
+        this.displayedColumns.shift(); // remove 'internalId'
     }
   };
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.models.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   setModels(){

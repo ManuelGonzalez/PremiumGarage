@@ -34,8 +34,13 @@
           <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="offer">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Oferta </th>
+          <td mat-cell *matCellDef="let element"> {{element.offer}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="refName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Referido </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Refiere </th>
           <td mat-cell *matCellDef="let element"> {{element.refName}} </td>
         </ng-container>
 
@@ -178,6 +183,14 @@
             <div class="col">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Email" type="email" name="emailRef" [(ngModel)]="userRef.email">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Oferta</mat-label>
+                <select matNativeControl required name="civilStatus" [(ngModel)]="contact.offer">
+                  <option *ngFor="let of of offers" value="{{of}}">{{of}}</option>
+                </select>
               </mat-form-field>
             </div>
           </div>
