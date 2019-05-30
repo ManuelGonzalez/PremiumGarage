@@ -56,6 +56,11 @@ export class ContactComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
   setupTable() {
@@ -80,6 +85,14 @@ export class ContactComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  private _filter(value: string): string[] {
+    if (value){
+      const filterValue = value.toLowerCase();
+
+      return this.models.filter(option => option.toLowerCase().includes(filterValue));
+    }
   }
 
   setModels(){

@@ -64,10 +64,23 @@ export class VehicleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  private _filter(value: string): string[] {
+    if (value){
+      const filterValue = value.toLowerCase();
+
+      return this.models.filter(option => option.toLowerCase().includes(filterValue));
+    }
   }
 
   setModels(){
@@ -76,6 +89,7 @@ export class VehicleComponent implements OnInit {
     }
     this.selectedBrand=this.brands.find(p=>p.id==this.vehicle.brand);
     this.models=this.selectedBrand.modelos;
+    console.log(this.models);
   }
 
   setupTable() {
