@@ -197,13 +197,15 @@ export class UserComponent implements OnInit {
   }
 
   uploadMulti(id) {
-    this.loadFiles=true;
-    let files = this.selectedFiles;
-    let filesIndex = _.range(files.length);
-    _.each(filesIndex, (idx) => {
-      this.currentUpload = new Upload(files[idx]);
-      this.userService.pushUserFiles(this.currentUpload,id)}
-    )
+    if(this.selectedFiles){
+      this.loadFiles=true;
+      let files = this.selectedFiles;
+      let filesIndex = _.range(files.length);
+      _.each(filesIndex, (idx) => {
+        this.currentUpload = new Upload(files[idx]);
+        this.userService.pushUserFiles(this.currentUpload,id)}
+      )
+    }
   }
 
   openDialogDeleteFile(): void {

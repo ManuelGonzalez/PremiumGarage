@@ -176,13 +176,15 @@ export class VehicleComponent implements OnInit {
   }
 
   uploadMulti(id) {
-    this.loadFiles=true;
-    let files = this.selectedFiles;
-    let filesIndex = _.range(files.length);
-    _.each(filesIndex, (idx) => {
-      this.currentUpload = new Upload(files[idx]);
-      this.vehicleService.pushVehicleFiles(this.currentUpload,id)}
-    )
+    if(this.selectedFiles){
+      this.loadFiles=true;
+      let files = this.selectedFiles;
+      let filesIndex = _.range(files.length);
+      _.each(filesIndex, (idx) => {
+        this.currentUpload = new Upload(files[idx]);
+        this.vehicleService.pushVehicleFiles(this.currentUpload,id)}
+      )
+    }
   }
 
   deleteFile(){
