@@ -108,19 +108,19 @@ export class VehicleComponent implements OnInit {
   setupTable() {
     switch (this.currentScreenWidth) {
       case 'xs':
-        this.displayedColumns = ['id', 'modelo', 'year', 'actions'];
+        this.displayedColumns = ['id', 'model', 'year', 'actions'];
         this.displayedColumns.shift(); // remove 'internalId'
         break;
       case 'sm':
-        this.displayedColumns = ['id', 'modelo', 'year', 'actions'];
+        this.displayedColumns = ['id', 'model', 'year', 'actions'];
         this.displayedColumns.shift(); // remove 'internalId'
         break;
       case 'md':
-        this.displayedColumns = ['id', 'modelo', 'year' ,'establishment', 'actions'];
+        this.displayedColumns = ['id', 'model', 'year' ,'tipe', 'actions'];
         this.displayedColumns.shift(); // remove 'internalId'
         break;
       default:
-        this.displayedColumns = ['id', 'modelo', 'year' ,'establishment', 'addressReg', 'phoneReg', 'actions'];
+        this.displayedColumns = ['id', 'model', 'year' ,'tipe', 'domain', 'actions'];
         this.displayedColumns.shift(); // remove 'internalId'
     }
   };

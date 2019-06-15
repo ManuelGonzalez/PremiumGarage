@@ -30,9 +30,9 @@
           <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="modelo">
+        <ng-container matColumnDef="model">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
-          <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.model}} </td>
         </ng-container>
 
         <ng-container matColumnDef="year">
@@ -40,19 +40,14 @@
           <td mat-cell *matCellDef="let element"> {{element.year}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="establishment">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Radicacion </th>
-          <td mat-cell *matCellDef="let element"> {{element.establishment}} </td>
+        <ng-container matColumnDef="tipe">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+          <td mat-cell *matCellDef="let element"> {{element.tipe}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="addressReg">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Domicilio </th>
-          <td mat-cell *matCellDef="let element"> {{element.addressReg}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="phoneReg">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
-          <td mat-cell *matCellDef="let element"> {{element.phoneReg}} </td>
+        <ng-container matColumnDef="domain">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dominio </th>
+          <td mat-cell *matCellDef="let element"> {{element.domain}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
