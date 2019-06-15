@@ -28,7 +28,7 @@ export class UserComponent implements OnInit {
   isUpdate=false;
   displayedColumns: string[] = [];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
-  nationalityStatus: string[] = ['Argentino Nativo', 'Naturalizado', 'Extrangero'];
+  nationalityStatus: string[] = ['Argentino Nativo', 'Naturalizado', 'Extranjero'];
   nativeDoc: string[] = ['D.N.I.', 'L.E.', 'L.C.'];
   foreineDoc: string[] = ['D.N.I.', 'C.I.', 'PASAP'];
   currentScreenWidth: string = '';

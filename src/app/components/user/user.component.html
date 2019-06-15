@@ -108,7 +108,7 @@
             <div class="col">
               <div class="col">
                 <mat-form-field>
-                  <mat-label>Seleccione Según Corresponda:</mat-label>
+                  <mat-label>Tipo de usuario:</mat-label>
                   <select matNativeControl required name="nationalityStatus" [(ngModel)]="user.nationalityStatus">
                     <option *ngFor="let ns of nationalityStatus" value="{{ns}}">{{ns}}</option>
                   </select>
@@ -140,7 +140,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Apellido y Nombre o Denominanción" required name="name" [(ngModel)]="user.name">
+                <input matInput placeholder="Apellido y Nombre o Denominación" required name="name" [(ngModel)]="user.name">
               </mat-form-field>
             </div>
           </div>
@@ -154,7 +154,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Telefono" required name="phone" [(ngModel)]="user.phone">
+                <input matInput placeholder="Teléfono" required name="phone" [(ngModel)]="user.phone">
               </mat-form-field>
             </div>
           </div>
@@ -286,31 +286,31 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Apellido y Nombre Conyuge" required name="nameSpouse" [(ngModel)]="user.nameSpouse">
+                <input matInput placeholder="Apellido y Nombre Cónyuge" required name="nameSpouse" [(ngModel)]="user.nameSpouse">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="DNI Conyuge" required name="nameSpouseDoc" [(ngModel)]="user.nameSpouseDoc">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Personeria Otorgada por" required name="pop" [(ngModel)]="user.pop">
+                <input matInput placeholder="DNI Cónyuge" required name="nameSpouseDoc" [(ngModel)]="user.nameSpouseDoc">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nro de Datos de Inscripción o Creacion" required name="numberData" [(ngModel)]="user.numberData">
+                <input matInput placeholder="Personería Otorgada por" required name="pop" [(ngModel)]="user.pop">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nro de Datos de Inscripción o Creación" required name="numberData" [(ngModel)]="user.numberData">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput [matDatepicker]="picker2" placeholder="Fecha de Inscripción o Creacion" name="dateData" [(ngModel)]="user.dateData">
+                <input matInput [matDatepicker]="picker2" placeholder="Fecha de Inscripción o Creación" name="dateData" [(ngModel)]="user.dateData">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
