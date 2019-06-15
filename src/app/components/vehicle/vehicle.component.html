@@ -74,6 +74,10 @@
                 <i class="fas fa-file-upload"></i>
                 <span>Archivos</span>
               </button>
+              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#regVehicleModal" (click)="setVehicle(element)">
+                <i class="fas fa-file-upload"></i>
+                <span>Registro</span>
+              </button>
               <button mat-menu-item (click)="setVehicle(element);openDialogDeleteVehicle()">
                 <i class="fas fa-trash"></i>
                 <span>Eliminar</span>
@@ -97,7 +101,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Guardar Vehiculo</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Vehiculo que se Transfiere - GP Devoto</h5>
         <button class="close" type="button" data-dismiss="modal" (click)="blankVehicle()" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -113,22 +117,61 @@
           </div>
           <div class="row">
             <div class="col">
-              <mat-form-field>
-                <mat-label>Marcas</mat-label>
-                <select matNativeControl placeholder="Marca" required name="marca" [(ngModel)]="vehicle.brand" (ngModelChange)="setModels()">
-                  <option *ngFor="let loc of brands" value="{{loc.id}}">{{loc.nombre}}</option>
-                </select>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dominio" required name="domain" [(ngModel)]="vehicle.domain">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input type="text" aria-label="Modelo" matInput [formControl]="myControl" [matAutocomplete]="auto"
-                       placeholder="Modelo" required name="modelo" [(ngModel)]="vehicle.modelo">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option id="modelOptions" *ngFor="let option of filteredOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
+                <input matInput placeholder="Marca" required name="brand" [(ngModel)]="vehicle.brand">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Tipo" required name="tipe" [(ngModel)]="vehicle.tipe">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Modelo" required name="model" [(ngModel)]="vehicle.model">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Marca Motor" required name="engineBrand" [(ngModel)]="vehicle.engineBrand">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nro de Motor" required name="brandNumber" [(ngModel)]="vehicle.brandNumber">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nro de Motor" required name="brandNumber" [(ngModel)]="vehicle.brandNumber">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Marca de Chasis" required name="chasisBrand" [(ngModel)]="vehicle.chasisBrand">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nro de Chasis" required name="chasisNumber" [(ngModel)]="vehicle.chasisNumber">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Uso" required name="use" [(ngModel)]="vehicle.use">
               </mat-form-field>
             </div>
           </div>
@@ -140,28 +183,62 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Radicacion" required name="establishment" [(ngModel)]="vehicle.establishment">
+                <input matInput placeholder="Ubicación" required name="location" [(ngModel)]="vehicle.location">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Domicilio del Registro" required name="addressReg" [(ngModel)]="vehicle.addressReg">
+                <input matInput placeholder="Color" required name="color" [(ngModel)]="vehicle.color">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Telefono del Registro" required name="phoneReg" [(ngModel)]="vehicle.phoneReg">
+                <input matInput placeholder="Estatus" required name="status" [(ngModel)]="vehicle.status">
               </mat-form-field>
             </div>
           </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <div class="custom-file">
-                <input #myInput type="file" class="custom-file-input" (change)="detectFiles($event)" multiple>
-                <label class="custom-file-label">{{numberFiles}} archivos seleccionados</label>
-              </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="KMS" required name="km" [(ngModel)]="vehicle.km">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Valor Costo" required name="costValue" [(ngModel)]="vehicle.costValue">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Combustible" required name="gasoline" [(ngModel)]="vehicle.gasoline">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Valor Publico" required name="publicValue" [(ngModel)]="vehicle.publicValue">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Provincia</mat-label>
+                <select matNativeControl required name="province" [(ngModel)]="vehicle.province" (ngModelChange)="setLocales()">
+                  <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Departamento</mat-label>
+                <select matNativeControl required name="addressLegalLocale" [(ngModel)]="vehicle.departament">
+                  <option *ngFor="let dep of departaments" value="{{dep.id}}">{{dep.nombre}}</option>
+                </select>
+              </mat-form-field>
             </div>
           </div>
         </form>
@@ -242,6 +319,28 @@
           (click)="createVehicle()">
           Subir Archivos
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Files Vehicle Modal-->
+<div class="modal fade" id="regVehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleRegVehicleModalLabel">Archivos</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <iframe width="100%" height=700 [src]="'https://www.dnrpa.gov.ar/guia_calles/radicacionPorDomicilio.php?departamento='+vehicle.departament+'&tipoId=A&tipoDescripcion=AUTOMOTOR&provinciaId='+vehicle.province+'&metodoAnterior=consultarDepartamentos' | safe"></iframe>
+
+      </div>
+      <div class="modal-footer">
+
       </div>
     </div>
   </div>

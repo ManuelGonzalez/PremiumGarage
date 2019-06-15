@@ -140,8 +140,8 @@ export class UserComponent implements OnInit {
     this.file=file;
   }
 
-  setLocales(){
-    this.selectedProvince=this.provinces.find(p=>p.id==this.user.province);
+  setLocales(province){
+    this.selectedProvince=this.provinces.find(p=>p.id==province);
     this.locales=this.selectedProvince.localidades;
   }
 

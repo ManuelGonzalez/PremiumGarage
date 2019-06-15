@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import {Upload} from '../../models/upload';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
+import {GeoService} from '../../services/geo.service';
 
 @Component({
   selector: 'app-vehicle',
@@ -35,6 +36,9 @@ export class VehicleComponent implements OnInit {
   loadFiles=false;
   file: any = {};
   files: any[]= [];
+  provinces: any[]= [];
+  selectedProvince: any={};
+  departaments: any[]= [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,6 +46,7 @@ export class VehicleComponent implements OnInit {
 
   constructor(private cardService: CardService,
               private vehicleService: VehicleService,
+              private geoService: GeoService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
               public dialog: MatDialog) {
@@ -54,6 +59,9 @@ export class VehicleComponent implements OnInit {
     });
     this.cardService.getBrands().valueChanges().subscribe(fbBrands=>{
       this.brands=fbBrands;
+    });
+    this.geoService.getProvincesDnrpa().valueChanges().subscribe(fbProv=>{
+      this.provinces=fbProv;
     });
     this.flexMediaWatcher = mediaObserver.media$.subscribe((change: MediaChange) => {
       if (change.mqAlias !== this.currentScreenWidth) {
@@ -69,6 +77,11 @@ export class VehicleComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value))
       );
+  }
+
+  setLocales(){
+    this.selectedProvince=this.provinces.find(p=>p.id==this.vehicle.province);
+    this.departaments=this.selectedProvince.departamenos;
   }
 
   applyFilter(filterValue: string) {

@@ -97,7 +97,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Guardar Usuario</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Comprador o Adquiriente - GP Devoto</h5>
         <button class="close" type="button" data-dismiss="modal" (click)="blankUser()" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -117,7 +117,7 @@
             </div>
             <div class="col">
               <mat-form-field>
-                <mat-label>Documento:</mat-label>
+                <mat-label>Tipo de Documento:</mat-label>
                 <select *ngIf="user.nationalityStatus!='Extrangero'" matNativeControl required name="docType" [(ngModel)]="user.docType">
                   <option *ngFor="let nd of nativeDoc" value="{{nd}}">{{nd}}</option>
                 </select>
@@ -191,7 +191,7 @@
             <div class="col">
               <mat-form-field>
                 <mat-label>Provincia</mat-label>
-                <select matNativeControl required name="addressLegalProvince" [(ngModel)]="user.addressLegalProvince" (ngModelChange)="setLocales()">
+                <select matNativeControl required name="addressLegalProvince" [(ngModel)]="user.addressLegalProvince" (ngModelChange)="setLocales(user.addressLegalProvince)">
                   <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
                 </select>
               </mat-form-field>
@@ -238,7 +238,7 @@
             <div class="col">
               <mat-form-field>
                 <mat-label>Provincia</mat-label>
-                <select matNativeControl required name="province" [(ngModel)]="user.addressProvince" (ngModelChange)="setLocales()">
+                <select matNativeControl required name="addressProvince" [(ngModel)]="user.addressProvince" (ngModelChange)="setLocales(user.addressProvince)">
                   <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
                 </select>
               </mat-form-field>

@@ -12,4 +12,8 @@ export class GeoService {
   public getProvinces(){
     return this.afDB.list('/provincias/');
   }
+
+  public getProvincesDnrpa(){
+    return this.afDB.list('/provinciasdnrpa/');
+  }
 }
