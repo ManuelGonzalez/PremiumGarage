@@ -3,7 +3,7 @@
 
 .example-form {
   min-width: 150px;
-  max-width: 500px;
+  max-width: 95%;
   width: 100%;
 }
 
@@ -75,4 +75,8 @@ body, html {
 .cdk-overlay-container {
   position: fixed;
   z-index: 1000000 !important;
+}
+
+.mat-form-field-infix {
+  width: 365px !important;
 }

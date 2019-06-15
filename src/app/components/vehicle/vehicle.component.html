@@ -8,7 +8,8 @@
 
   <div class="text-right">
     <button mat-mini-fab color="primary"
-            data-toggle="modal" data-target="#createVehicleModal"
+            data-toggle="modal" data-backdrop="static" data-keyboard="false"
+            data-target="#createVehicleModal"
             matTooltip="Agregar Vehiculos">
       <mat-icon>+</mat-icon>
     </button>
@@ -65,11 +66,11 @@
                 <i class="fas fa-eye"></i>
                 <span>Detalle</span>
               </button>
-              <button mat-menu-item data-toggle="modal" data-target="#createVehicleModal" (click)="searchVehicle(element.id)">
+              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleModal" (click)="searchVehicle(element.id)">
                 <i class="fas fa-pen"></i>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item data-toggle="modal" data-target="#filesVehicleModal" (click)="setVehicle(element)">
+              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleModal" (click)="setVehicle(element)">
                 <i class="fas fa-file-upload"></i>
                 <span>Archivos</span>
               </button>

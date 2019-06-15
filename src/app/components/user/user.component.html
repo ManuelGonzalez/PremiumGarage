@@ -8,7 +8,7 @@
 
   <div class="text-right">
     <button mat-mini-fab color="primary"
-            data-toggle="modal" data-target="#createUserModal"
+            data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createUserModal"
             (click)="blankUser()"
             matTooltip="Agregar usuarios">
       <mat-icon>+</mat-icon>
@@ -65,11 +65,11 @@
                 <i class="fas fa-eye"></i>
                 <span>Detalle</span>
               </button>
-              <button mat-menu-item data-toggle="modal" data-target="#createUserModal" (click)="setUser(element)">
+              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createUserModal" (click)="setUser(element)">
                 <i class="fas fa-pen"></i>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item data-toggle="modal" data-target="#filesUserModal" (click)="setUser(element)">
+              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesUserModal" (click)="setUser(element)">
                 <i class="fas fa-file-upload"></i>
                 <span>Archivos</span>
               </button>
@@ -106,6 +106,27 @@
         <form class="example-form" autocomplete="off">
           <div class="row">
             <div class="col">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Seleccione Según Corresponda:</mat-label>
+                  <select matNativeControl required name="nationalityStatus" [(ngModel)]="user.nationalityStatus">
+                    <option *ngFor="let ns of nationalityStatus" value="{{ns}}">{{ns}}</option>
+                  </select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Documento:</mat-label>
+                <select *ngIf="user.nationalityStatus!='Extrangero'" matNativeControl required name="docType" [(ngModel)]="user.docType">
+                  <option *ngFor="let nd of nativeDoc" value="{{nd}}">{{nd}}</option>
+                </select>
+                <select *ngIf="user.nationalityStatus=='Extrangero'" matNativeControl required name="docType" [(ngModel)]="user.docType">
+                  <option *ngFor="let fd of foreineDoc" value="{{fd}}">{{fd}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Documento" required name="id" [(ngModel)]="user.id" (focusout)="serarchUser(user.id)">
               </mat-form-field>
@@ -119,53 +140,11 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nombre" required name="name" [(ngModel)]="user.name">
+                <input matInput placeholder="Apellido y Nombre o Denominanción" required name="name" [(ngModel)]="user.name">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Direccion" required name="addres" [(ngModel)]="user.address"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field>
-                <mat-label>Provincias</mat-label>
-                <select matNativeControl required name="province" [(ngModel)]="user.province" (ngModelChange)="setLocales()">
-                  <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
-                </select>
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field>
-                <mat-label>Provincias</mat-label>
-                <select matNativeControl required name="locale" [(ngModel)]="user.locale">
-                  <option *ngFor="let loc of locales" value="{{loc.id}}">{{loc.nombre}}</option>
-                </select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="CP" required name="postalCode" [(ngModel)]="user.postalCode">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Ocupacion" required name="occupation" [(ngModel)]="user.occupation">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Telefono" required name="phone" [(ngModel)]="user.phone">
-              </mat-form-field>
-            </div>
             <div class="col">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Email" required type="email" name="email" [(ngModel)]="user.email">
@@ -175,9 +154,126 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nacionalidad" required name="nationality" [(ngModel)]="user.nationality">
+                <input matInput placeholder="Telefono" required name="phone" [(ngModel)]="user.phone">
               </mat-form-field>
             </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Domicilio Legal / Calle" required name="addressLegal" [(ngModel)]="user.addressLegal"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Número" required name="addressLegalNumber" [(ngModel)]="user.addressLegalNumber"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Piso" required name="addressLegalFloor" [(ngModel)]="user.addressLegalFloor"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dep" required name="addressLegalDep" [(ngModel)]="user.addressLegalDep"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Código Postal" required name="addressLegalCP" [(ngModel)]="user.addressLegalCP"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Provincia</mat-label>
+                <select matNativeControl required name="addressLegalProvince" [(ngModel)]="user.addressLegalProvince" (ngModelChange)="setLocales()">
+                  <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Localidad</mat-label>
+                <select matNativeControl required name="addressLegalLocale" [(ngModel)]="user.addressLegalLocale">
+                  <option *ngFor="let loc of locales" value="{{loc.id}}">{{loc.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Domicilio Real / Calle" required name="address" [(ngModel)]="user.address"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Número" required name="addressNumber" [(ngModel)]="user.addressNumber"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Piso" required name="addressFloor" [(ngModel)]="user.addressFloor"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Dep" required name="addressDep" [(ngModel)]="user.addressDep"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Código Postal" required name="addressCP" [(ngModel)]="user.addressCP"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Provincia</mat-label>
+                <select matNativeControl required name="province" [(ngModel)]="user.addressProvince" (ngModelChange)="setLocales()">
+                  <option *ngFor="let prov of provinces" value="{{prov.id}}">{{prov.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Localidad</mat-label>
+                <select matNativeControl required name="locale" [(ngModel)]="user.addressLocale">
+                  <option *ngFor="let loc of locales" value="{{loc.id}}">{{loc.nombre}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Profesión, Oficio o Actividad Principal" required name="placeOfBirth" [(ngModel)]="user.placeOfBirth">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Lugar de Nacimiento" required name="placeOfBirth" [(ngModel)]="user.placeOfBirth">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="picker" placeholder="Fecha de Nacimiento" name="dateBirth" [(ngModel)]="user.dateBirth">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
             <div class="col">
               <mat-form-field>
               <mat-label>Estado Civil</mat-label>
@@ -185,6 +281,39 @@
                 <option *ngFor="let cs of civilStatus" value="{{cs}}">{{cs}}</option>
               </select>
             </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Apellido y Nombre Conyuge" required name="nameSpouse" [(ngModel)]="user.nameSpouse">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="DNI Conyuge" required name="nameSpouseDoc" [(ngModel)]="user.nameSpouseDoc">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Personeria Otorgada por" required name="pop" [(ngModel)]="user.pop">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nro de Datos de Inscripción o Creacion" required name="numberData" [(ngModel)]="user.numberData">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="picker2" placeholder="Fecha de Inscripción o Creacion" name="dateData" [(ngModel)]="user.dateData">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
             </div>
           </div>
           <div class="row">

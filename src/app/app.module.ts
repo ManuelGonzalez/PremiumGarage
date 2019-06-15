@@ -26,9 +26,9 @@ import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatButtonToggleModule, MatCardModule, MatDialogModule,
+  MatButtonModule, MatButtonToggleModule, MatCardModule, MatDatepickerModule, MatDialogModule,
   MatIconModule,
-  MatInputModule, MatMenuModule, MatPaginatorModule,
+  MatInputModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule,
   MatTableModule, MatTabsModule,
@@ -49,6 +49,7 @@ import { VehicleComponent } from './components/vehicle/vehicle.component';
 import {VehicleService} from './services/vehicle.service';
 import {SafePipe} from './pipes/safe.pipe';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { AutocompleteComponent } from './components/autocomplete-component/autocomplete-component.component';
 
 export const environment = {
   production: false,
@@ -129,7 +130,8 @@ const appRoutes:Routes = [
     ContactComponent,
     VehicleComponent,
     SafePipe,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    AutocompleteComponent
   ],
   imports: [
     BrowserModule,
@@ -159,7 +161,10 @@ const appRoutes:Routes = [
     MatAutocompleteModule,
     MatTabsModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+
   ],
   entryComponents: [
     ConfirmationDialogComponent
