@@ -29,8 +29,8 @@ export class UserComponent implements OnInit {
   displayedColumns: string[] = [];
   civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
   nationalityStatus: string[] = ['Argentino Nativo', 'Naturalizado', 'Extranjero'];
-  nativeDoc: string[] = ['D.N.I.', 'L.E.', 'L.C.'];
-  foreineDoc: string[] = ['D.N.I.', 'C.I.', 'PASAP'];
+  nativeDoc: string[] = ['D.N.I.'];
+  foreineDoc: string[] = ['D.N.I.', 'PASAP'];
   currentScreenWidth: string = '';
   flexMediaWatcher: Subscription;
   selectedFiles: FileList;
@@ -72,20 +72,20 @@ export class UserComponent implements OnInit {
   setupTable() {
     switch (this.currentScreenWidth) {
       case 'xs':
-        this.displayedColumns = ['id', 'name', 'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns = ['cuil','id', 'name', 'actions'];
+        this.displayedColumns.shift();
         break;
       case 'sm':
-        this.displayedColumns = ['id', 'name', 'email', 'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns = ['cuil','id', 'name', 'email', 'actions'];
+        this.displayedColumns.shift();
         break;
       case 'md':
-        this.displayedColumns = ['id', 'name', 'phone', 'email', 'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns = ['cuil','id', 'name', 'movilPhone', 'email', 'actions'];
+        this.displayedColumns.shift();
         break;
       default:
-        this.displayedColumns = ['id', 'cuil', 'name', 'address', 'phone', 'email', 'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns = ['cuil','id', 'name', 'movilPhone', 'email', 'actions'];
+        this.displayedColumns.shift();
     }
   };
 

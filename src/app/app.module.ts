@@ -25,6 +25,7 @@ import {AuthService} from './services/auth.service';
 import {AuthGuard} from './auth.guard';
 import { HomeComponent } from './components/home/home.component';
 import {
+  DateAdapter,
   MatAutocompleteModule,
   MatButtonModule, MatButtonToggleModule, MatCardModule, MatDatepickerModule, MatDialogModule,
   MatIconModule,
@@ -50,6 +51,7 @@ import {VehicleService} from './services/vehicle.service';
 import {SafePipe} from './pipes/safe.pipe';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { AutocompleteComponent } from './components/autocomplete-component/autocomplete-component.component';
+import {DateFormat} from './Class/date-format';
 
 export const environment = {
   production: false,
@@ -163,7 +165,7 @@ const appRoutes:Routes = [
     MatCardModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatNativeDateModule
 
   ],
   entryComponents: [
@@ -178,8 +180,13 @@ const appRoutes:Routes = [
     GeoService,
     MessagingService,
     AuthGuard,
-    CookieService
+    CookieService,
+    { provide: DateAdapter, useClass: DateFormat },
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private dateAdapter:DateAdapter<Date>) {
+    dateAdapter.setLocale('en-in'); // DD/MM/YYYY
+  }
+}

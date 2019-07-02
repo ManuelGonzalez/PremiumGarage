@@ -67,19 +67,19 @@ export class ContactComponent implements OnInit {
     switch (this.currentScreenWidth) {
       case 'xs':
         this.displayedColumns = ['id', 'name' ,'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns.shift();
         break;
       case 'sm':
         this.displayedColumns = ['id', 'name', 'offer' ,'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns.shift();
         break;
       case 'md':
         this.displayedColumns = ['id', 'name', 'offer', 'refName' ,'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns.shift();
         break;
       default:
         this.displayedColumns = ['id', 'name', 'offer', 'refName' ,'actions'];
-        this.displayedColumns.shift(); // remove 'internalId'
+        this.displayedColumns.shift();
     }
   };
 

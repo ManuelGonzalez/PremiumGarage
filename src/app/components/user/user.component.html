@@ -29,11 +29,6 @@
           <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="cuil">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuil </th>
-          <td mat-cell *matCellDef="let element"> {{element.cuil}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
           <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -44,9 +39,9 @@
           <td mat-cell *matCellDef="let element"> {{element.address}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
-          <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+        <ng-container matColumnDef="movilPhone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono Particular </th>
+          <td mat-cell *matCellDef="let element"> {{element.movilPhone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="email">
@@ -97,7 +92,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Comprador o Adquiriente - GP Devoto</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Base de Clientes - GP Devoto</h5>
         <button class="close" type="button" data-dismiss="modal" (click)="blankUser()" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -128,12 +123,12 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Documento" required name="id" [(ngModel)]="user.id" (focusout)="serarchUser(user.id)">
+                <input matInput placeholder="Nro de Documento" required name="id" [(ngModel)]="user.id" (focusout)="serarchUser(user.id)">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Cuil" required name="cuil" [(ngModel)]="user.cuil">
+                <input matInput placeholder="CUIL / CUIT" required name="cuil" [(ngModel)]="user.cuil">
               </mat-form-field>
             </div>
           </div>
@@ -154,7 +149,17 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Teléfono" required name="phone" [(ngModel)]="user.phone">
+                <input matInput placeholder="Teléfono Movil" required name="movilPhone" [(ngModel)]="user.movilPhone">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Teléfono Particular" required name="phone" [(ngModel)]="user.phone">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Teléfono Laboral" required name="wockPhone" [(ngModel)]="user.wockPhone">
               </mat-form-field>
             </div>
           </div>
@@ -255,7 +260,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Profesión, Oficio o Actividad Principal" required name="placeOfBirth" [(ngModel)]="user.placeOfBirth">
+                <input matInput placeholder="Profesión, Oficio o Actividad Principal" required name="profesion" [(ngModel)]="user.profesion">
               </mat-form-field>
             </div>
           </div>
@@ -320,8 +325,8 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="custom-file">
-                  <input #myInput type="file" class="custom-file-input" (change)="detectFiles($event)" multiple>
-                  <label class="custom-file-label">{{numberFiles}} archivos seleccionados</label>
+                  <input #myInput type="file" class="custom-file-input" lang="es" (change)="detectFiles($event)" multiple>
+                  <label class="custom-file-label" data-browse="Adjuntar Archivo">{{numberFiles}} archivos seleccionados</label>
                 </div>
               </div>
             </div>
@@ -390,8 +395,8 @@
         <hr>
         <div class="input-group mb-3">
           <div class="custom-file">
-            <input #myInput type="file" class="custom-file-input" (change)="detectFiles($event)" multiple>
-            <label class="custom-file-label">{{numberFiles}} archivos seleccionados</label>
+            <input #myInput type="file" class="custom-file-input" lang="es" (change)="detectFiles($event)" multiple>
+            <label class="custom-file-label" data-browse="Adjuntar Archivo">{{numberFiles}} archivos seleccionados</label>
           </div>
         </div>
 
