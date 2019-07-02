@@ -36,7 +36,6 @@ export class VehicleComponent implements OnInit {
   loadFiles=false;
   file: any = {};
   files: any[]= [];
-  selectedProvince: any={};
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -135,10 +134,6 @@ export class VehicleComponent implements OnInit {
     this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files=>{
       this.files=files
     });
-    var iframe   = document.getElementById('iframeDom');
-    var iWindow = iframe.contentWindow
-    var doc = iframe.contentDocument || iframe.contentWindow.document;
-    doc.getElementById('dom').innerText=this.vehicle.id
   }
 
   createVehicle(){
