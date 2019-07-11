@@ -50,8 +50,9 @@ import { VehicleComponent } from './components/vehicle/vehicle.component';
 import {VehicleService} from './services/vehicle.service';
 import {SafePipe} from './pipes/safe.pipe';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
-import { AutocompleteComponent } from './components/autocomplete-component/autocomplete-component.component';
 import {DateFormat} from './Class/date-format';
+import { VehicleDetailComponent } from './components/vehicle-detail/vehicle-detail.component';
+import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 
 export const environment = {
   production: false,
@@ -89,6 +90,12 @@ const appRoutes:Routes = [
     path: 'vehicles',
     canActivate: [AuthGuard],
     component: VehicleComponent,
+    children:[]
+  },
+  {
+    path: 'vehicles/:id',
+    canActivate: [AuthGuard],
+    component: VehicleDetailComponent,
     children:[]
   },
   {
@@ -133,7 +140,7 @@ const appRoutes:Routes = [
     VehicleComponent,
     SafePipe,
     ConfirmationDialogComponent,
-    AutocompleteComponent
+    VehicleDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -165,8 +172,8 @@ const appRoutes:Routes = [
     MatCardModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
-
+    MatNativeDateModule,
+    GooglePlaceModule
   ],
   entryComponents: [
     ConfirmationDialogComponent

@@ -281,11 +281,11 @@
           <div class="row">
             <div class="col">
               <mat-form-field>
-              <mat-label>Estado Civil</mat-label>
-              <select matNativeControl required name="civilStatus" [(ngModel)]="user.civilStatus">
+                <mat-label>Estado Civil</mat-label>
+                <select matNativeControl required name="civilStatus" [(ngModel)]="user.civilStatus">
                 <option *ngFor="let cs of civilStatus" value="{{cs}}">{{cs}}</option>
-              </select>
-            </mat-form-field>
+                </select>
+              </mat-form-field>
             </div>
           </div>
           <div class="row">

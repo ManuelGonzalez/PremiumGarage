@@ -51,5 +51,13 @@ export class VehicleService {
       });
     });
   }
+
+  createOrUpdateVehicleState(vehicleId,vehicleState){
+    this.afDB.database.ref(`/vehicles/${vehicleId}/states/${vehicleState.id}`).set(vehicleState);
+  }
+
+  getVehicleStates(vehicleId: string){
+    return this.afDB.list(`/vehicles/${vehicleId}/states/`);
+  }
   
 }

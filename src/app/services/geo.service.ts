@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {HttpClient} from '@angular/common/http';
 

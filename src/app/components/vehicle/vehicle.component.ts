@@ -97,19 +97,19 @@ export class VehicleComponent implements OnInit {
   setupTable() {
     switch (this.currentScreenWidth) {
       case 'xs':
-        this.displayedColumns = ['cuil','domain', 'model', 'year', 'actions'];
+        this.displayedColumns = ['cuil','domain', 'brand', 'actions'];
         this.displayedColumns.shift();
         break;
       case 'sm':
-        this.displayedColumns = ['cuil','domain', 'model', 'year', 'actions'];
+        this.displayedColumns = ['cuil','domain', 'brand', 'model', 'actions'];
         this.displayedColumns.shift();
         break;
       case 'md':
-        this.displayedColumns = ['cuil','domain', 'model', 'brand' ,'year', 'actions'];
+        this.displayedColumns = ['cuil','domain', 'brand', 'model' ,'year', 'actions'];
         this.displayedColumns.shift();
         break;
       default:
-        this.displayedColumns = ['cuil','domain', 'model', 'brand' ,'year', 'actions'];
+        this.displayedColumns = ['cuil','domain', 'brand', 'model' ,'year', 'actions'];
         this.displayedColumns.shift();
     }
   };
