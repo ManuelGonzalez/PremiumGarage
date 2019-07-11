@@ -3,7 +3,7 @@
     <li class="breadcrumb-item">
       <a routerLink="">Inicio</a>
     </li>
-    <li class="breadcrumb-item active">Gestion de Vehiculos</li>
+    <li class="breadcrumb-item active">Clientes</li>
   </ol>
 
   <div class="text-right">
@@ -66,7 +66,7 @@
               </button>
               <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#regVehicleModal" (click)="setVehicle(element)">
                 <i class="fas fa-file-upload"></i>
-                <span>Registro</span>
+                <span>Radicacion</span>
               </button>
               <button mat-menu-item (click)="setVehicle(element);openDialogDeleteVehicle()">
                 <i class="fas fa-trash"></i>
@@ -91,7 +91,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Vehiculo que se Transfiere - GP Devoto</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Vehiculo - GP Devoto</h5>
         <button class="close" type="button" data-dismiss="modal" (click)="blankVehicle()" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -188,6 +188,11 @@
                 <input matInput placeholder="Valor de Toma" required name="costValue" [(ngModel)]="vehicle.costValue">
               </mat-form-field>
             </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Valor de Venta" required name="publicValue" [(ngModel)]="vehicle.publicValue">
+              </mat-form-field>
+            </div>
           </div>
           <div class="row">
             <div class="col">
@@ -197,7 +202,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Valor de Venta" required name="publicValue" [(ngModel)]="vehicle.publicValue">
+                <input matInput placeholder="Radicacion" required name="publicValue" [(ngModel)]="vehicle.radication">
               </mat-form-field>
             </div>
           </div>
