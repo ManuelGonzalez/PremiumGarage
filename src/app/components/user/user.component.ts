@@ -243,7 +243,6 @@ export class UserComponent implements OnInit {
 
   handleAddressChange(address: Address){
     this.address = this.utilServices.handleAddressChange(address);
-    debugger;
     this.user.addressNumber=this.address.address_components[0].long_name;
     this.user.addressCP=this.address.address_components[6].long_name;
   }
