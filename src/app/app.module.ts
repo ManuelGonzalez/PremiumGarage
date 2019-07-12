@@ -53,6 +53,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import {DateFormat} from './Class/date-format';
 import { VehicleDetailComponent } from './components/vehicle-detail/vehicle-detail.component';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
+import { ProvidersComponent } from './components/providers/providers.component';
 
 export const environment = {
   production: false,
@@ -99,6 +100,12 @@ const appRoutes:Routes = [
     children:[]
   },
   {
+    path: 'providers',
+    canActivate: [AuthGuard],
+    component: ProvidersComponent,
+    children:[]
+  },
+  {
     path: 'contacts',
     canActivate: [AuthGuard],
     component: ContactComponent,
@@ -140,7 +147,8 @@ const appRoutes:Routes = [
     VehicleComponent,
     SafePipe,
     ConfirmationDialogComponent,
-    VehicleDetailComponent
+    VehicleDetailComponent,
+    ProvidersComponent
   ],
   imports: [
     BrowserModule,

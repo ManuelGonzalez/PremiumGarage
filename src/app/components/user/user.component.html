@@ -213,7 +213,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Domicilio Real / Calle" required name="address" [(ngModel)]="user.address"></textarea>
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Domicilio Real / Calle" required name="address" [(ngModel)]="user.address" (onAddressChange)="handleAddressChange($event)"/>
               </mat-form-field>
             </div>
           </div>

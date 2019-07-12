@@ -202,7 +202,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Radicacion" required name="publicValue" [(ngModel)]="vehicle.radication">
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Radicacion" required name="publicValue" [(ngModel)]="vehicle.radication" (onAddressChange)="handleAddressChange($event)"/>
               </mat-form-field>
             </div>
           </div>

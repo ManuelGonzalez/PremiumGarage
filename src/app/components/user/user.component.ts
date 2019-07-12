@@ -7,6 +7,9 @@ import {Subscription} from 'rxjs';
 import {Upload} from '../../models/upload';
 import * as _ from 'lodash';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import {Address} from 'ngx-google-places-autocomplete/objects/address';
+import {UtilService} from '../../services/util.service';
+import {GooglePlaceDirective} from 'ngx-google-places-autocomplete';
 
 @Component({
   selector: 'app-user',
@@ -37,13 +40,16 @@ export class UserComponent implements OnInit {
   currentUpload: Upload;
   numberFiles = 0;
   loadFiles=false;
+  address: any = {};
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('myInput') myInputVariable: ElementRef;
+  @ViewChild("placesRef") placesRef : GooglePlaceDirective;
 
   constructor(private userService: UserService,
               private geoService: GeoService,
+              private utilServices: UtilService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
               public dialog: MatDialog) {
@@ -233,6 +239,13 @@ export class UserComponent implements OnInit {
         this.deleteUser();
       }
     });
+  }
+
+  handleAddressChange(address: Address){
+    this.address = this.utilServices.handleAddressChange(address);
+    debugger;
+    this.user.addressNumber=this.address.address_components[0].long_name;
+    this.user.addressCP=this.address.address_components[6].long_name;
   }
 
 }

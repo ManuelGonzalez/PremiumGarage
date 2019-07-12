@@ -10,6 +10,9 @@ import {Upload} from '../../models/upload';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {GeoService} from '../../services/geo.service';
+import {GooglePlaceDirective} from 'ngx-google-places-autocomplete';
+import {UtilService} from '../../services/util.service';
+import {Address} from 'ngx-google-places-autocomplete/objects/address';
 
 @Component({
   selector: 'app-vehicle',
@@ -36,7 +39,9 @@ export class VehicleComponent implements OnInit {
   loadFiles=false;
   file: any = {};
   files: any[]= [];
+  address: any = {}
 
+  @ViewChild("placesRef") placesRef : GooglePlaceDirective;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('myInput') myInputVariable: ElementRef;
@@ -44,6 +49,7 @@ export class VehicleComponent implements OnInit {
   constructor(private cardService: CardService,
               private vehicleService: VehicleService,
               private geoService: GeoService,
+              private utilServices: UtilService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
               public dialog: MatDialog) {
@@ -63,6 +69,11 @@ export class VehicleComponent implements OnInit {
         this.setupTable();
       }
     });
+  }
+
+  handleAddressChange(address: Address){
+    this.address = this.utilServices.handleAddressChange(address);
+    this.vehicle.postalCode=this.address.address_components[6].long_name;
   }
 
   ngOnInit() {
@@ -142,6 +153,7 @@ export class VehicleComponent implements OnInit {
     }else{
       this.vehicle.creationDate=Date.now();
     }
+    this.vehicle.addressRadicaction=this.address;
     Promise.all([
       this.uploadMulti(this.vehicle.id),
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
