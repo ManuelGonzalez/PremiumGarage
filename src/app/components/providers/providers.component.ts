@@ -81,6 +81,10 @@ export class ProvidersComponent implements OnInit {
     this.address.address_components=address.address_components;
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   createProvider(){
     if (this.isUpdate){
       this.provider.lastUpdate=Date.now();
