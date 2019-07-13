@@ -43,6 +43,21 @@ export class VehicleService {
     ])
   }
 
+  pushVehicleStateFiles(upload: Upload,id: string){
+    this.uploadServices.pushUpload(upload,"vehiclesState/"+id);
+  }
+
+  getVehicleStateFiles(id: string){
+    return this.uploadServices.getFiles("vehiclesState/"+id).valueChanges()
+  }
+
+  deleteVehicleStateFile(id: string, upload: Upload){
+    return Promise.all([
+      this.uploadServices.deleteUpload(`vehiclesState/${id}/${upload.name}`),
+      this.uploadServices.deleteFileData(`vehiclesState/${id}/${upload.id}`),
+    ])
+  }
+
   deleteAllUserFile(id: string){
     this.getVehicleFiles(id).subscribe(files=>{
       this.currentFiles=files;

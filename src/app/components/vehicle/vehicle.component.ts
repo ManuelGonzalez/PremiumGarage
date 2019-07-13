@@ -39,7 +39,8 @@ export class VehicleComponent implements OnInit {
   loadFiles=false;
   file: any = {};
   files: any[]= [];
-  address: any = {}
+  address: any = {};
+  vehicleStatesIn: string[] = ['Consignación', 'Permuta', 'Unidad Externa', 'Compra por inversión', 'Compra propia'];
 
   @ViewChild("placesRef") placesRef : GooglePlaceDirective;
   @ViewChild(MatSort) sort: MatSort;

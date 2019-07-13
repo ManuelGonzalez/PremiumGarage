@@ -202,7 +202,17 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Radicacion" required name="publicValue" [(ngModel)]="vehicle.radication" (onAddressChange)="handleAddressChange($event)"/>
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Radicacion" required name="radication" [(ngModel)]="vehicle.radication" (onAddressChange)="handleAddressChange($event)"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Estado de Entrada del Vehiculo</mat-label>
+                <select matNativeControl  name="stateIn" [(ngModel)]="vehicle.stateIn">
+                  <option *ngFor="let vs of vehicleStatesIn" value="{{vs}}">{{vs}}</option>
+                </select>
               </mat-form-field>
             </div>
           </div>

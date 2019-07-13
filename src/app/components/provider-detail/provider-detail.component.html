@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="">Inicio</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a routerLink="/providers">Proveedores</a>
+    </li>
+    <li class="breadcrumb-item active">
+      Detalle
+    </li>
+  </ol>
+  <h3>Detalle del Proveedor {{provider.name}}</h3>
+  <br>
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-responsive w-100">
+        <tr>
+          <th scope="row">Tipo</th>
+          <td>{{provider.type}}</td>
+          <th scope="row">Nombre</th>
+          <td>{{provider.name}}</td>
+          <th scope="row">Descripcion</th>
+          <td>{{provider.description}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Direccion</th>
+          <td>{{provider.location}}</td>
+          <th scope="row">Telefono</th>
+          <td>{{provider.phone}}</td>
+          <th scope="row">Correo</th>
+          <td>{{provider.mail}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Encargado</th>
+          <td>{{provider.inCharge}}</td>
+          <th scope="row">Persona de contacto</th>
+          <td>{{provider.contacPerson}}</td>
+          <th scope="row"></th>
+          <td></td>
+        </tr>
+      </table>
+      <hr>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Ubicación</h5>
+          <iframe *ngIf="provider.address" width="100%" height="100%" [src]="provider.address.url + '&output=embed' | safe"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

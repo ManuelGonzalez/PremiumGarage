@@ -90,10 +90,50 @@
         <div class="row">
           <div class="col">
             <div id="accordion">
-              <div class="card" *ngFor="let state of vehicleStates; let i = index" [attr.data-index]="i">
-                <div class="card-header" id="headingOne">
+              <div class="card" *ngIf="vehicle.stateIn">
+                <div class="card-header" id="heading">
                   <h5 class="mb-0">
-                    {{i+1}}
+                    1: <i class="fas fa-sign-in-alt"></i>
+                    <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#option'+i" aria-expanded="false" [attr.aria-controls]="'option'+i">
+                      {{vehicle.stateIn}}
+                    </button>
+                  </h5>
+                </div>
+                <div [id]="'option'+i" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col">
+                          <h6 class="card-subtitle mb-2 text-muted">Fecha de registro: {{formatDate(vehicle.creationDate)}}</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <p class="card-text">El vehiculo ha ingresado al sistema.</p>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title">Garaje: Sanabria 4674</h5>
+                          <iframe width="100%" height="100%" src="https://maps.google.com/?q=Sanabria+4674,+C1419BNR+CABA,+Argentina&ftid=0x95bcb7c803020a93:0x58a3fe7d62c58d6c&output=embed"></iframe>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="btn-group" role="group">
+                            <!--button type="button" class="btn btn-secondary"
+                                    data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleStateModal" (click)="setState(state)">
+                              <i class="fas fa-pen"></i> Editar
+                            </button-->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card" *ngFor="let state of vehicleStates; let i = index" [attr.data-index]="i">
+                <div class="card-header" id="heading{{i}}">
+                  <h5 class="mb-0">
+                    {{i+2}}: <i class="fas {{getIconByState(state.state)}}"></i>
                     <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#option'+i" aria-expanded="false" [attr.aria-controls]="'option'+i">
                       {{state.state}}
                     </button>
@@ -101,17 +141,46 @@
                 </div>
                 <div [id]="'option'+i" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
-                    <h5 class="card-title">{{state.location}}</h5>
-                    <p class="card-text">{{state.description}}</p>
-                    <div class="btn-group" role="group">
-                      <button type="button" class="btn btn-secondary">Detalle</button>
-                      <button type="button" class="btn btn-secondary">Editar</button>
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col">
+                          <h6 class="card-subtitle mb-2 text-muted">Fecha de registro: {{formatDate(state.id)}}</h6>
+                        </div>
+                        <div class="col" *ngIf="state.updateDate">
+                          <h6 class="card-subtitle mb-2 text-muted">Ultima modificacion: {{formatDate(state.updateDate)}}</h6>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <P class="card-title">{{state.provider?'Proveedor: '+getInfoProvider(state.provider).name:''}}</P>
+                          <p class="card-text">Descripcion: {{state.description}}</p>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title">{{state.provider?getInfoProvider(state.provider).location:state.state=='Transporte'?'En transito':'En Garaje'}}</h5>
+                          <iframe *ngIf="state.provider" width="100%" height="100%" [src]="getInfoProvider(state.provider).address.url + '&output=embed' | safe"></iframe>
+                          <iframe *ngIf="state.state=='Garaje'" width="100%" height="100%" src="https://maps.google.com/?q=Sanabria+4674,+C1419BNR+CABA,+Argentina&ftid=0x95bcb7c803020a93:0x58a3fe7d62c58d6c&output=embed"></iframe>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary"
+                                    data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleStateModal" (click)="setState(state)">
+                              <i class="fas fa-pen"></i> Editar
+                            </button>
+                            <button type="button" class="btn btn-secondary"
+                                    data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleStateModal" (click)="setState(state)">
+                              <i class="fas fa-file-upload"></i> Archivos
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="card">
-                <div style="text-align: center" class="card-header" id="final" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleStateModal">
+                <div style="text-align: center" class="card-header" id="final" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleStateModal" (click)="blankVehicleState()">
                   <h5 class="mb-0">
                     <i class="fas fa-plus-circle"></i>
                   </h5>
@@ -131,55 +200,139 @@
     <p>Pedimos disculpas por las molestias ocacionadas.</p>
     <a class="btn btn-primary btn-lg" routerLink="/vehicles" role="button">Volver</a>
   </div>
-  <!-- Upload Files Vehicle Modal-->
-  <div class="modal fade" id="createVehicleStateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titleRegVehicleModalLabel">Agregar Estado</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
+</div>
 
-          <form class="example-form" autocomplete="off">
-            <div class="row">
-              <div class="col">
-                <mat-form-field>
-                  <mat-label>Estado</mat-label>
-                  <select matNativeControl  name="state" [(ngModel)]="vehicleState.state">
-                    <option *ngFor="let vs of vehicleStatus" value="{{vs}}">{{vs}}</option>
-                  </select>
-                </mat-form-field>
+<!-- create stateVehicle Modal-->
+<div class="modal fade" id="createVehicleStateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleRegVehicleModalLabel">Agregar Estado</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form class="example-form" autocomplete="off">
+          <div class="row">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Estado</mat-label>
+                <select matNativeControl  name="state" [(ngModel)]="vehicleState.state">
+                  <option *ngFor="let vs of vehicleStatus" value="{{vs}}">{{vs}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Descripcion" required name="description" [(ngModel)]="vehicleState.description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="vehicleState.state!='Transporte'">
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Proveedor</mat-label>
+                <select matNativeControl  name="provider" [(ngModel)]="vehicleState.provider">
+                  <option *ngFor="let p of providers" value="{{p.id}}">{{p.name}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input #myInput type="file" class="custom-file-input" lang="es" (change)="detectFiles($event)" multiple>
+                  <label class="custom-file-label" data-browse="Adjuntar Archivo">{{numberFiles}} archivos seleccionados</label>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Descripcion" required name="description" [(ngModel)]="vehicleState.description">
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Ubicacion" required name="location" [(ngModel)]="vehicleState.location">
-                </mat-form-field>
-              </div>
-              <!--div class="col">
-                <input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
-              </div-->
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createStateVehicle()">Guardar</button>
-            </div>
-          </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createStateVehicle()">Guardar</button>
+          </div>
+        </form>
 
-        </div>
-        <div class="modal-footer">
+      </div>
+      <div class="modal-footer">
 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Files Vehicle Modal-->
+<div class="modal fade" id="filesVehicleStateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleFilesVehicleModalLabel">Archivos</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <mat-tab-group *ngIf="files.length>0">
+          <mat-tab *ngFor="let file of files" label="{{file.name}}">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>{{file.name}}</mat-card-title>
+                <mat-card-subtitle>{{file.type}}</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image *ngIf="file.type.includes('image')" [src]="file.url | safe" alt="">
+              <iframe *ngIf="file.type.includes('pdf')" width="100%" height="100%" [src]="file.url | safe"></iframe>
+              <div *ngIf="!file.type.includes('pdf')&&!file.type.includes('image')">
+                <h5>Vista previa no disponible para el tipo de archivo</h5>
+                <br>
+              </div>
+              <mat-card-content>
+
+              </mat-card-content>
+              <mat-card-actions>
+                <a *ngIf="file.type.includes('pdf')||file.type.includes('image')" target="_blank" href="{{file.url}}" mat-button>
+                  <i class="fas fa-eye"></i>
+                  <span>Ver</span>
+                </a>
+                <a *ngIf="!file.type.includes('pdf')&&!file.type.includes('image')" href="{{file.url}}" mat-button>
+                  <i class="fas fa-eye"></i>
+                  <span>Descargar</span>
+                </a>
+                <a mat-button (click)="setFile(file);openDialogDeleteFile()">
+                  <i class="fas fa-trash"></i>
+                  <span>Eliminar</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </mat-tab>
+        </mat-tab-group>
+        <div *ngIf="currentUpload&&loadFiles">
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
+          </div>
+          Progreso: {{currentUpload?.progress}}% Completado
         </div>
+        <hr>
+        <div class="input-group mb-3">
+          <div class="custom-file">
+            <input #myInput type="file" class="custom-file-input" lang="es" (change)="detectFiles($event)" multiple>
+            <label class="custom-file-label" data-browse="Adjuntar Archivo">{{numberFiles}} archivos seleccionados</label>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+        <button
+          class="btn btn-primary" type="button"
+          [disabled]="numberFiles==0"
+          (click)="createStateVehicle()">
+          Subir Archivos
+        </button>
       </div>
     </div>
   </div>

@@ -23,6 +23,7 @@ export class ProvidersComponent implements OnInit {
   providers: any[] = [];
   providersType: string[] = ['Taller', 'Bodega', 'Hotel', 'Otros'];
   address: any = {};
+  isNewAddress: boolean=false;
   dataSource;
   flexMediaWatcher: Subscription;
   currentScreenWidth: string = '';
@@ -79,6 +80,7 @@ export class ProvidersComponent implements OnInit {
     this.address.name=address.name;
     this.address.url=address.url;
     this.address.address_components=address.address_components;
+    this.isNewAddress=true;
   }
 
   applyFilter(filterValue: string) {
@@ -91,7 +93,9 @@ export class ProvidersComponent implements OnInit {
     }else{
       this.provider.id=Date.now();
     }
-    this.provider.address=this.address;
+    if(this.isNewAddress){
+      this.provider.address=this.address;
+    }
     this.providerService.createOrUpdateProvider(this.provider).then(res=>{
       this.snackbar.open('El proveedor: '+ this.provider.name + ' a sido guardado con exito', 'Save', {
         duration: 5000

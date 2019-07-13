@@ -20,8 +20,8 @@ export class ProviderService {
     return this.afDB.database.ref('/providers/'+provider.id).set(provider);
   }
 
-  public deleteProvider(provider){
-    return this.afDB.database.ref('/providers/'+provider.id).remove();
+  public deleteProvider(id){
+    return this.afDB.database.ref('/providers/'+id).remove();
   }
 
 }

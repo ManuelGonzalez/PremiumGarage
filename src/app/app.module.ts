@@ -54,6 +54,7 @@ import {DateFormat} from './Class/date-format';
 import { VehicleDetailComponent } from './components/vehicle-detail/vehicle-detail.component';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 import { ProvidersComponent } from './components/providers/providers.component';
+import { ProviderDetailComponent } from './components/provider-detail/provider-detail.component';
 
 export const environment = {
   production: false,
@@ -72,14 +73,7 @@ const appRoutes:Routes = [
     path: '',
     canActivate: [AuthGuard],
     component: HomeComponent,
-    children:[
-      /*
-      {
-        path: ':name',
-        component: UserComponent
-      }
-      */
-    ]
+    children:[]
   },
   {
     path: 'users',
@@ -103,6 +97,12 @@ const appRoutes:Routes = [
     path: 'providers',
     canActivate: [AuthGuard],
     component: ProvidersComponent,
+    children:[]
+  },
+  {
+    path: 'providers/:id',
+    canActivate: [AuthGuard],
+    component: ProviderDetailComponent,
     children:[]
   },
   {
@@ -148,7 +148,8 @@ const appRoutes:Routes = [
     SafePipe,
     ConfirmationDialogComponent,
     VehicleDetailComponent,
-    ProvidersComponent
+    ProvidersComponent,
+    ProviderDetailComponent
   ],
   imports: [
     BrowserModule,
