@@ -66,7 +66,7 @@
               </button>
               <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#regVehicleModal" (click)="setVehicle(element)">
                 <i class="fas fa-file-upload"></i>
-                <span>Radicacion</span>
+                <span>Radicación</span>
               </button>
               <button mat-menu-item (click)="setVehicle(element);openDialogDeleteVehicle()">
                 <i class="fas fa-trash"></i>
@@ -202,7 +202,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Radicacion" required name="radication" [(ngModel)]="vehicle.radication" (onAddressChange)="handleAddressChange($event)"/>
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Radicación" required name="radication" [(ngModel)]="vehicle.radication" (onAddressChange)="handleAddressChange($event)"/>
               </mat-form-field>
             </div>
           </div>
@@ -213,6 +213,22 @@
                 <select matNativeControl  name="stateIn" [(ngModel)]="vehicle.stateIn">
                   <option *ngFor="let vs of vehicleStatesIn" value="{{vs}}">{{vs}}</option>
                 </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-checkbox name="manual" [(ngModel)]="vehicle.manual">Manual</mat-checkbox>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Manual Descripcion" required name="manualDesc" [(ngModel)]="vehicle.manualDesc"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-checkbox name="additionalKeys" [(ngModel)]="vehicle.additionalKeys">Juego de llaves adicional</mat-checkbox>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Juego de llaves adicional Descripcion" required name="additionalKeysDesc" [(ngModel)]="vehicle.additionalKeysDesc"/>
               </mat-form-field>
             </div>
           </div>

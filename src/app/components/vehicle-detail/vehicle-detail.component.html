@@ -70,12 +70,12 @@
               <tr>
                 <th scope="row">Combustible</th>
                 <td>{{vehicle.gasoline}}</td>
-                <th scope="row"></th>
-                <td></td>
-                <th scope="row"></th>
-                <td></td>
-                <th scope="row"></th>
-                <td></td>
+                <th scope="row">Radicación</th>
+                <td>{{vehicle.radication}}</td>
+                <th scope="row">Manual</th>
+                <td>{{vehicle.manual?'Si':'No'}} {{'- '+vehicle.manualDesc}}</td>
+                <th scope="row">Juego de llaves Adicional</th>
+                <td>{{vehicle.additionalKeys?'Si':'No'}} {{'- '+vehicle.additionalKeysDesc}}</td>
               </tr>
             </table>
           </div>

@@ -27,7 +27,7 @@ import { HomeComponent } from './components/home/home.component';
 import {
   DateAdapter,
   MatAutocompleteModule,
-  MatButtonModule, MatButtonToggleModule, MatCardModule, MatDatepickerModule, MatDialogModule,
+  MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule,
   MatIconModule,
   MatInputModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule,
   MatSelectModule,
@@ -182,6 +182,7 @@ const appRoutes:Routes = [
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCheckboxModule,
     GooglePlaceModule
   ],
   entryComponents: [
