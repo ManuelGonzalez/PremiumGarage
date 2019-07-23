@@ -24,4 +24,8 @@ export class ProviderService {
     return this.afDB.database.ref('/providers/'+id).remove();
   }
 
+  public getRubros(){
+    return this.afDB.list('/rubros/');
+  }
+
 }

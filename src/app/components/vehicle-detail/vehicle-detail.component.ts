@@ -27,7 +27,7 @@ export class VehicleDetailComponent implements OnInit {
   provider: any = {};
   providers: any[] = [];
   options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-  vehicleStatus: string[] = ['Reparacion', 'Mantenimiento', 'Transporte', 'Bodega', 'Garaje', 'Venta'];
+  vehicleStatus: string[] = ['Reparacion', 'Mantenimiento', 'Transporte', 'Bodega', 'GP Devoto', 'Venta'];
   selectedFiles: FileList;
   currentUpload: Upload;
   numberFiles = 0;
@@ -121,7 +121,7 @@ export class VehicleDetailComponent implements OnInit {
       case "Venta":
         icon = "fa-hand-holding-usd";
         break;
-      case "Garaje":
+      case "GP Devoto":
         icon="fa-warehouse";
         break;
       case "Bodega":

@@ -41,6 +41,7 @@ export class VehicleComponent implements OnInit {
   files: any[]= [];
   address: any = {};
   vehicleStatesIn: string[] = ['Consignación', 'Permuta', 'Unidad Externa', 'Compra por inversión', 'Compra propia'];
+  finding: boolean = false;
 
   @ViewChild("placesRef") placesRef : GooglePlaceDirective;
   @ViewChild(MatSort) sort: MatSort;
@@ -86,6 +87,11 @@ export class VehicleComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
+    if (filterValue!=""){
+      this.finding=true;
+    }else{
+      this.finding=false;
+    }
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

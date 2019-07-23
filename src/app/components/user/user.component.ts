@@ -41,6 +41,7 @@ export class UserComponent implements OnInit {
   numberFiles = 0;
   loadFiles=false;
   address: any = {};
+  finding: boolean = false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -96,6 +97,11 @@ export class UserComponent implements OnInit {
   };
 
   applyFilter(filterValue: string) {
+    if(filterValue!=""){
+      this.finding=true;
+    }else{
+      this.finding=false;
+    }
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

@@ -5,7 +5,9 @@ import {ProviderService} from '../../services/provider.service';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-providers',
@@ -21,13 +23,16 @@ export class ProvidersComponent implements OnInit {
   isUpdate: boolean = false;
   provider: any = {};
   providers: any[] = [];
-  providersType: string[] = ['Taller', 'Bodega', 'Hotel', 'Otros'];
+  providersType: any[]= [];
   address: any = {};
   isNewAddress: boolean=false;
   dataSource;
   flexMediaWatcher: Subscription;
   currentScreenWidth: string = '';
   displayedColumns: string[] = [];
+  providersTypeControl = new FormControl();
+  filteredOptions: Observable<string[]>;
+  finding: boolean = false;
 
   constructor(private providerService: ProviderService,
               private snackbar: MatSnackBar,
@@ -40,15 +45,29 @@ export class ProvidersComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
+    this.providerService.getRubros().valueChanges().subscribe(rubResp=>{
+      this.providersType=rubResp;
+    });
     this.flexMediaWatcher = mediaObserver.media$.subscribe((change: MediaChange) => {
       if (change.mqAlias !== this.currentScreenWidth) {
         this.currentScreenWidth = change.mqAlias;
         this.setupTable();
       }
     });
+    this.filteredOptions = this.providersTypeControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.filter(value))
+      );
   }
 
   ngOnInit() {
+  }
+
+  filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.providersType.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   setupTable() {
@@ -84,6 +103,11 @@ export class ProvidersComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
+    if (filterValue!=""){
+      this.finding=true;
+    }else{
+      this.finding=false;
+    }
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

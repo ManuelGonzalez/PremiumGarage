@@ -10,6 +10,13 @@
       Detalle
     </li>
   </ol>
+  <div class="container" *ngIf="vehicle">
+    <div class="row">
+      <div class="col">
+        <h3>Detalle del vehiculo: {{vehicle.id}}</h3>
+      </div>
+    </div>
+  </div>
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#detail" role="tab" aria-controls="home" aria-selected="true">Detalle</a>
@@ -26,7 +33,7 @@
       <div class="container" *ngIf="vehicle">
         <div class="row">
           <div class="col">
-            <table class="table table-striped table-responsive">
+            <table class="table table-striped table-responsive w-100 table-white">
               <tr>
                 <th scope="row">Dominio</th>
                 <td>{{vehicle.id}}</td>
@@ -60,7 +67,7 @@
               <tr>
                 <th scope="row">Estatus</th>
                 <td>{{vehicle.status}}</td>
-                <th scope="row">Ksm</th>
+                <th scope="row">Kms</th>
                 <td>{{vehicle.km}}</td>
                 <th scope="row">Valor Toma</th>
                 <td>{{vehicle.costValue}}</td>
@@ -70,12 +77,16 @@
               <tr>
                 <th scope="row">Combustible</th>
                 <td>{{vehicle.gasoline}}</td>
-                <th scope="row">Radicación</th>
+                <th scope="row">Registro Seccional</th>
                 <td>{{vehicle.radication}}</td>
                 <th scope="row">Manual</th>
                 <td>{{vehicle.manual?'Si':'No'}} {{'- '+vehicle.manualDesc}}</td>
                 <th scope="row">Juego de llaves Adicional</th>
                 <td>{{vehicle.additionalKeys?'Si':'No'}} {{'- '+vehicle.additionalKeysDesc}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Comentarios</th>
+                <td>{{vehicle.coment}}</td>
               </tr>
             </table>
           </div>

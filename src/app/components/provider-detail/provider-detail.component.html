@@ -14,30 +14,34 @@
   <br>
   <div class="row">
     <div class="col">
-      <table class="table table-striped table-responsive w-100">
+      <table class="table table-striped table-responsive w-100 table-white">
         <tr>
-          <th scope="row">Tipo</th>
+          <th scope="row">Rubro</th>
           <td>{{provider.type}}</td>
-          <th scope="row">Nombre</th>
-          <td>{{provider.name}}</td>
-          <th scope="row">Descripcion</th>
+          <th scope="row">Descripcion o Referencia</th>
           <td>{{provider.description}}</td>
+          <th scope="row">Nombre Comercial</th>
+          <td>{{provider.name}}</td>
         </tr>
         <tr>
           <th scope="row">Direccion</th>
           <td>{{provider.location}}</td>
+          <th scope="row">Celular</th>
+          <td>{{provider.smartphone}}</td>
           <th scope="row">Telefono</th>
           <td>{{provider.phone}}</td>
-          <th scope="row">Correo</th>
-          <td>{{provider.mail}}</td>
         </tr>
         <tr>
-          <th scope="row">Encargado</th>
+          <th scope="row">Correo</th>
+          <td>{{provider.mail}}</td>
+          <th scope="row">Tutular o Dueño</th>
           <td>{{provider.inCharge}}</td>
           <th scope="row">Persona de contacto</th>
           <td>{{provider.contacPerson}}</td>
-          <th scope="row"></th>
-          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">Comentarios</th>
+          <td>{{provider.coment}}</td>
         </tr>
       </table>
       <hr>

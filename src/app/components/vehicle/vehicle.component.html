@@ -23,7 +23,7 @@
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
       </mat-form-field>
 
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+      <table *ngIf="finding" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
 
         <ng-container matColumnDef="domain">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Dominio </th>
@@ -81,7 +81,7 @@
       </table>
 
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator *ngIf="finding" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 
 </div>
@@ -161,7 +161,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Ubicación Física" required name="location" [(ngModel)]="vehicle.location">
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Ubicación Física" required name="location" [(ngModel)]="vehicle.location" (onAddressChange)="handleAddressChange($event)">
               </mat-form-field>
             </div>
             <div class="col">
@@ -202,7 +202,8 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Radicación" required name="radication" [(ngModel)]="vehicle.radication" (onAddressChange)="handleAddressChange($event)"/>
+                <input matInput placeholder="Registro Seccional" required name="radication" [(ngModel)]="vehicle.radication"/>
+                <a matSuffix mat-button target="_BLACK" href="https://www.dnrpa.gov.ar/portal_dnrpa/radicacion2.php">Consultar</a>
               </mat-form-field>
             </div>
           </div>
@@ -229,6 +230,13 @@
               <mat-checkbox name="additionalKeys" [(ngModel)]="vehicle.additionalKeys">Juego de llaves adicional</mat-checkbox>
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Juego de llaves adicional Descripcion" required name="additionalKeysDesc" [(ngModel)]="vehicle.additionalKeysDesc"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Comentarios" required name="coment" [(ngModel)]="vehicle.coment"></textarea>
               </mat-form-field>
             </div>
           </div>

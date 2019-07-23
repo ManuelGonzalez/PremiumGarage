@@ -22,7 +22,7 @@
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
       </mat-form-field>
 
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+      <table mat-table [dataSource]="dataSource" *ngIf="finding" matSort class="mat-elevation-z8 table">
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
@@ -81,7 +81,7 @@
       </table>
 
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator *ngIf="finding" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 
 
@@ -166,24 +166,24 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Domicilio Legal / Calle" required name="addressLegal" [(ngModel)]="user.addressLegal"></textarea>
+                <input matInput placeholder="Domicilio Legal / Calle" required name="addressLegal" [(ngModel)]="user.addressLegal">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Número" required name="addressLegalNumber" [(ngModel)]="user.addressLegalNumber"></textarea>
+                <input matInput placeholder="Número" required name="addressLegalNumber" [(ngModel)]="user.addressLegalNumber">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Piso" required name="addressLegalFloor" [(ngModel)]="user.addressLegalFloor"></textarea>
+                <input matInput placeholder="Piso" required name="addressLegalFloor" [(ngModel)]="user.addressLegalFloor">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Dep" required name="addressLegalDep" [(ngModel)]="user.addressLegalDep"></textarea>
+                <input matInput placeholder="Partido" required name="addressLegalDep" [(ngModel)]="user.addressLegalDep">
               </mat-form-field>
             </div>
             <div class="col">
@@ -220,22 +220,22 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Número" required name="addressNumber" [(ngModel)]="user.addressNumber"></textarea>
+                <input matInput placeholder="Número" required name="addressNumber" [(ngModel)]="user.addressNumber">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Piso" required name="addressFloor" [(ngModel)]="user.addressFloor"></textarea>
+                <input matInput placeholder="Piso" required name="addressFloor" [(ngModel)]="user.addressFloor">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Dep" required name="addressDep" [(ngModel)]="user.addressDep"></textarea>
+                <input matInput placeholder="Partido" required name="addressDep" [(ngModel)]="user.addressDep">
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Código Postal" required name="addressCP" [(ngModel)]="user.addressCP"></textarea>
+                <input matInput placeholder="Código Postal" required name="addressCP" [(ngModel)]="user.addressCP">
               </mat-form-field>
             </div>
           </div>
