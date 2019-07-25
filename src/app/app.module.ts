@@ -55,6 +55,7 @@ import { VehicleDetailComponent } from './components/vehicle-detail/vehicle-deta
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { ProviderDetailComponent } from './components/provider-detail/provider-detail.component';
+import {NumeralModule} from 'ngx-numeral';
 
 export const environment = {
   production: false,
@@ -157,6 +158,7 @@ const appRoutes:Routes = [
     FormsModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     RouterModule.forRoot(appRoutes),
+    NumeralModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

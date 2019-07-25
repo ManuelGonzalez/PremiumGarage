@@ -24,6 +24,9 @@ export class VehicleDetailComponent implements OnInit {
   vehicle: any;
   vehicleState: any = {};
   vehicleStates: any[] = [];
+  vehicleImport: any = {};
+  vehicleImports: any[] = [];
+  vehicleImportsFilter: any[] = [];
   provider: any = {};
   providers: any[] = [];
   options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -44,8 +47,11 @@ export class VehicleDetailComponent implements OnInit {
     this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
       this.vehicle=vehResp;
     });
-    this.vehicleService.getVehicleStates(this.id).valueChanges().subscribe(vehStatesResp=>{
+    this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
       this.vehicleStates=vehStatesResp;
+    });
+    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportsResp=>{
+      this.vehicleImports=vehImportsResp;
     });
     this.providerService.getProviders().valueChanges().subscribe(provResp=>{
       this.providers=provResp;
@@ -78,24 +84,46 @@ export class VehicleDetailComponent implements OnInit {
     }
     Promise.all([
       this.uploadMulti(this.vehicleState.id),
-      this.vehicleService.createOrUpdateVehicleState(this.id,this.vehicleState),
+      this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleState,'states'),
     ]).then(()=>{
       this.snackbar.open('El estado: '+ this.vehicleState.id + ' a sido guardado con exito', 'Save', {
         duration: 5000
       });
-      this.blankVehicleState();
     }).catch(err=>{
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
     }).finally(()=>{
-      this.blanckInputfiles();
+      this.blankVehicleContent();
     });
-    this.blankVehicleState();
   }
 
-  blankVehicleState(){
+  createImportsVehicle(stateId) {
+    if(!this.vehicleImport.id){
+      this.vehicleImport.id=Date.now();
+    }else {
+      this.vehicleImport.updateDate=Date.now();
+    }
+    this.vehicleImport.stateId=stateId;
+    Promise.all([
+      this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleImport,'imports'),
+    ]).then(()=>{
+      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido guardado con exito', 'Save', {
+        duration: 5000
+      });
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    }).finally(()=>{
+      this.setImportsByStateId(stateId);
+      this.blankVehicleContent();
+    });
+  }
+
+  blankVehicleContent(){
     this.vehicleState={};
+    this.vehicleImport={};
     this.blanckInputfiles();
   }
 
@@ -104,6 +132,10 @@ export class VehicleDetailComponent implements OnInit {
     this.vehicleService.getVehicleStateFiles(this.vehicleState.id).subscribe(files=>{
       this.files=files
     });
+  }
+
+  setImportsByStateId(stateId){
+    this.vehicleImportsFilter=this.vehicleImports.filter(imp=>imp.stateId==stateId);
   }
 
   getIconByState(state){
