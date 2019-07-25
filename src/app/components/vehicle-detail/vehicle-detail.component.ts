@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {VehicleService} from '../../services/vehicle.service';
-import {GeoService} from '../../services/geo.service';
 import {GooglePlaceDirective} from 'ngx-google-places-autocomplete';
 import {Address} from 'ngx-google-places-autocomplete/objects/address';
 import {ProviderService} from '../../services/provider.service';
@@ -9,6 +8,7 @@ import * as _ from 'lodash';
 import {Upload} from '../../models/upload';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import { NumeralPipe } from 'ngx-numeral';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -27,6 +27,7 @@ export class VehicleDetailComponent implements OnInit {
   vehicleImport: any = {};
   vehicleImports: any[] = [];
   vehicleImportsFilter: any[] = [];
+  vehicleImportsFilterTotal={};
   provider: any = {};
   providers: any[] = [];
   options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -104,6 +105,7 @@ export class VehicleDetailComponent implements OnInit {
     }else {
       this.vehicleImport.updateDate=Date.now();
     }
+    this.vehicleImport.date=this.vehicleImport.date.toLocaleDateString();
     this.vehicleImport.stateId=stateId;
     Promise.all([
       this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleImport,'imports'),
@@ -116,8 +118,8 @@ export class VehicleDetailComponent implements OnInit {
         duration: 5000
       });
     }).finally(()=>{
-      this.setImportsByStateId(stateId);
-      this.blankVehicleContent();
+      this.setImportsByStateId(stateId,this.vehicleImport);
+      this.blanckVehicleImport();
     });
   }
 
@@ -127,6 +129,10 @@ export class VehicleDetailComponent implements OnInit {
     this.blanckInputfiles();
   }
 
+  blanckVehicleImport(){
+    this.vehicleImport={};
+  }
+
   setState(state){
     this.vehicleState=state;
     this.vehicleService.getVehicleStateFiles(this.vehicleState.id).subscribe(files=>{
@@ -134,8 +140,11 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
-  setImportsByStateId(stateId){
+  setImportsByStateId(stateId,vehicleImport){
     this.vehicleImportsFilter=this.vehicleImports.filter(imp=>imp.stateId==stateId);
+    if (vehicleImport)
+      this.vehicleImportsFilter.push(vehicleImport);
+    this.vehicleImportsFilterTotal=this.vehicleImportsFilter.map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
   }
 
   getIconByState(state){
