@@ -25,9 +25,9 @@ export class VehicleDetailComponent implements OnInit {
   vehicleState: any = {};
   vehicleStates: any[] = [];
   vehicleImport: any = {};
+  date: any = {};
   vehicleImports: any[] = [];
   vehicleImportsFilter: any[] = [];
-  vehicleImportsFilterTotal={};
   provider: any = {};
   providers: any[] = [];
   options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -38,6 +38,7 @@ export class VehicleDetailComponent implements OnInit {
   loadFiles=false;
   file: any = {};
   files: any[]= [];
+  isUpdateImport: boolean = false;
 
   constructor(private route:ActivatedRoute,
               private vehicleService: VehicleService,
@@ -45,18 +46,6 @@ export class VehicleDetailComponent implements OnInit {
               private snackbar: MatSnackBar,
               public dialog: MatDialog){
     this.id = this.route.snapshot.params['id'];
-    this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
-      this.vehicle=vehResp;
-    });
-    this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
-      this.vehicleStates=vehStatesResp;
-    });
-    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportsResp=>{
-      this.vehicleImports=vehImportsResp;
-    });
-    this.providerService.getProviders().valueChanges().subscribe(provResp=>{
-      this.providers=provResp;
-    })
   }
 
   public handleAddressChange(address: Address) {
@@ -69,8 +58,25 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  getGMapsProviderLink(providerId) {
+    const provider = this.getInfoProvider(providerId);
+    return !!provider? provider.address.url + '&output=embed' : '';
+  }
 
+  ngOnInit() {
+    this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
+      this.vehicle=vehResp;
+    });
+    this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
+      this.vehicleStates=vehStatesResp;
+    });
+    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportsResp=>{
+      this.vehicleImports=vehImportsResp;
+    });
+    this.providerService.getProviders().valueChanges().subscribe(provResp=>{
+      this.providers=provResp;
+    });
+    this.date=new Date();
   }
 
   formatDate(date){
@@ -105,7 +111,7 @@ export class VehicleDetailComponent implements OnInit {
     }else {
       this.vehicleImport.updateDate=Date.now();
     }
-    this.vehicleImport.date=this.vehicleImport.date.toLocaleDateString();
+    this.vehicleImport.date=this.date.toISOString();
     this.vehicleImport.stateId=stateId;
     Promise.all([
       this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleImport,'imports'),
@@ -130,6 +136,8 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   blanckVehicleImport(){
+    this.date=new Date();
+    this.isUpdateImport=false;
     this.vehicleImport={};
   }
 
@@ -140,11 +148,24 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
+  setImport(vehicleImport){
+    this.isUpdateImport=true;
+    this.vehicleImport=vehicleImport;
+    this.date = new Date(this.vehicleImport.date);
+  }
+
+  ISOStringToLocalDateString(iso){
+    return new Date(iso).toLocaleDateString();
+  }
+
   setImportsByStateId(stateId,vehicleImport){
     this.vehicleImportsFilter=this.vehicleImports.filter(imp=>imp.stateId==stateId);
-    if (vehicleImport)
+    if (vehicleImport&&!this.isUpdateImport)
       this.vehicleImportsFilter.push(vehicleImport);
-    this.vehicleImportsFilterTotal=this.vehicleImportsFilter.map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
+  }
+
+  sum(listImports){
+    return listImports.map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
   }
 
   getIconByState(state){

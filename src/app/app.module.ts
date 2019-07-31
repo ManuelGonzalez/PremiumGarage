@@ -56,6 +56,7 @@ import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { ProviderDetailComponent } from './components/provider-detail/provider-detail.component';
 import {NumeralModule} from 'ngx-numeral';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 export const environment = {
   production: false,
@@ -183,6 +184,7 @@ const appRoutes:Routes = [
     MatCardModule,
     MatDialogModule,
     MatDatepickerModule,
+    MatMomentDateModule,
     MatNativeDateModule,
     MatCheckboxModule,
     GooglePlaceModule

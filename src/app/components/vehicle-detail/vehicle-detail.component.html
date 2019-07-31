@@ -27,6 +27,9 @@
     <li class="nav-item">
       <a class="nav-link" id="life-cycle" data-toggle="tab" href="#life-cycle-tab" role="tab" aria-controls="profile" aria-selected="false">Ciclo de Vida</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" id="imports" data-toggle="tab" href="#imports-tab" role="tab" aria-controls="profile" aria-selected="false">Importes</a>
+    </li>
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
@@ -101,7 +104,7 @@
         <div class="row">
           <div class="col">
             <div id="accordion">
-              <div class="card" *ngIf="vehicle.stateIn">
+              <div class="card" *ngIf="!!vehicle&&vehicle.stateIn">
                 <div class="card-header" id="heading">
                   <h5 class="mb-0">
                     1: <i class="fas fa-sign-in-alt"></i>
@@ -168,7 +171,7 @@
                         </div>
                         <div class="col">
                           <h5 class="card-title">{{state.provider?getInfoProvider(state.provider).location:state.state=='Transporte'?'En transito':'En Garaje'}}</h5>
-                          <iframe *ngIf="state.provider" width="100%" height="100%" [src]="getInfoProvider(state.provider).address.url + '&output=embed' | safe"></iframe>
+                          <iframe *ngIf="state.provider" width="100%" height="100%" [src]="getGMapsProviderLink(state.provider) | safe"></iframe>
                           <iframe *ngIf="state.state=='Garaje'" width="100%" height="100%" src="https://maps.google.com/?q=Sanabria+4674,+C1419BNR+CABA,+Argentina&ftid=0x95bcb7c803020a93:0x58a3fe7d62c58d6c&output=embed"></iframe>
                         </div>
                       </div>
@@ -184,7 +187,7 @@
                               <i class="fas fa-file-upload"></i> Archivos
                             </button>
                             <button type="button" class="btn btn-secondary"
-                                    data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleImportModal" (click)="setState(state);setImportsByStateId(state.id,null)">
+                                    data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleImportModal" (click)="setState(state);setImportsByStateId(state.id)">
                               <i class="fas fa-file-upload"></i> Importes
                             </button>
                           </div>
@@ -205,6 +208,30 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="imports-tab" role="tabpanel" aria-labelledby="imports-tab">
+      <div class="table-responsive">
+        <table *ngIf="vehicleImports.length>0" class="table table-striped">
+          <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Descripcion</th>
+            <th>Importe</th>
+          </tr>
+          <tr *ngFor="let importValue of vehicleImports; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{ISOStringToLocalDateString(importValue.date)}}</td>
+            <td>{{importValue.description}}</td>
+            <td>{{importValue.import | numeral:'$0,0.00'}}</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td></td>
+            <th>Total</th>
+            <th>{{sum(vehicleImports) | numeral:'$0,0.00'}}</th>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
@@ -296,7 +323,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput [matDatepicker]="picker" placeholder="Fecha" required name="dateImport" [(ngModel)]="vehicleImport.date">
+                <input matInput [matDatepicker]="picker" placeholder="Fecha" required name="date" [value]="date" [(ngModel)]="date">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
@@ -313,8 +340,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" type="button" (click)="createImportsVehicle(vehicleState.id)">Agregar</button>
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+            <button class="btn btn-primary" type="button" (click)="createImportsVehicle(vehicleState.id)">{{isUpdateImport?"Actualizar":"Agregar"}}</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="blanckVehicleImport()">Cerrar</button>
           </div>
         </form>
 
@@ -327,18 +354,24 @@
               <th>Fecha</th>
               <th>Descripcion</th>
               <th>Importe</th>
+              <th>Acciones</th>
             </tr>
-            <tr *ngFor="let imports of vehicleImportsFilter; let i = index">
+            <tr *ngFor="let importValue of vehicleImportsFilter; let i = index">
               <td>{{i+1}}</td>
-              <td>{{imports.date}}</td>
-              <td>{{imports.description}}</td>
-              <td>{{imports.import | numeral:'$0,0.00'}}</td>
+              <td>{{ISOStringToLocalDateString(importValue.date)}}</td>
+              <td>{{importValue.description}}</td>
+              <td>{{importValue.import | numeral:'$0,0.00'}}</td>
+              <td>
+                <button type="button" class="btn btn-secondary" (click)="setImport(importValue)">
+                  <i class="fas fa-pen"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>-</td>
               <td></td>
               <th>Total</th>
-              <th>{{vehicleImportsFilterTotal | numeral:'$0,0.00'}}</th>
+              <th>{{sum(vehicleImportsFilter) | numeral:'$0,0.00'}}</th>
             </tr>
           </table>
         </div>
