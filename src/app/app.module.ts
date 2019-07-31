@@ -57,6 +57,7 @@ import { ProvidersComponent } from './components/providers/providers.component';
 import { ProviderDetailComponent } from './components/provider-detail/provider-detail.component';
 import {NumeralModule} from 'ngx-numeral';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import { VehicleAdditionalInfoComponent } from './components/vehicle-additional-info/vehicle-additional-info.component';
 
 export const environment = {
   production: false,
@@ -151,7 +152,8 @@ const appRoutes:Routes = [
     ConfirmationDialogComponent,
     VehicleDetailComponent,
     ProvidersComponent,
-    ProviderDetailComponent
+    ProviderDetailComponent,
+    VehicleAdditionalInfoComponent
   ],
   imports: [
     BrowserModule,

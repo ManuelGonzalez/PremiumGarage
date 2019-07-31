@@ -27,9 +27,9 @@
     <li class="nav-item">
       <a class="nav-link" id="life-cycle" data-toggle="tab" href="#life-cycle-tab" role="tab" aria-controls="profile" aria-selected="false">Ciclo de Vida</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" id="imports" data-toggle="tab" href="#imports-tab" role="tab" aria-controls="profile" aria-selected="false">Importes</a>
-    </li>
+    <!--li class="nav-item">
+      <a class="nav-link" id="imports" data-toggle="tab" href="#imports-tab" role="tab" aria-controls="profile" aria-selected="false">Control de Gastos</a>
+    </li-->
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
@@ -98,6 +98,7 @@
     </div>
     <div class="tab-pane fade" id="additional-data" role="tabpanel" aria-labelledby="additional-data-tab">
       <app-in-construction></app-in-construction>
+      <!--app-vehicle-additional-info [vehicle]="vehicle"></app-vehicle-additional-info-->
     </div>
     <div class="tab-pane fade" id="life-cycle-tab" role="tabpanel" aria-labelledby="life-cycle-tab">
       <div class="container">
@@ -186,10 +187,10 @@
                                     data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleStateModal" (click)="setState(state)">
                               <i class="fas fa-file-upload"></i> Archivos
                             </button>
-                            <button type="button" class="btn btn-secondary"
+                            <!--button type="button" class="btn btn-secondary"
                                     data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleImportModal" (click)="setState(state);setImportsByStateId(state.id)">
                               <i class="fas fa-file-upload"></i> Importes
-                            </button>
+                            </button-->
                           </div>
                         </div>
                       </div>
@@ -354,17 +355,22 @@
               <th>Fecha</th>
               <th>Descripcion</th>
               <th>Importe</th>
-              <th>Acciones</th>
             </tr>
             <tr *ngFor="let importValue of vehicleImportsFilter; let i = index">
               <td>{{i+1}}</td>
               <td>{{ISOStringToLocalDateString(importValue.date)}}</td>
               <td>{{importValue.description}}</td>
-              <td>{{importValue.import | numeral:'$0,0.00'}}</td>
               <td>
-                <button type="button" class="btn btn-secondary" (click)="setImport(importValue)">
-                  <i class="fas fa-pen"></i>
-                </button>
+                <div class="row">
+                  <div class="col">
+                    {{importValue.import | numeral:'$0,0.00'}}
+                  </div>
+                  <div class="col">
+                    <button type="button" class="btn btn-secondary" (click)="setImport(importValue)">
+                      <i class="fas fa-pen"></i>
+                    </button>
+                  </div>
+                </div>
               </td>
             </tr>
             <tr>
