@@ -115,7 +115,7 @@ export class UserComponent implements OnInit {
       this.uploadMulti(this.user.id),
       this.userService.createOrUpdateUser(this.user),
     ]).then(res=>{
-      this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
     }).catch(err=>{

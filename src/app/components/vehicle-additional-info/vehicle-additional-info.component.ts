@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {VehicleService} from '../../services/vehicle.service';
-import {ProviderService} from '../../services/provider.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-vehicle-additional-info',
@@ -12,6 +11,7 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 export class VehicleAdditionalInfoComponent implements OnInit {
 
   @Input() vehicle: any;
+  vehicleAddInfo: any = {};
 
   constructor(private vehicleService: VehicleService,
               private snackbar: MatSnackBar,
@@ -19,6 +19,38 @@ export class VehicleAdditionalInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.vehicleService.getVehicleContent(this.vehicle.id,'addInfo').valueChanges().subscribe(vehImportsResp=>{
+      this.vehicleAddInfo=!!vehImportsResp[0]?vehImportsResp[0]:{};
+      if(!!this.vehicleAddInfo){
+        $(window).on('load',function(){
+          $('#createVehicleAdditionadInfoModal').modal('show');
+        });
+      }
+    });
   }
 
+  createVehicleAddInfo(){
+    if(!this.vehicleAddInfo.id){
+      this.vehicleAddInfo.id=Date.now();
+    }else {
+      this.vehicleAddInfo.updateDate=Date.now();
+    }
+    Promise.all([
+      this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id,this.vehicleAddInfo,'addInfo'),
+    ]).then(()=>{
+        this.snackbar.open('La informacion adicional para el vehivulo: '+ this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
+        duration: 5000
+      });
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    }).finally(()=>{
+      this.blankVehicleAddInfo();
+    });
+  }
+
+  blankVehicleAddInfo() {
+    this.vehicleAddInfo={}
+  }
 }

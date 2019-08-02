@@ -120,7 +120,7 @@ export class ContactComponent implements OnInit {
       this.userService.createOrUpdateUser(this.user),
       this.contactService.createOrUpdateContact(this.contact),
     ]).then(res=>{
-      this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El usuario: '+ this.user.name + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
       this.blankData();

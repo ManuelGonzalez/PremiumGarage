@@ -165,7 +165,7 @@ export class VehicleComponent implements OnInit {
       this.uploadMulti(this.vehicle.id),
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(()=>{
-      this.snackbar.open('El vehiculo: '+ this.vehicle.id + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El vehiculo: '+ this.vehicle.id + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
       this.blankVehicle();

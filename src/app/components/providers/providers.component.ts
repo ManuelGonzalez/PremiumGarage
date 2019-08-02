@@ -121,7 +121,7 @@ export class ProvidersComponent implements OnInit {
       this.provider.address=this.address;
     }
     this.providerService.createOrUpdateProvider(this.provider).then(res=>{
-      this.snackbar.open('El proveedor: '+ this.provider.name + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El proveedor: '+ this.provider.name + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
       this.blankProvider();

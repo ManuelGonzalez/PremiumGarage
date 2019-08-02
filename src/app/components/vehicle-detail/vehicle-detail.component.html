@@ -27,9 +27,9 @@
     <li class="nav-item">
       <a class="nav-link" id="life-cycle" data-toggle="tab" href="#life-cycle-tab" role="tab" aria-controls="profile" aria-selected="false">Ciclo de Vida</a>
     </li>
-    <!--li class="nav-item">
+    <li class="nav-item">
       <a class="nav-link" id="imports" data-toggle="tab" href="#imports-tab" role="tab" aria-controls="profile" aria-selected="false">Control de Gastos</a>
-    </li-->
+    </li>
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
@@ -96,11 +96,10 @@
         </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="additional-data" role="tabpanel" aria-labelledby="additional-data-tab">
-      <app-in-construction></app-in-construction>
-      <!--app-vehicle-additional-info [vehicle]="vehicle"></app-vehicle-additional-info-->
+    <div *ngIf="vehicle" class="tab-pane fade" id="additional-data" role="tabpanel" aria-labelledby="additional-data-tab">
+      <app-vehicle-additional-info [vehicle]="vehicle"></app-vehicle-additional-info>
     </div>
-    <div class="tab-pane fade" id="life-cycle-tab" role="tabpanel" aria-labelledby="life-cycle-tab">
+    <div *ngIf="vehicleStates.length>0" class="tab-pane fade" id="life-cycle-tab" role="tabpanel" aria-labelledby="life-cycle-tab">
       <div class="container">
         <div class="row">
           <div class="col">
@@ -109,12 +108,12 @@
                 <div class="card-header" id="heading">
                   <h5 class="mb-0">
                     1: <i class="fas fa-sign-in-alt"></i>
-                    <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#option'+i" aria-expanded="false" [attr.aria-controls]="'option'+i">
+                    <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#option'" aria-expanded="false" [attr.aria-controls]="'option'+i">
                       {{vehicle.stateIn}}
                     </button>
                   </h5>
                 </div>
-                <div [id]="'option'+i" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div [id]="'option'" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
                     <div class="container-fluid">
                       <div class="row">
@@ -187,10 +186,10 @@
                                     data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleStateModal" (click)="setState(state)">
                               <i class="fas fa-file-upload"></i> Archivos
                             </button>
-                            <!--button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-secondary"
                                     data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleImportModal" (click)="setState(state);setImportsByStateId(state.id)">
                               <i class="fas fa-file-upload"></i> Importes
-                            </button-->
+                            </button>
                           </div>
                         </div>
                       </div>

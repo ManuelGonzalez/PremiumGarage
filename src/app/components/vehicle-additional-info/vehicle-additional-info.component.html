@@ -1,3 +1,165 @@
-<p>
-  {{vehicle.id}}
-</p>
+<div class="container-fluid">
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col">
+        <h3>Gestoria:</h3>
+      </div>
+      <div class="col">
+        <div class="text-right">
+          <button mat-mini-fab color="primary"
+                  data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                  data-target="#createVehicleAdditionadInfoModal"
+                  matTooltip="{{!!vehicleAddInfo.id?'Agregar Informacion Adicional':'Modificar informacion Adicional'}}">
+            <mat-icon>+</mat-icon>
+          </button>
+          <br>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tr>
+            <th>Dominio</th>
+            <td>{{vehicle.id}}</td>
+            <th>Radicacion</th>
+            <td>{{vehicle.radication}}</td>
+          </tr>
+          <tr>
+            <th>Marca</th>
+            <td>{{vehicle.brand}}</td>
+            <th>Modelo</th>
+            <td>{{vehicle.model}}</td>
+          </tr>
+        </table>
+      </div>
+      <hr>
+      <div *ngIf="vehicleAddInfo" class="table-responsive">
+        <table class="table table-striped">
+          <tr>
+            <th>Titular</th>
+            <td>{{vehicleAddInfo.titular}}</td>
+            <th>Titulo</th>
+            <td>{{vehicleAddInfo.title}}</td>
+            <th>Cedula</th>
+            <td>{{vehicleAddInfo.identification}}</td>
+          </tr>
+          <tr>
+            <th>Cedula Azul</th>
+            <td>{{vehicleAddInfo.identificationBlue}}</td>
+            <th>F08</th>
+            <td>{{vehicleAddInfo.F08}}</td>
+            <th>Informe de Dominio</th>
+            <td>{{vehicleAddInfo.domainReport}}</td>
+          </tr>
+          <tr>
+            <th>Informe de patentes</th>
+            <td>{{vehicleAddInfo.patentReport}}</td>
+            <th>Vefificacion Policial</th>
+            <td>{{vehicleAddInfo.policeCheck}}</td>
+            <th>VTV</th>
+            <td>{{vehicleAddInfo.vtv}}</td>
+          </tr>
+          <tr>
+            <th>Deudas</th>
+            <td>{{vehicleAddInfo.debts}}</td>
+          </tr>
+        </table>
+      </div>
+      <hr>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tr>
+            <th>Manual</th>
+            <td>{{vehicle.manual?"Si":"No"}}</td>
+            <th>Descripcion</th>
+            <td>{{vehicle.manualDesc}}</td>
+          </tr>
+          <tr>
+            <th>Duplicado de llaves</th>
+            <td>{{vehicle.additionalKeys?"Si":"No"}}</td>
+            <th>Descripcion</th>
+            <td>{{vehicle.additionalKeysDesc}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Provider Modal-->
+<div class="modal fade" id="createVehicleAdditionadInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Informacion Adicional - Vehiculo: {{vehicle.id}}</h5>
+        <button class="close" type="button" data-dismiss="modal" (click)="blankVehicleAddInfo()" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="example-form" autocomplete="off">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Titular" required name="titular" [(ngModel)]="vehicleAddInfo.titular">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Titulo" required name="title" [(ngModel)]="vehicleAddInfo.title">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput  placeholder="Cedula" required name="identification" [(ngModel)]="vehicleAddInfo.identification"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Cedula Azul" required name="identificationBlue" [(ngModel)]="vehicleAddInfo.identificationBlue"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="F08" required name="F08" [(ngModel)]="vehicleAddInfo.F08"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Informe de Dominio" required name="domainReport" [(ngModel)]="vehicleAddInfo.domainReport"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Informe de patentes" required name="patentReport" [(ngModel)]="vehicleAddInfo.patentReport"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Verificacion Policial" required name="policeCheck" [(ngModel)]="vehicleAddInfo.policeCheck"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="VTV" required name="vtv" [(ngModel)]="vehicleAddInfo.vtv"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Deudas" required name="debts" [(ngModel)]="vehicleAddInfo.debts"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="blankVehicleAddInfo()">Cancelar</button>
+        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createVehicleAddInfo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

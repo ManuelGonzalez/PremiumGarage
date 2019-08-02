@@ -93,7 +93,7 @@ export class VehicleDetailComponent implements OnInit {
       this.uploadMulti(this.vehicleState.id),
       this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleState,'states'),
     ]).then(()=>{
-      this.snackbar.open('El estado: '+ this.vehicleState.id + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El estado: '+ this.vehicleState.id + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
     }).catch(err=>{
@@ -116,7 +116,7 @@ export class VehicleDetailComponent implements OnInit {
     Promise.all([
       this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleImport,'imports'),
     ]).then(()=>{
-      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido guardado con exito', 'Save', {
+      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
     }).catch(err=>{
