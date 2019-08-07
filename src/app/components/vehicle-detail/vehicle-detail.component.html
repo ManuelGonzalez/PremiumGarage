@@ -210,29 +210,8 @@
         </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="imports-tab" role="tabpanel" aria-labelledby="imports-tab">
-      <div class="table-responsive">
-        <table *ngIf="vehicleImports.length>0" class="table table-striped">
-          <tr>
-            <th>#</th>
-            <th>Fecha</th>
-            <th>Descripcion</th>
-            <th>Importe</th>
-          </tr>
-          <tr *ngFor="let importValue of vehicleImports; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{ISOStringToLocalDateString(importValue.date)}}</td>
-            <td>{{importValue.description}}</td>
-            <td>{{importValue.import | numeral:'$0,0.00'}}</td>
-          </tr>
-          <tr>
-            <td>-</td>
-            <td></td>
-            <th>Total</th>
-            <th>{{sum(vehicleImports) | numeral:'$0,0.00'}}</th>
-          </tr>
-        </table>
-      </div>
+    <div *ngIf="vehicle" class="tab-pane fade" id="imports-tab" role="tabpanel" aria-labelledby="imports-tab">
+      <app-vehicle-imports [vehicle]="vehicle"></app-vehicle-imports>
     </div>
   </div>
   <div class="jumbotron" *ngIf="!vehicle">

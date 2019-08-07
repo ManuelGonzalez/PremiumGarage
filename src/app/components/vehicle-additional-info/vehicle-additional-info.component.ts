@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {VehicleService} from '../../services/vehicle.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-vehicle-additional-info',
@@ -20,12 +19,7 @@ export class VehicleAdditionalInfoComponent implements OnInit {
 
   ngOnInit() {
     this.vehicleService.getVehicleContent(this.vehicle.id,'addInfo').valueChanges().subscribe(vehImportsResp=>{
-      this.vehicleAddInfo=!!vehImportsResp[0]?vehImportsResp[0]:{};
-      if(!!this.vehicleAddInfo){
-        $(window).on('load',function(){
-          $('#createVehicleAdditionadInfoModal').modal('show');
-        });
-      }
+      this.vehicleAddInfo=!!vehImportsResp[0]?vehImportsResp[0]:{}
     });
   }
 
@@ -45,12 +39,6 @@ export class VehicleAdditionalInfoComponent implements OnInit {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
-    }).finally(()=>{
-      this.blankVehicleAddInfo();
     });
-  }
-
-  blankVehicleAddInfo() {
-    this.vehicleAddInfo={}
   }
 }

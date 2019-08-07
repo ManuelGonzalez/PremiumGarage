@@ -70,9 +70,6 @@ export class VehicleDetailComponent implements OnInit {
     this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
       this.vehicleStates=vehStatesResp;
     });
-    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportsResp=>{
-      this.vehicleImports=vehImportsResp;
-    });
     this.providerService.getProviders().valueChanges().subscribe(provResp=>{
       this.providers=provResp;
     });
