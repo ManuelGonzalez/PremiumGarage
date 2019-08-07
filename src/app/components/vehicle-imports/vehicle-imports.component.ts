@@ -19,7 +19,6 @@ export class VehicleImportsComponent implements OnInit {
   displayedColumns = ['date','description', 'import', 'actions'];
   vehicleImport: any = {};
   dataSource: MatTableDataSource<any>;
-  finding: boolean = false;
   date: any = {};
 
   constructor(private vehicleService: VehicleService,
@@ -47,12 +46,6 @@ export class VehicleImportsComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    if(filterValue!=""){
-      this.finding=true;
-    }else{
-      this.finding=false;
-    }
-
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
@@ -90,15 +83,32 @@ export class VehicleImportsComponent implements OnInit {
     this.vehicleImport=vehicleImport;
   }
 
-  openDialogDeleteVehicleImport() {
+  openDialogDeleteVehicleImport(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: "Deseas eliminar el archivo?"
+      data: "Deseas eliminar el importe?"
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        //this.deleteFile()
+        this.deleteVehicleImport()
       }
     });
   }
+
+  deleteVehicleImport(){
+    Promise.all([
+      this.vehicleService.deleteVehicleContent(this.vehicleImport.id,this.vehicle.id,'imports'),
+    ]).then(()=>{
+      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido eliminado con exito', 'Registro Eliminado', {
+        duration: 5000
+      });
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    }).finally(()=>{
+      this.blankImport();
+    });
+  }
+
 }

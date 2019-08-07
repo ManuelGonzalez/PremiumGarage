@@ -6,7 +6,7 @@ import {Address} from 'ngx-google-places-autocomplete/objects/address';
 import {ProviderService} from '../../services/provider.service';
 import * as _ from 'lodash';
 import {Upload} from '../../models/upload';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import { NumeralPipe } from 'ngx-numeral';
 
@@ -19,6 +19,8 @@ export class VehicleDetailComponent implements OnInit {
 
   @ViewChild("placesRef") placesRef : GooglePlaceDirective;
   @ViewChild('myInput') myInputVariable: ElementRef;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   id: any = null;
   vehicle: any;
@@ -39,6 +41,8 @@ export class VehicleDetailComponent implements OnInit {
   file: any = {};
   files: any[]= [];
   isUpdateImport: boolean = false;
+  displayedColumns = ['date','description', 'import', 'actions'];
+  dataSource;
 
   constructor(private route:ActivatedRoute,
               private vehicleService: VehicleService,
@@ -50,6 +54,14 @@ export class VehicleDetailComponent implements OnInit {
 
   public handleAddressChange(address: Address) {
     // Do some stuff
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   getInfoProvider(providerId){
@@ -69,6 +81,9 @@ export class VehicleDetailComponent implements OnInit {
     });
     this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
       this.vehicleStates=vehStatesResp;
+    });
+    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportResp=>{
+      this.vehicleImports=vehImportResp;
     });
     this.providerService.getProviders().valueChanges().subscribe(provResp=>{
       this.providers=provResp;
@@ -121,7 +136,22 @@ export class VehicleDetailComponent implements OnInit {
         duration: 5000
       });
     }).finally(()=>{
-      this.setImportsByStateId(stateId,this.vehicleImport);
+      this.blanckVehicleImport();
+    });
+  }
+
+  deleteVehicleImport(){
+    Promise.all([
+      this.vehicleService.deleteVehicleContent(this.vehicleImport.id,this.id,'imports'),
+    ]).then(()=>{
+      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido eliminado con exito', 'Registro Eliminado', {
+        duration: 5000
+      });
+    }).catch(err=>{
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    }).finally(()=>{
       this.blanckVehicleImport();
     });
   }
@@ -155,10 +185,15 @@ export class VehicleDetailComponent implements OnInit {
     return new Date(iso).toLocaleDateString();
   }
 
-  setImportsByStateId(stateId,vehicleImport){
-    this.vehicleImportsFilter=this.vehicleImports.filter(imp=>imp.stateId==stateId);
-    if (vehicleImport&&!this.isUpdateImport)
-      this.vehicleImportsFilter.push(vehicleImport);
+  setImportsByStateId(stateId){
+    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportResp=>{
+      this.vehicleImports=vehImportResp;
+      this.vehicleImportsFilter=this.vehicleImports.filter(imp=>imp.stateId==stateId);
+      this.dataSource = new MatTableDataSource(this.vehicleImportsFilter);
+      this.dataSource = new MatTableDataSource(this.vehicleImportsFilter);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
   sum(listImports){
@@ -231,6 +266,18 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
+  openDialogDeleteVehicleImport(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: "Deseas eliminar el importe?"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.deleteVehicleImport()
+      }
+    });
+  }
+
   setFile(file){
     this.file=file;
   }
@@ -242,5 +289,9 @@ export class VehicleDetailComponent implements OnInit {
     setTimeout(function(this){
       that.loadFiles = false;
     },5000);
+  }
+
+  setVehicleImport(vehicleImport) {
+    this.vehicleImport=vehicleImport;
   }
 }

@@ -40,7 +40,7 @@
         <table class="table table-striped">
           <tr>
             <th>Titular</th>
-            <td>{{vehicleAddInfo.titular?"Si":"No"}}</td>
+            <td>{{vehicleAddInfo.titular}}</td>
             <th>Titulo</th>
             <td>{{vehicleAddInfo.title?"Si":"No"}}</td>
             <th>Cedula</th>
@@ -67,6 +67,10 @@
             <td>{{vehicleAddInfo.report13?"Si":"No"}}</td>
             <th>Deudas</th>
             <td>{{vehicleAddInfo.report13Debts}}</td>
+          </tr>
+          <tr>
+            <th>Comentarios</th>
+            <td>{{vehicleAddInfo.coment}}</td>
           </tr>
         </table>
       </div>
@@ -105,10 +109,12 @@
         <form class="example-form" autocomplete="off">
           <div class="row">
             <div class="col">
-              <mat-checkbox name="titular" [(ngModel)]="vehicleAddInfo.titular">Titular</mat-checkbox>
+              <mat-checkbox name="title" [(ngModel)]="vehicleAddInfo.title">Titulo</mat-checkbox>
             </div>
             <div class="col">
-              <mat-checkbox name="title" [(ngModel)]="vehicleAddInfo.title">Titulo</mat-checkbox>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Titular" required name="titular" [(ngModel)]="vehicleAddInfo.titular"/>
+              </mat-form-field>
             </div>
           </div>
           <hr>
@@ -143,13 +149,20 @@
             <div class="col">
               <mat-checkbox name="patentReport" [(ngModel)]="vehicleAddInfo.report13">Informe 13</mat-checkbox>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Deudas" required name="report13Debts" [(ngModel)]="vehicleAddInfo.report13Debts"/>
+                <input matInput placeholder="Deudas" type="number" required name="report13Debts" [(ngModel)]="vehicleAddInfo.report13Debts"/>
               </mat-form-field>
             </div>
             <div class="col">
               <mat-checkbox name="patentReport" [(ngModel)]="vehicleAddInfo.patentReport">Informe de patentes</mat-checkbox>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Deudas" required name="vehicleAddInfoDebts" [(ngModel)]="vehicleAddInfo.patentReportDebts"/>
+                <input matInput placeholder="Deudas" type="number" required name="vehicleAddInfoDebts" [(ngModel)]="vehicleAddInfo.patentReportDebts"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <textarea matInput placeholder="Comentarios" required name="coment" [(ngModel)]="vehicleAddInfo.coment"></textarea>
               </mat-form-field>
             </div>
           </div>

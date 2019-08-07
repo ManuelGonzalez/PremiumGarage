@@ -74,5 +74,9 @@ export class VehicleService {
   getVehicleContent(vehicleId: string,pathContent: string){
     return this.afDB.list(`/vehicles/${vehicleId}/${pathContent}/`);
   }
+
+  public deleteVehicleContent(id,vehicleId,pathContent: string){
+    return this.afDB.database.ref(`/vehicles/${vehicleId}/${pathContent}/${id}`).remove();
+  }
   
 }
