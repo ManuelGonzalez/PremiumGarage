@@ -41,8 +41,9 @@ export class VehicleDetailComponent implements OnInit {
   file: any = {};
   files: any[]= [];
   isUpdateImport: boolean = false;
-  displayedColumns = ['date','description', 'import', 'actions'];
+  displayedColumns = ['date','description', 'importType', 'import', 'actions'];
   dataSource;
+  importTypes: string[] = ['Operativos', 'Administrativos', 'Legales'];
 
   constructor(private route:ActivatedRoute,
               private vehicleService: VehicleService,

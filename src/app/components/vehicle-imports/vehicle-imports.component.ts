@@ -16,10 +16,11 @@ export class VehicleImportsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   vehicleImports: any[] = [];
-  displayedColumns = ['date','description', 'import', 'actions'];
+  displayedColumns = ['date','description', 'importType', 'import', 'actions'];
   vehicleImport: any = {};
   dataSource: MatTableDataSource<any>;
   date: any = {};
+  importTypes: string[] = ['Operativos', 'Administrativos', 'Legales'];
 
   constructor(private vehicleService: VehicleService,
               private snackbar: MatSnackBar,

@@ -59,6 +59,7 @@ import {NumeralModule} from 'ngx-numeral';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { VehicleAdditionalInfoComponent } from './components/vehicle-additional-info/vehicle-additional-info.component';
 import { VehicleImportsComponent } from './components/vehicle-imports/vehicle-imports.component';
+import { SalesOrderReportComponent } from './components/sales-order-report/sales-order-report.component';
 
 export const environment = {
   production: false,
@@ -155,7 +156,8 @@ const appRoutes:Routes = [
     ProvidersComponent,
     ProviderDetailComponent,
     VehicleAdditionalInfoComponent,
-    VehicleImportsComponent
+    VehicleImportsComponent,
+    SalesOrderReportComponent,
   ],
   imports: [
     BrowserModule,

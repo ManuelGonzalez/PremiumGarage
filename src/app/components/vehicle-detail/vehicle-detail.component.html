@@ -308,6 +308,14 @@
               </mat-form-field>
             </div>
             <div class="col">
+              <mat-form-field>
+                <mat-label>Concepto</mat-label>
+                <select matNativeControl  name="importType" [(ngModel)]="vehicleImport.importType">
+                  <option *ngFor="let it of importTypes" value="{{it}}">{{it}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Descripcion" required name="description" [(ngModel)]="vehicleImport.description">
               </mat-form-field>
@@ -335,6 +343,12 @@
               <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
                 <td mat-cell *matCellDef="let element"> {{ISOStringToLocalDateString(element.date)}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <ng-container matColumnDef="importType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Concepto </th>
+                <td mat-cell *matCellDef="let element"> {{element.importType}} </td>
                 <td mat-footer-cell *matFooterCellDef></td>
               </ng-container>
 

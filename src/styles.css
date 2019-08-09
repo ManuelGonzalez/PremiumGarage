@@ -280,3 +280,11 @@ body, html {
 .table-white{
   background: #fff;
 }
+
+.margin-btn > button{
+  margin: 10px;
+}
+
+.white-modal{
+  background: #fff;
+}
