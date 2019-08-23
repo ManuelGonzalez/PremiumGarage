@@ -78,5 +78,9 @@ export class VehicleService {
   public deleteVehicleContent(id,vehicleId,pathContent: string){
     return this.afDB.database.ref(`/vehicles/${vehicleId}/${pathContent}/${id}`).remove();
   }
+
+  verifyData(vehicle){
+
+  }
   
 }

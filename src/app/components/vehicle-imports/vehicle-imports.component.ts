@@ -16,11 +16,12 @@ export class VehicleImportsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   vehicleImports: any[] = [];
-  displayedColumns = ['date','description', 'importType', 'import', 'actions'];
+  displayedColumns = ['date', 'description', 'importType', 'import', 'percentage', 'earnings', 'actions'];
   vehicleImport: any = {};
   dataSource: MatTableDataSource<any>;
   date: any = {};
-  importTypes: string[] = ['Operativos', 'Administrativos', 'Legales'];
+  importTypes: string[] = ['Documentación', 'Reparaciones', 'Traslados'];
+  showInput: boolean = false;
 
   constructor(private vehicleService: VehicleService,
               private snackbar: MatSnackBar,
@@ -46,6 +47,19 @@ export class VehicleImportsComponent implements OnInit {
     return listImports.map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
   }
 
+  sumPer(listImports){
+    return listImports.map(imp=> new NumeralPipe(imp.percentage)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
+  }
+
+  totalEarnings(listImports){
+    let totalImport = this.sum(listImports)
+    return new NumeralPipe(totalImport).multiply(this.sumPer(listImports)).divide(100).add(totalImport).value()
+  }
+
+  percentage(importVal,percentage){
+    return new NumeralPipe(importVal).multiply(percentage).divide(100).add(importVal).value()
+  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -61,8 +75,10 @@ export class VehicleImportsComponent implements OnInit {
   createImportsVehicle() {
     if(!this.vehicleImport.id){
       this.vehicleImport.id=Date.now();
+      this.vehicleImport.percentage=0;
     }else {
       this.vehicleImport.updateDate=Date.now();
+      this.vehicleImport.percentage=this.vehicleImport.percentage>0?this.vehicleImport.percentage:0;
     }
     this.vehicleImport.date=this.date.toISOString();
     Promise.all([
@@ -82,6 +98,10 @@ export class VehicleImportsComponent implements OnInit {
 
   setVehicleImport(vehicleImport) {
     this.vehicleImport=vehicleImport;
+  }
+
+  changeBool(){
+    this.showInput=!this.showInput;
   }
 
   openDialogDeleteVehicleImport(): void {
