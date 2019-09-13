@@ -16,7 +16,7 @@ export class VehicleImportsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   vehicleImports: any[] = [];
-  displayedColumns = ['date', 'description', 'importType', 'import', 'percentage', 'earnings', 'actions'];
+  displayedColumns = [];
   vehicleImport: any = {};
   dataSource: MatTableDataSource<any>;
   date: any = {};
@@ -37,6 +37,9 @@ export class VehicleImportsComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     });
     this.date=new Date();
+    this.displayedColumns = this.vehicle.stateIn ==="Consignación" ?
+      ['date', 'description', 'importType', 'import', 'percentage', 'earnings', 'actions']:
+      ['date', 'description', 'importType', 'import', 'actions'];
   }
 
   ISOStringToLocalDateString(iso){

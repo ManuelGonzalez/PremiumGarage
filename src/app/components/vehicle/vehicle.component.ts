@@ -25,7 +25,7 @@ export class VehicleComponent implements OnInit {
   vehicles: any[] = [];
   brands: any[] = [];
   models: string[] = [];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
   selectedBrand: any = {};
@@ -42,6 +42,7 @@ export class VehicleComponent implements OnInit {
   address: any = {};
   vehicleStatesIn: string[] = ['Consignación', 'Permuta', 'Unidad Externa', 'Compra por inversión', 'Compra propia'];
   finding: boolean = false;
+  date: any = {};
 
   @ViewChild("placesRef") placesRef : GooglePlaceDirective;
   @ViewChild(MatSort) sort: MatSort;
@@ -61,6 +62,25 @@ export class VehicleComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.vehicles);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.dataSource.filterPredicate =
+        (data: any, filters: string) => {
+          const matchFilter = [];
+          const filterArray = filters.split(' ');
+          const columns = (<any>Object).values(data);
+          // OR be more specific [data.name, data.race, data.color];
+
+          // Main
+          filterArray.forEach(filter => {
+            const customFilter = [];
+            columns.forEach(
+              column => {
+                customFilter.push(column.toString().toLowerCase().includes(filter))
+              }
+            );
+            matchFilter.push(customFilter.some(Boolean)); // OR
+          });
+          return matchFilter.every(Boolean); // AND
+        }
     });
     this.cardService.getBrands().valueChanges().subscribe(fbBrands=>{
       this.brands=fbBrands;
@@ -84,6 +104,7 @@ export class VehicleComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value))
       );
+    this.date=new Date();
   }
 
   applyFilter(filterValue: string) {
@@ -160,6 +181,7 @@ export class VehicleComponent implements OnInit {
     }else{
       this.vehicle.creationDate=Date.now();
     }
+    this.vehicle.dateAdmission=this.date.toISOString();
     this.vehicle.addressRadicaction=this.address;
     Promise.all([
       this.uploadMulti(this.vehicle.id),

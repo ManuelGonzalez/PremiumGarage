@@ -42,6 +42,7 @@ export class UserComponent implements OnInit {
   loadFiles=false;
   address: any = {};
   finding: boolean = false;
+  date: any = {};
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

@@ -20,7 +20,7 @@
     <loading-spinner *ngIf="vehicles.length==0"></loading-spinner>
     <div *ngIf="vehicles.length>0">
       <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        <input matInput [ngModel]="globalFilter" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
       </mat-form-field>
 
       <table *ngIf="finding" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
@@ -178,7 +178,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Kms" required name="km" [(ngModel)]="vehicle.km">
+                <input matInput placeholder="Kms al Ingreso" required name="km" [(ngModel)]="vehicle.km">
               </mat-form-field>
             </div>
           </div>
@@ -210,10 +210,17 @@
           <div class="row">
             <div class="col">
               <mat-form-field>
-                <mat-label>Estado de Entrada del Vehiculo</mat-label>
+                <mat-label>Situación de Entrada del Vehiculo</mat-label>
                 <select matNativeControl  name="stateIn" [(ngModel)]="vehicle.stateIn">
                   <option *ngFor="let vs of vehicleStatesIn" value="{{vs}}">{{vs}}</option>
                 </select>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="picker" placeholder="Fecha de Ingreso" name="dateAdmission" [(ngModel)]="vehicle.dateAdmission">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
             </div>
           </div>
@@ -236,7 +243,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Comentarios" required name="coment" [(ngModel)]="vehicle.coment"></textarea>
+                <textarea matInput placeholder="Observaciones" required name="coment" [(ngModel)]="vehicle.coment"></textarea>
               </mat-form-field>
             </div>
           </div>

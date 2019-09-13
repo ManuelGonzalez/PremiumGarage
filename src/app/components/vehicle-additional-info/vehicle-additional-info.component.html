@@ -7,12 +7,20 @@
       </div>
       <div class="col">
         <div class="text-right">
-          <button mat-mini-fab color="primary"
-                  data-toggle="modal" data-backdrop="static" data-keyboard="false"
-                  data-target="#createVehicleAdditionadInfoModal"
-                  matTooltip="{{!!vehicleAddInfo.id?'Agregar Informacion Adicional':'Modificar informacion Adicional'}}">
-            <i class="fas fa-plus"></i>
+          <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
+            <i class="fas fa-bars"></i>
           </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                    data-target="#createVehicleAdditionadInfoModal">
+              <i class="fas fa-pen"></i>
+              <span>Editar</span>
+            </button>
+            <!--button mat-menu-item (click)="setVehicleImport(element);openDialogDeleteVehicleImport()">
+              <i class="fas fa-print"></i>
+              <span>Imprimir Gestoria</span>
+            </button-->
+          </mat-menu>
           <br>
         </div>
       </div>
@@ -20,63 +28,99 @@
     <hr>
     <div class="row">
       <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-sm table-hover">
           <tr>
             <th>Dominio</th>
             <td>{{vehicle.id}}</td>
-            <th>Radicacion</th>
-            <td>{{vehicle.radication}}</td>
-          </tr>
-          <tr>
             <th>Marca</th>
             <td>{{vehicle.brand}}</td>
             <th>Modelo</th>
             <td>{{vehicle.model}}</td>
+            <th>Año</th>
+            <td>{{vehicle.year}}</td>
+          </tr>
+          <tr>
+            <th>Radicacion</th>
+            <td>{{vehicle.radication}}</td>
+          </tr>
+          <tr>
+            <th>Titular</th>
+            <td>{{vehicleAddInfo.titular}}</td>
           </tr>
         </table>
       </div>
       <hr>
       <div *ngIf="vehicleAddInfo" class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-sm table-hover">
           <tr>
-            <th>Titular</th>
-            <td>{{vehicleAddInfo.titular}}</td>
             <th>Titulo</th>
             <td>{{vehicleAddInfo.title?"Si":"No"}}</td>
-            <th>Cedula</th>
+            <th *ngIf="vehicleAddInfo.title">N</th>
+            <td *ngIf="vehicleAddInfo.title">{{vehicleAddInfo.titleNum}}</td>
+          </tr>
+          <tr>
+            <th>Cedula de Identificacion</th>
             <td>{{vehicleAddInfo.identification?"Si":"No"}}</td>
-            <th>Cedula Azul</th>
+            <th *ngIf="vehicleAddInfo.identification">N</th>
+            <td *ngIf="vehicleAddInfo.identification">{{vehicleAddInfo.identificationNum}}</td>
+          </tr>
+          <tr>
+            <th>Cedula Autorizadas</th>
             <td>{{vehicleAddInfo.identificationBlue?"Si":"No"}}</td>
+            <th *ngIf="vehicleAddInfo.identificationBlue">N</th>
+            <td *ngIf="vehicleAddInfo.identificationBlue">{{vehicleAddInfo.identificationBlueNum}}</td>
           </tr>
           <tr>
             <th>F08</th>
             <td>{{vehicleAddInfo.F08?"Si":"No"}}</td>
+            <th *ngIf="vehicleAddInfo.F08">N</th>
+            <td *ngIf="vehicleAddInfo.F08">{{vehicleAddInfo.F08Num}}</td>
+          </tr>
+          <tr>
             <th>Informe de Dominio</th>
             <td>{{vehicleAddInfo.domainReport?"Si":"No"}}</td>
-            <th>Vefificacion Policial</th>
-            <td>{{vehicleAddInfo.policeCheck?"Si":"No"}}</td>
-            <th>VTV</th>
-            <td>{{vehicleAddInfo.vtv?"Si":"No"}}</td>
+          </tr>
+          <tr>
+            <th>Informe 13</th>
+            <td>{{vehicleAddInfo.report13?"Si":"No"}}</td>
+            <th *ngIf="vehicleAddInfo.report13">Deudas</th>
+            <td *ngIf="vehicleAddInfo.report13">{{vehicleAddInfo.report13Debts}}</td>
+            <th *ngIf="vehicleAddInfo.report13">Fecha</th>
+            <td *ngIf="vehicleAddInfo.report13">{{ISOStringToLocalDateString(vehicleAddInfo.report13Date)}}</td>
           </tr>
           <tr>
             <th>Informe de patentes</th>
             <td>{{vehicleAddInfo.patentReport?"Si":"No"}}</td>
-            <th>Deudas</th>
-            <td>{{vehicleAddInfo.patentReportDebts}}</td>
-            <th>Informe 13</th>
-            <td>{{vehicleAddInfo.report13?"Si":"No"}}</td>
-            <th>Deudas</th>
-            <td>{{vehicleAddInfo.report13Debts}}</td>
+            <th *ngIf="vehicleAddInfo.patentReport">Deudas</th>
+            <td *ngIf="vehicleAddInfo.patentReport">{{vehicleAddInfo.patentReportDebts}}</td>
+            <th *ngIf="vehicleAddInfo.patentReport">Fecha</th>
+            <td *ngIf="vehicleAddInfo.patentReport">{{ISOStringToLocalDateString(vehicleAddInfo.patentReportDate)}}</td>
           </tr>
           <tr>
-            <th>Comentarios</th>
+            <th>Vefificacion Policial</th>
+            <td>{{vehicleAddInfo.policeCheck?"Si":"No"}}</td>
+            <th *ngIf="vehicleAddInfo.policeCheck">Fecha</th>
+            <td *ngIf="vehicleAddInfo.policeCheck">{{ISOStringToLocalDateString(vehicleAddInfo.policeCheckDate)}}</td>
+          </tr>
+          <tr>
+            <th>Grabado de Autopartes</th>
+            <td>{{vehicleAddInfo.engravingAutoParts?"Si":"No"}}</td>
+          </tr>
+          <tr>
+            <th>VTV</th>
+            <td>{{vehicleAddInfo.vtv?"Si":"No"}}</td>
+            <th *ngIf="vehicleAddInfo.vtv">Vencimiento</th>
+            <td *ngIf="vehicleAddInfo.vtv">{{ISOStringToLocalDateString(vehicleAddInfo.VTVDate)}}</td>
+          </tr>
+          <tr>
+            <th>Observaciones</th>
             <td>{{vehicleAddInfo.coment}}</td>
           </tr>
         </table>
       </div>
       <hr>
       <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-sm table-hover">
           <tr>
             <th>Manual</th>
             <td>{{vehicle.manual?"Si":"No"}}</td>
@@ -91,82 +135,141 @@
           </tr>
         </table>
       </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover">
+          <tr>
+            <td>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="{{vehicle.sellerId?'col-sm-11':'col'}}">
+                      <div *ngIf="vehicle.sellerId">
+                        <div class="table-responsive">
+                          <table class="table table-sm table-hover">
+                            <tr>
+                              <th>Dni</th>
+                              <td>{{seller.id}}</td>
+                            </tr>
+                            <tr>
+                              <th>Nombre y Apellido</th>
+                              <td>{{seller.name}}</td>
+                            </tr>
+                            <tr>
+                              <th>Telefono</th>
+                              <td>{{seller.movilPhone}}</td>
+                            </tr>
+                            <tr>
+                              <th>Fecha de Ingreso</th>
+                              <td></td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="{{vehicle.sellerId?'col-sm-1':'col'}}">
+                      <button mat-mini-fab color="primary"
+                              data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal"
+                              (click)="setSeller(true)"
+                              matTooltip="{{vehicle.sellerId?'Modificar Vendedor':'Agregar Vendedor'}}">
+                        <i class="fas {{vehicle.sellerId?'fa-user':'fa-plus'}}"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="{{vehicle.buyerId?'col-sm-11':'col'}}">
+                      <div *ngIf="vehicle.buyerId">
+                        <table class="table table-sm table-hover">
+                          <tr>
+                            <th>Dni</th>
+                            <td>{{buyer.id}}</td>
+                          </tr>
+                          <tr>
+                            <th>Nombre y Apellido</th>
+                            <td>{{buyer.name}}</td>
+                          </tr>
+                          <tr>
+                            <th>Telefono</th>
+                            <td>{{buyer.movilPhone}}</td>
+                          </tr>
+                          <tr>
+                            <th>Fecha de Egreso</th>
+                            <td></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="{{vehicle.buyerId?'col-sm-1':'col'}}">
+                      <button mat-mini-fab color="primary"
+                              data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal"
+                              (click)="setSeller(false)"
+                              matTooltip="{{vehicle.buyerId?'Modificar Comprador':'Agregar Comprador'}}">
+                        <i class="fas {{vehicle.buyerId?'fa-user':'fa-plus'}}"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Create Provider Modal-->
-<div class="modal fade" id="createVehicleAdditionadInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleUserModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Informacion Adicional - Vehiculo: {{vehicle.id}}</h5>
+        <h5 class="modal-title" id="exampleUserModal">Informacion Adicional - Vehiculo: {{vehicle.id}}</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form class="example-form" autocomplete="off">
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="title" [(ngModel)]="vehicleAddInfo.title">Titulo</mat-checkbox>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Titular" required name="titular" [(ngModel)]="vehicleAddInfo.titular"/>
-              </mat-form-field>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="identification" [(ngModel)]="vehicleAddInfo.identification">Cedula</mat-checkbox>
-            </div>
-            <div class="col">
-              <mat-checkbox name="identificationBlue" [(ngModel)]="vehicleAddInfo.identificationBlue">Cedula Azul</mat-checkbox>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="F08" [(ngModel)]="vehicleAddInfo.F08">F08</mat-checkbox>
-            </div>
-            <div class="col">
-              <mat-checkbox name="domainReport" [(ngModel)]="vehicleAddInfo.domainReport">Informe de Dominio</mat-checkbox>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="policeCheck" [(ngModel)]="vehicleAddInfo.policeCheck">Verificacion Policial</mat-checkbox>
-            </div>
-            <div class="col">
-              <mat-checkbox name="vtv" [(ngModel)]="vehicleAddInfo.vtv">VTV</mat-checkbox>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="patentReport" [(ngModel)]="vehicleAddInfo.report13">Informe 13</mat-checkbox>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Deudas" type="number" required name="report13Debts" [(ngModel)]="vehicleAddInfo.report13Debts"/>
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-checkbox name="patentReport" [(ngModel)]="vehicleAddInfo.patentReport">Informe de patentes</mat-checkbox>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Deudas" type="number" required name="vehicleAddInfoDebts" [(ngModel)]="vehicleAddInfo.patentReportDebts"/>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Comentarios" required name="coment" [(ngModel)]="vehicleAddInfo.coment"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-        </form>
+        <div *ngIf="users.length>0">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+            <a matSuffix mat-button target="_BLACK" routerLink="/users">Usuarios</a>
+          </mat-form-field>
+
+          <table mat-table [dataSource]="dataSource" *ngIf="finding" matSort class="mat-elevation-z8 table">
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
+              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-dismiss="modal" (click)="saveSellerOrBuyer(element)">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Seleccionar</span>
+                </button>
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
@@ -175,4 +278,3 @@
     </div>
   </div>
 </div>
-

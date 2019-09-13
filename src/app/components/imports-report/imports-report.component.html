@@ -1,0 +1,129 @@
+<div class="container-fluid withe-modal">
+  <div class="text-right margin-btn">
+    <button mat-mini-fab color="primary"
+            (click)="donwloadPdf()"
+            matTooltip="Imprimir">
+      <i class="fas fa-print"></i>
+    </button>
+  </div>
+</div>
+<div #reportImport class="container-fluid withe-modal">
+  <div class="row">
+    <div class="col">
+      <img src="../../../assets/images/Logo_GP-Devoto.png" class="img-fluid" alt="">
+    </div>
+    <div class="col">
+      <table class="table">
+        <tr><th>Cliente</th><td>Michael Ortiz</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive-sm">
+        <table class="table table-sm table-borderless">
+          <thead>
+            <tr>
+              <th>Gastos Por Documentacion</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tr *ngFor="let imp of getImports('Documentación')">
+            <td>{{imp.description}}</td>
+            <td class="float-right">{{imp.import}}</td>
+          </tr>
+          <tr>
+            <th>total</th>
+            <th class="float-right">{{sumImports('Documentación')}}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive-sm">
+        <table class="table table-sm table-borderless">
+          <thead>
+            <tr>
+              <th>Gastos Por Reparaciones</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tr *ngFor="let imp of getImports('Reparaciones')">
+            <td>{{imp.description}}</td>
+            <td class="float-right">{{imp.import}}</td>
+          </tr>
+          <tr>
+            <th>total</th>
+            <th class="float-right">{{sumImports('Reparaciones')}}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive-sm">
+        <table class="table table-sm table-borderless">
+          <thead>
+            <tr>
+              <th>Gastos Por Traslado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tr *ngFor="let imp of getImports('Traslados')">
+            <td>{{imp.description}}</td>
+            <td class="float-right">{{imp.import}}</td>
+          </tr>
+          <tr>
+            <th>total</th>
+            <th class="float-right">{{sumImports('Traslados')}}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive-sm">
+        <table class="table table-sm table-borderless">
+          <thead>
+            <tr>
+              <td>Valor de Venta</td>
+              <td class="float-right">{{vehicle.publicValue}}</td>
+            </tr>
+          </thead>
+          <tr>
+            <td>Comision</td>
+            <td class="float-right">{{vehicle.publicValue}}</td>
+          </tr>
+          <tr>
+            <td>Decuento por Documentación</td>
+            <td class="float-right">-{{sumImports('Documentación') | numeral:'$0,0.00'}}</td>
+          </tr>
+          <tr>
+            <td>Decuento por Reparaciones</td>
+            <td class="float-right">-{{sumImports('Reparaciones') | numeral:'$0,0.00'}}</td>
+          </tr>
+          <tr>
+            <td>Decuento por Traslados</td>
+            <td class="float-right">-{{sumImports('Traslados') | numeral:'$0,0.00'}}</td>
+          </tr>
+          <tr>
+            <th>Sub Total</th>
+            <th class="float-right">{{vehicle.publicValue}}</th>
+          </tr>
+          <tr>
+            <td>Alta de Patentes (a cargo del comprador)</td>
+            <td class="float-right">{{vehicle.publicValue}}</td>
+          </tr>
+          <tr>
+            <th>TOTTAL A PAGAR</th>
+            <th class="float-right">{{vehicle.publicValue}}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

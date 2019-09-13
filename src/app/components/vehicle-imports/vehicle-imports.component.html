@@ -6,6 +6,11 @@
       <i class="far fa-folder-open"></i>
     </button>
     <button mat-mini-fab color="primary"
+            data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#reportImport"
+            matTooltip="Reporte Importes">
+      <i class="far fa-folder-open"></i>
+    </button>
+    <button mat-mini-fab color="primary"
             data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleImport"
             (click)="blankImport()"
             matTooltip="Agregar importe">
@@ -145,7 +150,7 @@
   </div>
 </div>
 
-<!-- Create Vehicle import Modal-->
+<!-- Create reports-->
 <div *ngIf="vehicle" class="modal white-modal fade" id="reports" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -156,6 +161,24 @@
       </div>
       <div class="modal-body">
         <app-sales-order-report [vehicle]="vehicle"></app-sales-order-report>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="vehicle" class="modal white-modal fade" id="reportImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-imports-report [vehicle]="vehicle" [vehicleImports]="vehicleImports"></app-imports-report>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
