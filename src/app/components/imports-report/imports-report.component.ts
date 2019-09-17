@@ -26,7 +26,8 @@ export class ImportsReportComponent implements OnInit {
   }
 
   sumImports(importType){
-    return this.vehicleImports.filter(vi=>vi.importType===importType).map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
+    let total = this.vehicleImports.filter(vi=>vi.importType===importType).map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value()),new NumeralPipe(0));
+    return total.value();
   }
 
 }

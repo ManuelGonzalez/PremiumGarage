@@ -2,6 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {VehicleService} from '../../services/vehicle.service';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {UserService} from '../../services/user.service';
+import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-vehicle-additional-info',
@@ -84,8 +85,24 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     });
   }
 
-  setSeller(val){
-    this.isSeller=val;
+  setSeller(isSeller){
+    this.isSeller=isSeller;
+  }
+
+  clearSellerOrBuyer(){
+    this.saveSellerOrBuyer(null);
+  }
+
+  openDialogClearSellerOrBuyer(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: `Deseas eliminar el ${this.isSeller?"Vendedor":"Comprador"}?`
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.clearSellerOrBuyer()
+      }
+    });
   }
 
   ISOStringToLocalDateString(iso){
@@ -95,10 +112,10 @@ export class VehicleAdditionalInfoComponent implements OnInit {
 
   saveSellerOrBuyer(user) {
     if(this.isSeller){
-      this.vehicle.sellerId=user.id;
+      this.vehicle.sellerId=user!==null?user.id:null;
       this.seller=user;
     }else{
-      this.vehicle.buyerId=user.id;
+      this.vehicle.buyerId=user!==null?user.id:null;
       this.buyer=user;
     }
     Promise.all([

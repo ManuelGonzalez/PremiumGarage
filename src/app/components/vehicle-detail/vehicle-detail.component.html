@@ -27,7 +27,7 @@
     <li class="nav-item">
       <a class="nav-link" id="life-cycle" data-toggle="tab" href="#life-cycle-tab" role="tab" aria-controls="profile" aria-selected="false">Ciclo de Vida</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="vehicle.stateIn">
       <a class="nav-link" id="imports" data-toggle="tab" href="#imports-tab" role="tab" aria-controls="profile" aria-selected="false">{{vehicle.stateIn==="Consignación"?"Detalle Consignacion":"Control de Gastos"}}</a>
     </li>
   </ul>
@@ -489,4 +489,6 @@
       </div>
     </div>
   </div>
+</div>
+
 </div>

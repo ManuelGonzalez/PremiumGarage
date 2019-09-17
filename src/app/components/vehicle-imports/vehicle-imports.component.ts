@@ -37,7 +37,7 @@ export class VehicleImportsComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     });
     this.date=new Date();
-    this.displayedColumns = this.vehicle.stateIn ==="Consignación" ?
+    this.displayedColumns = this.vehicle.stateIn && this.vehicle.stateIn ==="Consignación" ?
       ['date', 'description', 'importType', 'import', 'percentage', 'earnings', 'actions']:
       ['date', 'description', 'importType', 'import', 'actions'];
   }
