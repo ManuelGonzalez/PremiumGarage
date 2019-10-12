@@ -4,7 +4,7 @@
   "name": "Premium Garage",
   "scope": "/",
   "display": "fullscreen",
-  "start_url": "index.html?launcher=true",
+  "start_url": "index.html",
   "short_name": "GP Devoto",
   "theme_color": "transparent",
   "description": "Sistema de gestion para concesionarios",

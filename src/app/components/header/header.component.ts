@@ -8,6 +8,8 @@ import * as $ from 'jquery';
 })
 export class HeaderComponent implements OnInit {
 
+  promptEvent = null;
+
   constructor() { }
 
   ngOnInit() {
@@ -15,6 +17,17 @@ export class HeaderComponent implements OnInit {
       e.preventDefault();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
+    });
+    this.prepareInstall()
+  }
+
+  prepareInstall(){
+    window.addEventListener("beforeinstallprompt", e=>{
+      this.promptEvent = e;
+      let button = document.getElementById("installButton");
+      button.addEventListener("click", ()=>{
+        this.promptEvent.prompt();
+      });
     });
   }
 

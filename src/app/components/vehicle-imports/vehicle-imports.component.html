@@ -19,7 +19,9 @@
     <br>
   </div>
   <div class="table table-responsive">
-    <loading-spinner *ngIf="vehicleImports.length==0"></loading-spinner>
+    <div *ngIf="vehicleImports.length==0">
+      Actualmente no tienes importes registrados
+    </div>
     <div *ngIf="vehicleImports.length>0">
 
       <table mat-table [dataSource]="dataSource" matSort class="table thead-dark table-hover">

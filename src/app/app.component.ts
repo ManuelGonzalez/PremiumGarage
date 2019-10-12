@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {SwUpdate} from '@angular/service-worker';
-import {MessagingService} from './services/messaging.service';
 import {AuthService} from './services/auth.service';
 import {CookieService} from 'ngx-cookie-service';
 

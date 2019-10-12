@@ -9,6 +9,7 @@ import {Upload} from '../../models/upload';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import { NumeralPipe } from 'ngx-numeral';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -23,6 +24,7 @@ export class VehicleDetailComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   id: any = null;
+  statesForm: FormGroup;
   vehicle: any;
   vehicleState: any = {};
   vehicleStates: any[] = [];
@@ -44,8 +46,12 @@ export class VehicleDetailComponent implements OnInit {
   displayedColumns = ['date','description', 'importType', 'import', 'actions'];
   dataSource;
   importTypes: string[] = ['Operativos', 'Administrativos', 'Legales'];
+  kms;
+  isNewState: boolean = false;
+  tabMenu: String;
 
   constructor(private route:ActivatedRoute,
+              public fb: FormBuilder,
               private vehicleService: VehicleService,
               private providerService: ProviderService,
               private snackbar: MatSnackBar,
@@ -77,19 +83,39 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
-      this.vehicle=vehResp;
+    this.statesForm = this.fb.group({
+      state: ['', [Validators.required]],
+      provider: ['', [Validators.required]],
+      kms: ['', [this.validateKMS]],
+      description: ['', [Validators.required]],
     });
-    this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
-      this.vehicleStates=vehStatesResp;
-    });
+    this.getInfoVehicle();
+    this.date=new Date();
+  }
+
+  validateKMS(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value && control.value.toString().length>0) {
+      if (this.vehicle){
+        console.log("paso");
+      }
+      return { 'invalidKMS': true };
+    }
+    return null;
+  }
+
+  getInfoVehicle(){
     this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportResp=>{
       this.vehicleImports=vehImportResp;
     });
     this.providerService.getProviders().valueChanges().subscribe(provResp=>{
       this.providers=provResp;
     });
-    this.date=new Date();
+    this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
+      this.vehicle=vehResp;
+    });
+    this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
+      this.vehicleStates=vehStatesResp;
+    });
   }
 
   formatDate(date){
@@ -99,8 +125,10 @@ export class VehicleDetailComponent implements OnInit {
   createStateVehicle() {
     if(!this.vehicleState.id){
       this.vehicleState.id=Date.now();
+      this.isNewState=true;
     }else {
       this.vehicleState.updateDate=Date.now();
+      this.isNewState=false;
     }
     Promise.all([
       this.uploadMulti(this.vehicleState.id),
@@ -114,8 +142,26 @@ export class VehicleDetailComponent implements OnInit {
         duration: 5000
       });
     }).finally(()=>{
-      this.blankVehicleContent();
+      this.updateVehicleLocation(this.isNewState?this.vehicleState:this.getLastState());
     });
+  }
+
+  updateVehicleLocation(state) {
+    setTimeout(()=>{
+      if (state.provider) {
+        let provider = this.providers.find(p=>p.id.toString()===state.provider);
+        this.vehicle.location = provider.address.name;
+      } else {
+        this.vehicle.location = "GP Devoto";
+      }
+      this.vehicleService.createOrUpdateVehicle(this.vehicle).then(()=>{
+        this.blankVehicleContent();
+      })
+    },3000)
+  }
+
+  getLastState(){
+    return this.vehicleStates[this.vehicleStates.length-1];
   }
 
   createImportsVehicle(stateId) {
@@ -217,10 +263,10 @@ export class VehicleDetailComponent implements OnInit {
         icon = "fa-hand-holding-usd";
         break;
       case "GP Devoto":
-        icon="fa-warehouse";
+        icon="fa-home";
         break;
       case "Bodega":
-        icon="fa-warehouse-alt";
+        icon="fa-warehouse";
         break;
     }
     return icon;
@@ -294,5 +340,9 @@ export class VehicleDetailComponent implements OnInit {
 
   setVehicleImport(vehicleImport) {
     this.vehicleImport=vehicleImport;
+  }
+
+  donwloadPdf() {
+    window.print();
   }
 }

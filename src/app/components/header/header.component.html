@@ -51,6 +51,7 @@
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
         <a class="dropdown-item" routerLink="/user-login">Clientes</a>
         <a class="dropdown-item" href="#" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#logoutModal">Cerrar Sesion</a>
+        <button id="installButton" *ngIf="promptEvent" class="dropdown-item">Instalar</button>
       </div>
     </li>
   </ul>

@@ -6,7 +6,7 @@
         <h3>Gestoria:</h3>
       </div>
       <div class="col">
-        <div class="text-right">
+        <div class="text-right" *ngIf="!isReport">
           <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
             <i class="fas fa-bars"></i>
           </button>
@@ -15,6 +15,11 @@
                     data-target="#createVehicleAdditionadInfoModal">
               <i class="fas fa-pen"></i>
               <span>Editar</span>
+            </button>
+            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                    data-target="#additionalInfoReport">
+              <i class="fas fa-print"></i>
+              <span>Imprimir</span>
             </button>
             <!--button mat-menu-item (click)="setVehicleImport(element);openDialogDeleteVehicleImport()">
               <i class="fas fa-print"></i>
@@ -25,213 +30,216 @@
         </div>
       </div>
     </div>
-    <hr>
     <div class="row">
-      <div class="table-responsive">
-        <table class="table table-sm table-hover">
-          <tr>
-            <th>Dominio</th>
-            <td>{{vehicle.id}}</td>
-            <th>Marca</th>
-            <td>{{vehicle.brand}}</td>
-            <th>Modelo</th>
-            <td>{{vehicle.model}}</td>
-            <th>Año</th>
-            <td>{{vehicle.year}}</td>
-          </tr>
-          <tr>
-            <th>Radicacion</th>
-            <td>{{vehicle.radication}}</td>
-          </tr>
-          <tr>
-            <th>Titular</th>
-            <td>{{vehicleAddInfo.titular}}</td>
-          </tr>
-        </table>
-      </div>
-      <hr>
-      <div *ngIf="vehicleAddInfo" class="table-responsive">
-        <table class="table table-sm table-hover">
-          <tr>
-            <th>Titulo</th>
-            <td>{{vehicleAddInfo.title?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.title">N</th>
-            <td *ngIf="vehicleAddInfo.title">{{vehicleAddInfo.titleNum}}</td>
-          </tr>
-          <tr>
-            <th>Cedula de Identificacion</th>
-            <td>{{vehicleAddInfo.identification?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.identification">N</th>
-            <td *ngIf="vehicleAddInfo.identification">{{vehicleAddInfo.identificationNum}}</td>
-          </tr>
-          <tr>
-            <th>Cedula Autorizadas</th>
-            <td>{{vehicleAddInfo.identificationBlue?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.identificationBlue">N</th>
-            <td *ngIf="vehicleAddInfo.identificationBlue">{{vehicleAddInfo.identificationBlueNum}}</td>
-          </tr>
-          <tr>
-            <th>F08</th>
-            <td>{{vehicleAddInfo.F08?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.F08">N</th>
-            <td *ngIf="vehicleAddInfo.F08">{{vehicleAddInfo.F08Num}}</td>
-          </tr>
-          <tr>
-            <th>Informe de Dominio</th>
-            <td>{{vehicleAddInfo.domainReport?"Si":"No"}}</td>
-          </tr>
-          <tr>
-            <th>Informe 13</th>
-            <td>{{vehicleAddInfo.report13?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.report13">Deudas</th>
-            <td *ngIf="vehicleAddInfo.report13">{{vehicleAddInfo.report13Debts}}</td>
-            <th *ngIf="vehicleAddInfo.report13">Fecha</th>
-            <td *ngIf="vehicleAddInfo.report13">{{ISOStringToLocalDateString(vehicleAddInfo.report13Date)}}</td>
-          </tr>
-          <tr>
-            <th>Informe de patentes</th>
-            <td>{{vehicleAddInfo.patentReport?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.patentReport">Deudas</th>
-            <td *ngIf="vehicleAddInfo.patentReport">{{vehicleAddInfo.patentReportDebts}}</td>
-            <th *ngIf="vehicleAddInfo.patentReport">Fecha</th>
-            <td *ngIf="vehicleAddInfo.patentReport">{{ISOStringToLocalDateString(vehicleAddInfo.patentReportDate)}}</td>
-          </tr>
-          <tr>
-            <th>Vefificacion Policial</th>
-            <td>{{vehicleAddInfo.policeCheck?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.policeCheck">Fecha</th>
-            <td *ngIf="vehicleAddInfo.policeCheck">{{ISOStringToLocalDateString(vehicleAddInfo.policeCheckDate)}}</td>
-          </tr>
-          <tr>
-            <th>Grabado de Autopartes</th>
-            <td>{{vehicleAddInfo.engravingAutoParts?"Si":"No"}}</td>
-          </tr>
-          <tr>
-            <th>VTV</th>
-            <td>{{vehicleAddInfo.vtv?"Si":"No"}}</td>
-            <th *ngIf="vehicleAddInfo.vtv">Vencimiento</th>
-            <td *ngIf="vehicleAddInfo.vtv">{{ISOStringToLocalDateString(vehicleAddInfo.VTVDate)}}</td>
-          </tr>
-          <tr>
-            <th>Observaciones</th>
-            <td>{{vehicleAddInfo.coment}}</td>
-          </tr>
-        </table>
-      </div>
-      <hr>
-      <div class="table-responsive">
-        <table class="table table-sm table-hover">
-          <tr>
-            <th>Manual</th>
-            <td>{{vehicle.manual?"Si":"No"}}</td>
-            <th>Descripcion</th>
-            <td>{{vehicle.manualDesc}}</td>
-          </tr>
-          <tr>
-            <th>Duplicado de llaves</th>
-            <td>{{vehicle.additionalKeys?"Si":"No"}}</td>
-            <th>Descripcion</th>
-            <td>{{vehicle.additionalKeysDesc}}</td>
-          </tr>
-        </table>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-sm table-hover">
-          <tr>
-            <td>
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="{{vehicle.sellerId?'col-sm-11':'col'}}">
-                      <div *ngIf="vehicle.sellerId">
-                        <div class="table-responsive">
+      <div class="col-sm-11">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover">
+            <tr>
+              <th>Dominio</th>
+              <td>{{vehicle.id}}</td>
+              <th>Marca</th>
+              <td>{{vehicle.brand}}</td>
+              <th>Modelo</th>
+              <td>{{vehicle.model}}</td>
+              <th>Año</th>
+              <td>{{vehicle.year}}</td>
+            </tr>
+            <tr>
+              <th>Radicacion</th>
+              <td>{{vehicle.radication}}</td>
+            </tr>
+            <tr>
+              <th>Titular</th>
+              <td>{{vehicleAddInfo.titular}}</td>
+            </tr>
+          </table>
+        </div>
+        <hr>
+        <div *ngIf="vehicleAddInfo" class="table-responsive">
+          <table class="table table-sm table-hover">
+            <tr>
+              <th>Titulo</th>
+              <td>{{vehicleAddInfo.title?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.title">N</th>
+              <td *ngIf="vehicleAddInfo.title">{{vehicleAddInfo.titleNum}}</td>
+            </tr>
+            <tr>
+              <th>Cedula de Identificacion</th>
+              <td>{{vehicleAddInfo.identification?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.identification">N</th>
+              <td *ngIf="vehicleAddInfo.identification">{{vehicleAddInfo.identificationNum}}</td>
+            </tr>
+            <tr>
+              <th>Cedula Autorizadas</th>
+              <td>{{vehicleAddInfo.identificationBlue?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.identificationBlue">N</th>
+              <td *ngIf="vehicleAddInfo.identificationBlue">{{vehicleAddInfo.identificationBlueNum}}</td>
+            </tr>
+            <tr>
+              <th>F08</th>
+              <td>{{vehicleAddInfo.F08?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.F08">N</th>
+              <td *ngIf="vehicleAddInfo.F08">{{vehicleAddInfo.F08Num}}</td>
+            </tr>
+            <tr>
+              <th>Informe de Dominio</th>
+              <td>{{vehicleAddInfo.domainReport?"Si":"No"}}</td>
+            </tr>
+            <tr>
+              <th>Informe 13</th>
+              <td>{{vehicleAddInfo.report13?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.report13">Deudas</th>
+              <td *ngIf="vehicleAddInfo.report13">{{vehicleAddInfo.report13Debts}}</td>
+              <th *ngIf="vehicleAddInfo.report13">Fecha</th>
+              <td *ngIf="vehicleAddInfo.report13">{{ISOStringToLocalDateString(vehicleAddInfo.report13Date)}}</td>
+            </tr>
+            <tr>
+              <th>Informe de patentes</th>
+              <td>{{vehicleAddInfo.patentReport?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.patentReport">Deudas</th>
+              <td *ngIf="vehicleAddInfo.patentReport">{{vehicleAddInfo.patentReportDebts}}</td>
+              <th *ngIf="vehicleAddInfo.patentReport">Fecha</th>
+              <td *ngIf="vehicleAddInfo.patentReport">{{ISOStringToLocalDateString(vehicleAddInfo.patentReportDate)}}</td>
+            </tr>
+            <tr>
+              <th>Vefificacion Policial</th>
+              <td>{{vehicleAddInfo.policeCheck?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.policeCheck">Fecha</th>
+              <td *ngIf="vehicleAddInfo.policeCheck">{{ISOStringToLocalDateString(vehicleAddInfo.policeCheckDate)}}</td>
+            </tr>
+            <tr>
+              <th>Grabado de Autopartes</th>
+              <td>{{vehicleAddInfo.engravingAutoParts?"Si":"No"}}</td>
+            </tr>
+            <tr>
+              <th>VTV</th>
+              <td>{{vehicleAddInfo.vtv?"Si":"No"}}</td>
+              <th *ngIf="vehicleAddInfo.vtv">Vencimiento</th>
+              <td *ngIf="vehicleAddInfo.vtv">{{ISOStringToLocalDateString(vehicleAddInfo.VTVDate)}}</td>
+            </tr>
+            <tr>
+              <th>Observaciones</th>
+              <td>{{vehicleAddInfo.coment}}</td>
+            </tr>
+          </table>
+        </div>
+        <hr>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover">
+            <tr>
+              <th>Manual</th>
+              <td>{{vehicle.manual?"Si":"No"}}</td>
+              <th>Descripcion</th>
+              <td>{{vehicle.manualDesc}}</td>
+            </tr>
+            <tr>
+              <th>Duplicado de llaves</th>
+              <td>{{vehicle.additionalKeys?"Si":"No"}}</td>
+              <th>Descripcion</th>
+              <td>{{vehicle.additionalKeysDesc}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover">
+            <tr>
+              <td>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Vendedor:</h5>
+                    <div class="row">
+                      <div class="{{vehicle.sellerId?'col-sm-11':'col'}}">
+                        <div *ngIf="vehicle.sellerId">
+                          <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                              <tr>
+                                <th>Dni</th>
+                                <td>{{seller.id}}</td>
+                              </tr>
+                              <tr>
+                                <th>Nombre y Apellido</th>
+                                <td>{{seller.name}}</td>
+                              </tr>
+                              <tr>
+                                <th>Telefono</th>
+                                <td>{{seller.movilPhone}}</td>
+                              </tr>
+                              <tr>
+                                <th>Fecha de Ingreso</th>
+                                <td></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="{{vehicle.sellerId?'col-sm-1':'col'}}" *ngIf="!isReport">
+                        <button mat-mini-fab color="primary"
+                                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal"
+                                (click)="setSeller(true)"
+                                matTooltip="{{vehicle.sellerId?'Modificar Vendedor':'Agregar Vendedor'}}">
+                          <i class="fas {{vehicle.sellerId?'fa-user':'fa-plus'}}"></i>
+                        </button>
+                        <br>
+                        <button *ngIf="vehicle.sellerId" mat-mini-fab color="primary"
+                                (click)="setSeller(true);openDialogClearSellerOrBuyer();"
+                                matTooltip="Eliminar Vendedor">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Compador:</h5>
+                    <div class="row">
+                      <div class="{{vehicle.buyerId?'col-sm-11':'col'}}">
+                        <div *ngIf="vehicle.buyerId">
                           <table class="table table-sm table-hover">
                             <tr>
                               <th>Dni</th>
-                              <td>{{seller.id}}</td>
+                              <td>{{buyer.id}}</td>
                             </tr>
                             <tr>
                               <th>Nombre y Apellido</th>
-                              <td>{{seller.name}}</td>
+                              <td>{{buyer.name}}</td>
                             </tr>
                             <tr>
                               <th>Telefono</th>
-                              <td>{{seller.movilPhone}}</td>
+                              <td>{{buyer.movilPhone}}</td>
                             </tr>
                             <tr>
-                              <th>Fecha de Ingreso</th>
+                              <th>Fecha de Egreso</th>
                               <td></td>
                             </tr>
                           </table>
                         </div>
                       </div>
-                    </div>
-                    <div class="{{vehicle.sellerId?'col-sm-1':'col'}}">
-                      <button mat-mini-fab color="primary"
-                              data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal"
-                              (click)="setSeller(true)"
-                              matTooltip="{{vehicle.sellerId?'Modificar Vendedor':'Agregar Vendedor'}}">
-                        <i class="fas {{vehicle.sellerId?'fa-user':'fa-plus'}}"></i>
-                      </button>
-                      <br>
-                      <button *ngIf="vehicle.sellerId" mat-mini-fab color="primary"
-                              (click)="setSeller(true);openDialogClearSellerOrBuyer();"
-                              matTooltip="Eliminar Vendedor">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="{{vehicle.buyerId?'col-sm-11':'col'}}">
-                      <div *ngIf="vehicle.buyerId">
-                        <table class="table table-sm table-hover">
-                          <tr>
-                            <th>Dni</th>
-                            <td>{{buyer.id}}</td>
-                          </tr>
-                          <tr>
-                            <th>Nombre y Apellido</th>
-                            <td>{{buyer.name}}</td>
-                          </tr>
-                          <tr>
-                            <th>Telefono</th>
-                            <td>{{buyer.movilPhone}}</td>
-                          </tr>
-                          <tr>
-                            <th>Fecha de Egreso</th>
-                            <td></td>
-                          </tr>
-                        </table>
+                      <div class="{{vehicle.buyerId?'col-sm-1':'col'}}" *ngIf="!isReport">
+                        <button mat-mini-fab color="primary"
+                                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal"
+                                (click)="setSeller(false)"
+                                matTooltip="{{vehicle.buyerId?'Modificar Comprador':'Agregar Comprador'}}">
+                          <i class="fas {{vehicle.buyerId?'fa-user':'fa-plus'}}"></i>
+                        </button>
+                        <br>
+                        <button *ngIf="vehicle.buyerId" mat-mini-fab color="primary"
+                                (click)="setSeller(false);openDialogClearSellerOrBuyer();"
+                                matTooltip="Eliminar Comprador">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </div>
                     </div>
-                    <div class="{{vehicle.buyerId?'col-sm-1':'col'}}">
-                      <button mat-mini-fab color="primary"
-                              data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#userModal"
-                              (click)="setSeller(false)"
-                              matTooltip="{{vehicle.buyerId?'Modificar Comprador':'Agregar Comprador'}}">
-                        <i class="fas {{vehicle.buyerId?'fa-user':'fa-plus'}}"></i>
-                      </button>
-                      <br>
-                      <button *ngIf="vehicle.buyerId" mat-mini-fab color="primary"
-                              (click)="setSeller(false);openDialogClearSellerOrBuyer();"
-                              matTooltip="Eliminar Comprador">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </table>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </div>

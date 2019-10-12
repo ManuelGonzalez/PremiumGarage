@@ -12,6 +12,7 @@ import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-d
 export class VehicleAdditionalInfoComponent implements OnInit {
 
   @Input() vehicle: any;
+  @Input() isReport: boolean;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
