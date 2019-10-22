@@ -61,6 +61,9 @@ import { VehicleAdditionalInfoComponent } from './components/vehicle-additional-
 import { VehicleImportsComponent } from './components/vehicle-imports/vehicle-imports.component';
 import { SalesOrderReportComponent } from './components/sales-order-report/sales-order-report.component';
 import { ImportsReportComponent } from './components/imports-report/imports-report.component';
+import { ExpertiseComponent } from './components/expertise/expertise.component';
+import {ExpertiseService} from './services/expertise.service';
+import {ProviderService} from './services/provider.service';
 
 export const environment = {
   production: false,
@@ -160,6 +163,7 @@ const appRoutes:Routes = [
     VehicleImportsComponent,
     SalesOrderReportComponent,
     ImportsReportComponent,
+    ExpertiseComponent,
   ],
   imports: [
     BrowserModule,
@@ -210,6 +214,8 @@ const appRoutes:Routes = [
     MessagingService,
     AuthGuard,
     CookieService,
+    ProviderService,
+    ExpertiseService,
     { provide: DateAdapter, useClass: DateFormat },
   ],
   bootstrap: [AppComponent]

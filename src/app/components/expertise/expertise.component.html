@@ -1,0 +1,112 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h3>Peritaje:</h3>
+    </div>
+    <div class="col">
+      <div class="text-right margin-btn">
+        <button *ngIf="!vehicle.expertise" mat-mini-fab color="primary"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#expertiseModal"
+                matTooltip="Guardar">
+          <i class="fas fa-plus"></i>
+        </button>
+        <div *ngIf="vehicle.expertise" class="text-right">
+          <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                    data-target="#expertiseModal">
+              <i class="fas fa-pen"></i>
+              <span>Editar</span>
+            </button>
+            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                    data-target="#additionalInfoReport">
+              <i class="fas fa-print"></i>
+              <span>Imprimir</span>
+            </button>
+          </mat-menu>
+          <br>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="accordion" id="accordionExample">
+        <div class="card" *ngFor="let expertise of expertises ; let i = index">
+          <div class="card-header" id="{{i}}">
+            <h2 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#option'+i" aria-expanded="false" [attr.aria-controls]="'option'+i">
+                {{expertisesType[i]}}
+              </button>
+            </h2>
+          </div>
+
+          <div [id]="'option'+i" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm">
+                  <tr>
+                    <th>Seccion</th>
+                    <th>Compra Repuestos</th>
+                    <th>Costos Repuestos</th>
+                    <th>Reparaciones a Realizar</th>
+                    <th>Costos Reparaciones</th>
+                    <th>Costos Estimados</th>
+                  </tr>
+                  <tr *ngFor="let exp of expertise">
+                    <td>
+                      <mat-checkbox name="exp" [(ngModel)]="vehicleExpertise[exp]">{{exp}}</mat-checkbox>
+                    </td>
+                    <td>
+                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'CR'}}" [(ngModel)]="vehicleExpertise[exp+'CR']">
+                    </td>
+                    <td>
+                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'CoR'}}" [(ngModel)]="vehicleExpertise[exp+'CoR']">
+                    </td>
+                    <td>
+                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'R'}}" [(ngModel)]="vehicleExpertise[exp+'R']">
+                    </td>
+                    <td>
+                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'C'}}" [(ngModel)]="vehicleExpertise[exp+'C']">
+                    </td>
+                    <td>{{utilService.sum([vehicleExpertise[exp+'CR'],vehicleExpertise[exp+'CoR'],vehicleExpertise[exp+'R'],vehicleExpertise[exp+'C']])}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create expertise-->
+<div *ngIf="vehicle" class="modal fade" id="expertiseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+          <mat-button-toggle (click)="setType(0)" value="bold">A Ingresar</mat-button-toggle>
+          <mat-button-toggle (click)="setType(1)" value="italic">Ingresado</mat-button-toggle>
+          <mat-button-toggle (click)="setType(2)" value="underline">Standby</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+      <button
+        class="btn btn-primary" type="button"
+        [disabled]="!vehicleExpertise.type"
+        (click)="createExpertise()">
+        Subir Archivos
+      </button>
+    </div>
+  </div>
+</div>

@@ -30,6 +30,9 @@
     <li class="nav-item" *ngIf="vehicle.stateIn">
       <a class="nav-link" id="imports" data-toggle="tab" href="#imports-tab" role="tab" aria-controls="profile" aria-selected="false">{{vehicle.stateIn==="Consignación"?"Detalle Consignacion":"Control de Gastos"}}</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" id="expertise" data-toggle="tab" href="#expertise-tab" role="tab" aria-controls="profile" aria-selected="false">Peritaje</a>
+    </li>
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
@@ -231,6 +234,9 @@
     <div *ngIf="vehicle" class="tab-pane fade" id="imports-tab" role="tabpanel" aria-labelledby="imports-tab">
       <app-vehicle-imports [vehicle]="vehicle"></app-vehicle-imports>
     </div>
+    <div *ngIf="vehicle" class="tab-pane fade" id="expertise-tab" role="tabpanel" aria-labelledby="imports-tab">
+      <app-expertise [vehicle]="vehicle"></app-expertise>
+    </div>
   </div>
   <div class="jumbotron" *ngIf="!vehicle">
     <h1 class="display-4">Ups!</h1>
@@ -273,10 +279,20 @@
               </mat-form-field>
             </div>
             <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Kms" required formControlName="kms" name="kms" [(ngModel)]="kms">
-                <mat-hint class="text-danger" *ngIf="statesForm.get('kms').errors.invalidKMS">Este campo es requerido</mat-hint>
-              </mat-form-field>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Kms" required formControlName="kms" name="kms" [(ngModel)]="kms">
+                    <mat-hint class="text-danger" *ngIf="statesForm.get('kms').errors.invalidKMS">Este campo es requerido</mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Kms" required formControlName="newKms" name="kms" [(ngModel)]="newKms">
+                    <mat-hint class="text-danger" *ngIf="statesForm.get('kms').errors.invalidKMS">Este campo es requerido</mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row">

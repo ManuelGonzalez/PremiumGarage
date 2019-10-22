@@ -9,7 +9,7 @@ import {Upload} from '../../models/upload';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import { NumeralPipe } from 'ngx-numeral';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -86,22 +86,19 @@ export class VehicleDetailComponent implements OnInit {
     this.statesForm = this.fb.group({
       state: ['', [Validators.required]],
       provider: ['', [Validators.required]],
-      kms: ['', [this.validateKMS]],
       description: ['', [Validators.required]],
-    });
+    },{ validator: this.validateKMS});
     this.getInfoVehicle();
     this.date=new Date();
   }
 
-  validateKMS(control: AbstractControl): { [key: string]: boolean } | null {
-    if (control.value && control.value.toString().length>0) {
-      if (this.vehicle){
-        console.log("paso");
-      }
-      return { 'invalidKMS': true };
-    }
-    return null;
-  }
+  validateKMS: ValidatorFn = (fg: FormGroup) => {
+    const kms = fg.get('kms').value;
+    const newKms = fg.get('newKms').value;
+    return kms !== null && newKms !== null && kms < newKms
+      ? null
+      : { range: true };
+  };
 
   getInfoVehicle(){
     this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportResp=>{
@@ -112,6 +109,7 @@ export class VehicleDetailComponent implements OnInit {
     });
     this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
       this.vehicle=vehResp;
+      this.vehicleState.kms=this.vehicle.kmsIn;
     });
     this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
       this.vehicleStates=vehStatesResp;
