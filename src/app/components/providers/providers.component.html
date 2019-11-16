@@ -107,7 +107,7 @@
               <div class="col">
                 <mat-form-field class="example-full-width">
                   <mat-label>Rubro</mat-label>
-                  <input type="text" placeholder="Escriba el nombre del proveedor" matInput [formControl]="providersTypeControl" [matAutocomplete]="auto">
+                  <input type="text" placeholder="Escriba el nombre del proveedor" matInput [(ngModel)]="provider.type" [formControl]="providersTypeControl" [matAutocomplete]="auto">
                   <mat-autocomplete #auto="matAutocomplete">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                       {{option}}

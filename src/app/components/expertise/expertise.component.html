@@ -10,24 +10,16 @@
                 matTooltip="Guardar">
           <i class="fas fa-plus"></i>
         </button>
-        <div *ngIf="vehicle.expertise" class="text-right">
-          <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
-            <i class="fas fa-bars"></i>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
-                    data-target="#expertiseModal">
-              <i class="fas fa-pen"></i>
-              <span>Editar</span>
-            </button>
-            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
-                    data-target="#additionalInfoReport">
-              <i class="fas fa-print"></i>
-              <span>Imprimir</span>
-            </button>
-          </mat-menu>
-          <br>
-        </div>
+        <button *ngIf="vehicle.expertise" mat-mini-fab color="primary"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#additionalInfoReport"
+                matTooltip="Imprimir">
+          <i class="fas fa-print"></i>
+        </button>
+        <button *ngIf="vehicle.expertise" mat-mini-fab color="primary"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#expertiseModal"
+                matTooltip="Editar">
+          <i class="fas fa-pen"></i>
+        </button>
         <br>
       </div>
     </div>
@@ -61,16 +53,16 @@
                       <mat-checkbox name="exp" [(ngModel)]="vehicleExpertise[exp]">{{exp}}</mat-checkbox>
                     </td>
                     <td>
-                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'CR'}}" [(ngModel)]="vehicleExpertise[exp+'CR']">
+                      <input [disabled]="!vehicleExpertise[exp]" type="number" matInput required name="{{exp+'CR'}}" [(ngModel)]="vehicleExpertise[exp+'CR']">
                     </td>
                     <td>
-                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'CoR'}}" [(ngModel)]="vehicleExpertise[exp+'CoR']">
+                      <input [disabled]="!vehicleExpertise[exp]" type="number" matInput required name="{{exp+'CoR'}}" [(ngModel)]="vehicleExpertise[exp+'CoR']">
                     </td>
                     <td>
-                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'R'}}" [(ngModel)]="vehicleExpertise[exp+'R']">
+                      <input [disabled]="!vehicleExpertise[exp]" type="number" matInput required name="{{exp+'R'}}" [(ngModel)]="vehicleExpertise[exp+'R']">
                     </td>
                     <td>
-                      <input [disabled]="vehicleExpertise[exp]" type="number" matInput required name="{{exp+'C'}}" [(ngModel)]="vehicleExpertise[exp+'C']">
+                      <input [disabled]="!vehicleExpertise[exp]" type="number" matInput required name="{{exp+'C'}}" [(ngModel)]="vehicleExpertise[exp+'C']">
                     </td>
                     <td>{{utilService.sum([vehicleExpertise[exp+'CR'],vehicleExpertise[exp+'CoR'],vehicleExpertise[exp+'R'],vehicleExpertise[exp+'C']])}}</td>
                   </tr>
@@ -89,24 +81,32 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        Seleccione el tipo de vehiculo:
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-          <mat-button-toggle (click)="setType(0)" value="bold">A Ingresar</mat-button-toggle>
-          <mat-button-toggle (click)="setType(1)" value="italic">Ingresado</mat-button-toggle>
-          <mat-button-toggle (click)="setType(2)" value="underline">Standby</mat-button-toggle>
-        </mat-button-toggle-group>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="favoriteSeason">
+          <mat-radio-button class="example-radio-button" *ngFor="let type of types" (change)="setType(type)"  [value]="type">
+            {{type}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <div>Selecciono: {{vehicleExpertise.type}}</div>
       </div>
-      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-      <button
-        class="btn btn-primary" type="button"
-        [disabled]="!vehicleExpertise.type"
-        (click)="createExpertise()">
-        Subir Archivos
-      </button>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+        <button
+          class="btn btn-primary" type="button"
+          data-dismiss="modal"
+          [disabled]="!vehicleExpertise.type"
+          (click)="createExpertise()">
+          Guardar
+        </button>
+      </div>
     </div>
   </div>
 </div>

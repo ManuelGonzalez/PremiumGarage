@@ -13,6 +13,7 @@ import {GeoService} from '../../services/geo.service';
 import {GooglePlaceDirective} from 'ngx-google-places-autocomplete';
 import {UtilService} from '../../services/util.service';
 import {Address} from 'ngx-google-places-autocomplete/objects/address';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-vehicle',
@@ -21,6 +22,7 @@ import {Address} from 'ngx-google-places-autocomplete/objects/address';
 })
 export class VehicleComponent implements OnInit {
 
+  type: any = null;
   vehicle: any = {};
   vehicles: any[] = [];
   brands: any[] = [];
@@ -29,35 +31,44 @@ export class VehicleComponent implements OnInit {
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
   selectedBrand: any = {};
-  isUpdate=false;
+  isUpdate = false;
   displayedColumns: string[] = [];
-  currentScreenWidth: string = '';
+  currentScreenWidth = '';
   flexMediaWatcher: Subscription;
   selectedFiles: FileList;
   currentUpload: Upload;
   numberFiles = 0;
-  loadFiles=false;
+  loadFiles = false;
   file: any = {};
-  files: any[]= [];
+  files: any[] = [];
   address: any = {};
-  vehicleStatesIn: string[] = ['Consignación', 'Permuta', 'Unidad Externa', 'Compra por inversión', 'Compra propia'];
-  finding: boolean = false;
+  vehicleStatesIn: string[] = ['Consignación', 'Permuta', 'Unidad Externa', 'Compra por inversión', 'Compra propia', 'Por reparación'];
+  finding = false;
   date: any = {};
 
-  @ViewChild("placesRef") placesRef : GooglePlaceDirective;
+  @ViewChild('placesRef') placesRef: GooglePlaceDirective;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('myInput') myInputVariable: ElementRef;
 
-  constructor(private cardService: CardService,
+  constructor(private route: ActivatedRoute,
+              private cardService: CardService,
               private vehicleService: VehicleService,
               private geoService: GeoService,
               private utilServices: UtilService,
               private snackbar: MatSnackBar,
               private mediaObserver: MediaObserver,
               public dialog: MatDialog) {
-    this.vehicleService.getVehicles().valueChanges().subscribe(fbVeh=>{
-      this.vehicles=fbVeh;
+    this.type = this.route.snapshot.params.type;
+    this.vehicleService.getVehicles().valueChanges().subscribe(fbVeh => {
+      this.vehicles = fbVeh;
+      switch (this.type) {
+        case 'expertise' : {
+          this.vehicles = this.vehicles.filter(v => v.expertise);
+          this.finding = true;
+          break;
+        }
+      }
       this.dataSource = new MatTableDataSource(this.vehicles);
       this.dataSource = new MatTableDataSource(this.vehicles);
       this.dataSource.sort = this.sort;
@@ -66,7 +77,7 @@ export class VehicleComponent implements OnInit {
         (data: any, filters: string) => {
           const matchFilter = [];
           const filterArray = filters.split(' ');
-          const columns = (<any>Object).values(data);
+          const columns = (Object as any).values(data);
           // OR be more specific [data.name, data.race, data.color];
 
           // Main
@@ -74,16 +85,16 @@ export class VehicleComponent implements OnInit {
             const customFilter = [];
             columns.forEach(
               column => {
-                customFilter.push(column.toString().toLowerCase().includes(filter))
+                customFilter.push(column.toString().toLowerCase().includes(filter));
               }
             );
             matchFilter.push(customFilter.some(Boolean)); // OR
           });
           return matchFilter.every(Boolean); // AND
-        }
+        };
     });
-    this.cardService.getBrands().valueChanges().subscribe(fbBrands=>{
-      this.brands=fbBrands;
+    this.cardService.getBrands().valueChanges().subscribe(fbBrands => {
+      this.brands = fbBrands;
     });
     this.flexMediaWatcher = mediaObserver.media$.subscribe((change: MediaChange) => {
       if (change.mqAlias !== this.currentScreenWidth) {
@@ -93,9 +104,9 @@ export class VehicleComponent implements OnInit {
     });
   }
 
-  handleAddressChange(address: Address){
+  handleAddressChange(address: Address) {
     this.address = this.utilServices.handleAddressChange(address);
-    this.vehicle.postalCode=this.address.address_components[6].long_name;
+    this.vehicle.postalCode = this.address.address_components[6].long_name;
   }
 
   ngOnInit() {
@@ -104,109 +115,109 @@ export class VehicleComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value))
       );
-    this.date=new Date();
+    this.date = new Date();
   }
 
   applyFilter(filterValue: string) {
-    if (filterValue!=""){
-      this.finding=true;
-    }else{
-      this.finding=false;
+    if (filterValue !== '') {
+      this.finding = true;
+    } else {
+      this.finding = false;
     }
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   private _filter(value: string): string[] {
-    if (value){
+    if (value) {
       const filterValue = value.toLowerCase();
 
       return this.models.filter(option => option.toLowerCase().includes(filterValue));
     }
   }
 
-  setModels(){
-    if(this.vehicle){
-      this.vehicle.modelo="";
+  setModels() {
+    if (this.vehicle) {
+      this.vehicle.modelo = '';
     }
-    this.selectedBrand=this.brands.find(p=>p.id==this.vehicle.brand);
-    this.models=this.selectedBrand.modelos;
+    this.selectedBrand = this.brands.find(p => p.id == this.vehicle.brand);
+    this.models = this.selectedBrand.modelos;
     console.log(this.models);
   }
 
   setupTable() {
     switch (this.currentScreenWidth) {
       case 'xs':
-        this.displayedColumns = ['cuil','domain', 'brand', 'actions'];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'actions'];
         this.displayedColumns.shift();
         break;
       case 'sm':
-        this.displayedColumns = ['cuil','domain', 'brand', 'model', 'actions'];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'model', 'actions'];
         this.displayedColumns.shift();
         break;
       case 'md':
-        this.displayedColumns = ['cuil','domain', 'brand', 'model' ,'year', 'actions'];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'model' , 'year', 'actions'];
         this.displayedColumns.shift();
         break;
       default:
-        this.displayedColumns = ['cuil','domain', 'brand', 'model' ,'year', 'actions'];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'model' , 'year', 'actions'];
         this.displayedColumns.shift();
     }
-  };
+  }
 
-  blankVehicle(){
-    this.vehicle={};
+  blankVehicle() {
+    this.vehicle = {};
     this.blanckInputfiles();
   }
 
-  searchVehicle(id){
-    this.vehicleService.getVehicle(id).valueChanges().subscribe(fbVeh=>{
-      if (fbVeh!=null){
-        this.isUpdate=true;
-        this.vehicle=fbVeh;
+  searchVehicle(id) {
+    this.vehicleService.getVehicle(id).valueChanges().subscribe(fbVeh => {
+      if (fbVeh != null) {
+        this.isUpdate = true;
+        this.vehicle = fbVeh;
       }
-    })
-  }
-
-  setVehicle(vehicle){
-    this.isUpdate=true;
-    this.vehicle=vehicle;
-    this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files=>{
-      this.files=files
     });
   }
 
-  createVehicle(){
-    if (this.isUpdate){
-      this.vehicle.lastUpdate=Date.now();
-    }else{
-      this.vehicle.creationDate=Date.now();
+  setVehicle(vehicle) {
+    this.isUpdate = true;
+    this.vehicle = vehicle;
+    this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files => {
+      this.files = files;
+    });
+  }
+
+  createVehicle() {
+    if (this.isUpdate) {
+      this.vehicle.lastUpdate = Date.now();
+    } else {
+      this.vehicle.creationDate = Date.now();
     }
-    this.vehicle.dateAdmission=this.date.toISOString();
-    this.vehicle.addressRadicaction=this.address;
+    this.vehicle.dateAdmission = this.date.toISOString();
+    this.vehicle.addressRadicaction = this.address;
     Promise.all([
       this.uploadMulti(this.vehicle.id),
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
-    ]).then(()=>{
-      this.snackbar.open('El vehiculo: '+ this.vehicle.id + ' a sido guardado con exito', 'Registro Guerdado', {
+    ]).then(() => {
+      this.snackbar.open('El vehiculo: ' + this.vehicle.id + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
       this.blankVehicle();
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
-    }).finally(()=>{
+    }).finally(() => {
       this.blanckInputfiles();
     });
   }
 
-  deleteVehicle(){
-    this.vehicleService.deleteVehicle(this.vehicle).then(()=>{
-      this.snackbar.open('El vehiculo: '+ this.vehicle.id + ' a sido eliminado', 'Delete', {
+  deleteVehicle() {
+    this.vehicleService.deleteVehicle(this.vehicle).then(() => {
+      this.snackbar.open('El vehiculo: ' + this.vehicle.id + ' a sido eliminado', 'Delete', {
         duration: 5000
       });
       this.blankVehicle();
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
@@ -219,50 +230,50 @@ export class VehicleComponent implements OnInit {
   }
 
   uploadMulti(id) {
-    if(this.selectedFiles){
-      this.loadFiles=true;
-      let files = this.selectedFiles;
-      let filesIndex = _.range(files.length);
+    if (this.selectedFiles) {
+      this.loadFiles = true;
+      const files = this.selectedFiles;
+      const filesIndex = _.range(files.length);
       _.each(filesIndex, (idx) => {
         this.currentUpload = new Upload(files[idx]);
-        this.vehicleService.pushVehicleFiles(this.currentUpload,id)}
-      )
+        this.vehicleService.pushVehicleFiles(this.currentUpload, id);
+      });
     }
   }
 
-  deleteFile(){
-    this.vehicleService.deleteVehicleFile(this.vehicle.id, this.file).then(resp=>{
+  deleteFile() {
+    this.vehicleService.deleteVehicleFile(this.vehicle.id, this.file).then(resp => {
       this.snackbar.open('El archivo: a sido eliminado', 'Delete', {
         duration: 5000
       });
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
     });
   }
 
-  setFile(file){
-    this.file=file;
+  setFile(file) {
+    this.file = file;
   }
 
-  blanckInputfiles(){
-    this.myInputVariable.nativeElement.value = "";
+  blanckInputfiles() {
+    this.myInputVariable.nativeElement.value = '';
     this.numberFiles = 0;
-    let that = this;
-    setTimeout(function(this){
+    const that = this;
+    setTimeout(function(this) {
       that.loadFiles = false;
-    },5000);
+    }, 5000);
   }
 
   openDialogDeleteFile(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: "Deseas eliminar el archivo?"
+      data: 'Deseas eliminar el archivo?'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.deleteFile()
+      if (result) {
+        this.deleteFile();
       }
     });
   }
@@ -273,7 +284,7 @@ export class VehicleComponent implements OnInit {
       data: `Deseas eliminar el vehiculo: ${this.vehicle.id}?`
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.deleteVehicle();
       }
     });

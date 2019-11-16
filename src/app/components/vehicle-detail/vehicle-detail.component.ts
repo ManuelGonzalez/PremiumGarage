@@ -18,7 +18,7 @@ import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '
 })
 export class VehicleDetailComponent implements OnInit {
 
-  @ViewChild("placesRef") placesRef : GooglePlaceDirective;
+  @ViewChild('placesRef') placesRef: GooglePlaceDirective;
   @ViewChild('myInput') myInputVariable: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -39,24 +39,24 @@ export class VehicleDetailComponent implements OnInit {
   selectedFiles: FileList;
   currentUpload: Upload;
   numberFiles = 0;
-  loadFiles=false;
+  loadFiles = false;
   file: any = {};
-  files: any[]= [];
-  isUpdateImport: boolean = false;
-  displayedColumns = ['date','description', 'importType', 'import', 'actions'];
+  files: any[] = [];
+  isUpdateImport = false;
+  displayedColumns = ['date', 'description', 'importType', 'import', 'actions'];
   dataSource;
   importTypes: string[] = ['Operativos', 'Administrativos', 'Legales'];
   kms;
-  isNewState: boolean = false;
+  isNewState = false;
   tabMenu: String;
 
-  constructor(private route:ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               public fb: FormBuilder,
               private vehicleService: VehicleService,
               private providerService: ProviderService,
               private snackbar: MatSnackBar,
-              public dialog: MatDialog){
-    this.id = this.route.snapshot.params['id'];
+              public dialog: MatDialog) {
+    this.id = this.route.snapshot.params.id;
   }
 
   public handleAddressChange(address: Address) {
@@ -71,15 +71,15 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
 
-  getInfoProvider(providerId){
-    if(this.providers.length>0){
-      return this.providers.filter(p=>p.id==providerId)[0]
+  getInfoProvider(providerId) {
+    if (this.providers.length > 0) {
+      return this.providers.filter(p => p.id == providerId)[0];
     }
   }
 
   getGMapsProviderLink(providerId) {
     const provider = this.getInfoProvider(providerId);
-    return !!provider? provider.address.url + '&output=embed' : '';
+    return !!provider ? provider.address.url + '&output=embed' : '';
   }
 
   ngOnInit() {
@@ -87,11 +87,13 @@ export class VehicleDetailComponent implements OnInit {
       state: ['', [Validators.required]],
       provider: ['', [Validators.required]],
       description: ['', [Validators.required]],
-    },{ validator: this.validateKMS});
+      kms: ['', [Validators.required]],
+    }/*,{ validator: this.validateKMS}*/);
     this.getInfoVehicle();
-    this.date=new Date();
+    this.date = new Date();
   }
 
+  /*
   validateKMS: ValidatorFn = (fg: FormGroup) => {
     const kms = fg.get('kms').value;
     const newKms = fg.get('newKms').value;
@@ -99,141 +101,142 @@ export class VehicleDetailComponent implements OnInit {
       ? null
       : { range: true };
   };
+  */
 
-  getInfoVehicle(){
-    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportResp=>{
-      this.vehicleImports=vehImportResp;
+  getInfoVehicle() {
+    this.vehicleService.getVehicleContent(this.id, 'imports').valueChanges().subscribe(vehImportResp => {
+      this.vehicleImports = vehImportResp;
     });
-    this.providerService.getProviders().valueChanges().subscribe(provResp=>{
-      this.providers=provResp;
+    this.providerService.getProviders().valueChanges().subscribe(provResp => {
+      this.providers = provResp;
     });
-    this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp=>{
-      this.vehicle=vehResp;
-      this.vehicleState.kms=this.vehicle.kmsIn;
+    this.vehicleService.getVehicle(this.id).valueChanges().subscribe(vehResp => {
+      this.vehicle = vehResp;
+      this.vehicleState.kms = this.vehicle.kmsIn;
     });
-    this.vehicleService.getVehicleContent(this.id,'states').valueChanges().subscribe(vehStatesResp=>{
-      this.vehicleStates=vehStatesResp;
+    this.vehicleService.getVehicleContent(this.id, 'states').valueChanges().subscribe(vehStatesResp => {
+      this.vehicleStates = vehStatesResp;
     });
   }
 
-  formatDate(date){
+  formatDate(date) {
     return new Date(date).toLocaleDateString('es-AR', this.options);
   }
 
   createStateVehicle() {
-    if(!this.vehicleState.id){
-      this.vehicleState.id=Date.now();
-      this.isNewState=true;
-    }else {
-      this.vehicleState.updateDate=Date.now();
-      this.isNewState=false;
+    if (!this.vehicleState.id) {
+      this.vehicleState.id = Date.now();
+      this.isNewState = true;
+    } else {
+      this.vehicleState.updateDate = Date.now();
+      this.isNewState = false;
     }
     Promise.all([
       this.uploadMulti(this.vehicleState.id),
-      this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleState,'states'),
-    ]).then(()=>{
-      this.snackbar.open('El estado: '+ this.vehicleState.id + ' a sido guardado con exito', 'Registro Guerdado', {
+      this.vehicleService.createOrUpdateVehicleContent(this.id, this.vehicleState, 'states'),
+    ]).then(() => {
+      this.snackbar.open('El estado: ' + this.vehicleState.id + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
-    }).finally(()=>{
-      this.updateVehicleLocation(this.isNewState?this.vehicleState:this.getLastState());
+    }).finally(() => {
+      this.updateVehicleLocation(this.isNewState ? this.vehicleState : this.getLastState());
     });
   }
 
   updateVehicleLocation(state) {
-    setTimeout(()=>{
+    setTimeout(() => {
       if (state.provider) {
-        let provider = this.providers.find(p=>p.id.toString()===state.provider);
+        const provider = this.providers.find(p => p.id.toString() === state.provider);
         this.vehicle.location = provider.address.name;
       } else {
-        this.vehicle.location = "GP Devoto";
+        this.vehicle.location = 'GP Devoto';
       }
-      this.vehicleService.createOrUpdateVehicle(this.vehicle).then(()=>{
+      this.vehicleService.createOrUpdateVehicle(this.vehicle).then(() => {
         this.blankVehicleContent();
-      })
-    },3000)
+      });
+    }, 3000);
   }
 
-  getLastState(){
-    return this.vehicleStates[this.vehicleStates.length-1];
+  getLastState() {
+    return this.vehicleStates[this.vehicleStates.length - 1];
   }
 
   createImportsVehicle(stateId) {
-    if(!this.vehicleImport.id){
-      this.vehicleImport.id=Date.now();
-    }else {
-      this.vehicleImport.updateDate=Date.now();
+    if (!this.vehicleImport.id) {
+      this.vehicleImport.id = Date.now();
+    } else {
+      this.vehicleImport.updateDate = Date.now();
     }
-    this.vehicleImport.date=this.date.toISOString();
-    this.vehicleImport.stateId=stateId;
+    this.vehicleImport.date = this.date.toISOString();
+    this.vehicleImport.stateId = stateId;
     Promise.all([
-      this.vehicleService.createOrUpdateVehicleContent(this.id,this.vehicleImport,'imports'),
-    ]).then(()=>{
-      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido guardado con exito', 'Registro Guerdado', {
+      this.vehicleService.createOrUpdateVehicleContent(this.id, this.vehicleImport, 'imports'),
+    ]).then(() => {
+      this.snackbar.open('El importe: ' + this.vehicleImport.id + ' a sido guardado con exito', 'Registro Guerdado', {
         duration: 5000
       });
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
-    }).finally(()=>{
+    }).finally(() => {
       this.blanckVehicleImport();
     });
   }
 
-  deleteVehicleImport(){
+  deleteVehicleImport() {
     Promise.all([
-      this.vehicleService.deleteVehicleContent(this.vehicleImport.id,this.id,'imports'),
-    ]).then(()=>{
-      this.snackbar.open('El importe: '+ this.vehicleImport.id + ' a sido eliminado con exito', 'Registro Eliminado', {
+      this.vehicleService.deleteVehicleContent(this.vehicleImport.id, this.id, 'imports'),
+    ]).then(() => {
+      this.snackbar.open('El importe: ' + this.vehicleImport.id + ' a sido eliminado con exito', 'Registro Eliminado', {
         duration: 5000
       });
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
-    }).finally(()=>{
+    }).finally(() => {
       this.blanckVehicleImport();
     });
   }
 
-  blankVehicleContent(){
-    this.vehicleState={};
-    this.vehicleImport={};
+  blankVehicleContent() {
+    this.vehicleState = {};
+    this.vehicleImport = {};
     this.blanckInputfiles();
   }
 
-  blanckVehicleImport(){
-    this.date=new Date();
-    this.isUpdateImport=false;
-    this.vehicleImport={};
+  blanckVehicleImport() {
+    this.date = new Date();
+    this.isUpdateImport = false;
+    this.vehicleImport = {};
   }
 
-  setState(state){
-    this.vehicleState=state;
-    this.vehicleService.getVehicleStateFiles(this.vehicleState.id).subscribe(files=>{
-      this.files=files
+  setState(state) {
+    this.vehicleState = state;
+    this.vehicleService.getVehicleStateFiles(this.vehicleState.id).subscribe(files => {
+      this.files = files;
     });
   }
 
-  setImport(vehicleImport){
-    this.isUpdateImport=true;
-    this.vehicleImport=vehicleImport;
+  setImport(vehicleImport) {
+    this.isUpdateImport = true;
+    this.vehicleImport = vehicleImport;
     this.date = new Date(this.vehicleImport.date);
   }
 
-  ISOStringToLocalDateString(iso){
+  ISOStringToLocalDateString(iso) {
     return new Date(iso).toLocaleDateString();
   }
 
-  setImportsByStateId(stateId){
-    this.vehicleService.getVehicleContent(this.id,'imports').valueChanges().subscribe(vehImportResp=>{
-      this.vehicleImports=vehImportResp;
-      this.vehicleImportsFilter=this.vehicleImports.filter(imp=>imp.stateId==stateId);
+  setImportsByStateId(stateId) {
+    this.vehicleService.getVehicleContent(this.id, 'imports').valueChanges().subscribe(vehImportResp => {
+      this.vehicleImports = vehImportResp;
+      this.vehicleImportsFilter = this.vehicleImports.filter(imp => imp.stateId == stateId);
       this.dataSource = new MatTableDataSource(this.vehicleImportsFilter);
       this.dataSource = new MatTableDataSource(this.vehicleImportsFilter);
       this.dataSource.sort = this.sort;
@@ -241,30 +244,30 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
-  sum(listImports){
-    return listImports.map(imp=> new NumeralPipe(imp.import)).reduce((nrImportA,nrImportB)=>nrImportA.add(nrImportB.value())).value();
+  sum(listImports) {
+    return listImports.map(imp => new NumeralPipe(imp.import)).reduce((nrImportA, nrImportB) => nrImportA.add(nrImportB.value())).value();
   }
 
-  getIconByState(state){
+  getIconByState(state) {
     let icon;
     switch (state) {
-      case "Reparacion":
-        icon = "fa-tools";
+      case 'Reparacion':
+        icon = 'fa-tools';
         break;
-      case "Mantenimiento":
-        icon="fa-toolbox";
-       break;
-      case "Transporte":
-        icon="fa-car";
+      case 'Mantenimiento':
+        icon = 'fa-toolbox';
         break;
-      case "Venta":
-        icon = "fa-hand-holding-usd";
+      case 'Transporte':
+        icon = 'fa-car';
         break;
-      case "GP Devoto":
-        icon="fa-home";
+      case 'Venta':
+        icon = 'fa-hand-holding-usd';
         break;
-      case "Bodega":
-        icon="fa-warehouse";
+      case 'GP Devoto':
+        icon = 'fa-home';
+        break;
+      case 'Bodega':
+        icon = 'fa-warehouse';
         break;
     }
     return icon;
@@ -276,23 +279,23 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   uploadMulti(id) {
-    if(this.selectedFiles){
-      this.loadFiles=true;
-      let files = this.selectedFiles;
-      let filesIndex = _.range(files.length);
+    if (this.selectedFiles) {
+      this.loadFiles = true;
+      const files = this.selectedFiles;
+      const filesIndex = _.range(files.length);
       _.each(filesIndex, (idx) => {
         this.currentUpload = new Upload(files[idx]);
-        this.vehicleService.pushVehicleStateFiles(this.currentUpload,id)}
-      )
+        this.vehicleService.pushVehicleStateFiles(this.currentUpload, id); }
+      );
     }
   }
 
-  deleteFile(){
-    this.vehicleService.deleteVehicleStateFile(this.vehicleState.id, this.file).then(resp=>{
+  deleteFile() {
+    this.vehicleService.deleteVehicleStateFile(this.vehicleState.id, this.file).then(resp => {
       this.snackbar.open('El archivo: a sido eliminado', 'Delete', {
         duration: 5000
       });
-    }).catch(err=>{
+    }).catch(err => {
       this.snackbar.open(err.toLocaleString(), 'Error', {
         duration: 5000
       });
@@ -302,11 +305,11 @@ export class VehicleDetailComponent implements OnInit {
   openDialogDeleteFile(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: "Deseas eliminar el archivo?"
+      data: 'Deseas eliminar el archivo?'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.deleteFile()
+      if (result) {
+        this.deleteFile();
       }
     });
   }
@@ -314,30 +317,30 @@ export class VehicleDetailComponent implements OnInit {
   openDialogDeleteVehicleImport(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: "Deseas eliminar el importe?"
+      data: 'Deseas eliminar el importe?'
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-        this.deleteVehicleImport()
+      if (result) {
+        this.deleteVehicleImport();
       }
     });
   }
 
-  setFile(file){
-    this.file=file;
+  setFile(file) {
+    this.file = file;
   }
 
-  blanckInputfiles(){
-    this.myInputVariable.nativeElement.value = "";
+  blanckInputfiles() {
+    this.myInputVariable.nativeElement.value = '';
     this.numberFiles = 0;
-    let that = this;
-    setTimeout(function(this){
+    const that = this;
+    setTimeout(function(this) {
       that.loadFiles = false;
-    },5000);
+    }, 5000);
   }
 
   setVehicleImport(vehicleImport) {
-    this.vehicleImport=vehicleImport;
+    this.vehicleImport = vehicleImport;
   }
 
   donwloadPdf() {

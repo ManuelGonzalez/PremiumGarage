@@ -6,26 +6,17 @@
         <h3>Gestoria:</h3>
       </div>
       <div class="col">
-        <div class="text-right" *ngIf="!isReport">
-          <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
-            <i class="fas fa-bars"></i>
+        <div class="text-right margin-btn" *ngIf="!isReport">
+          <button mat-mini-fab color="primary"
+                  data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#additionalInfoReport"
+                  matTooltip="Imprimir">
+            <i class="fas fa-print"></i>
           </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
-                    data-target="#createVehicleAdditionadInfoModal">
-              <i class="fas fa-pen"></i>
-              <span>Editar</span>
-            </button>
-            <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false"
-                    data-target="#additionalInfoReport">
-              <i class="fas fa-print"></i>
-              <span>Imprimir</span>
-            </button>
-            <!--button mat-menu-item (click)="setVehicleImport(element);openDialogDeleteVehicleImport()">
-              <i class="fas fa-print"></i>
-              <span>Imprimir Gestoria</span>
-            </button-->
-          </mat-menu>
+          <button mat-mini-fab color="primary"
+                  data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleAdditionadInfoModal"
+                  matTooltip="Editar">
+            <i class="fas fa-pen"></i>
+          </button>
           <br>
         </div>
       </div>
@@ -60,30 +51,34 @@
             <tr>
               <th>Titulo</th>
               <td>{{vehicleAddInfo.title?"Si":"No"}}</td>
-              <th *ngIf="vehicleAddInfo.title">N</th>
+              <th *ngIf="vehicleAddInfo.title">Nro.</th>
               <td *ngIf="vehicleAddInfo.title">{{vehicleAddInfo.titleNum}}</td>
             </tr>
             <tr>
               <th>Cedula de Identificacion</th>
               <td>{{vehicleAddInfo.identification?"Si":"No"}}</td>
-              <th *ngIf="vehicleAddInfo.identification">N</th>
+              <th *ngIf="vehicleAddInfo.identification">Nro.</th>
               <td *ngIf="vehicleAddInfo.identification">{{vehicleAddInfo.identificationNum}}</td>
             </tr>
             <tr>
               <th>Cedula Autorizadas</th>
               <td>{{vehicleAddInfo.identificationBlue?"Si":"No"}}</td>
-              <th *ngIf="vehicleAddInfo.identificationBlue">N</th>
+              <th *ngIf="vehicleAddInfo.identificationBlue">Nro.</th>
               <td *ngIf="vehicleAddInfo.identificationBlue">{{vehicleAddInfo.identificationBlueNum}}</td>
             </tr>
             <tr>
               <th>F08</th>
               <td>{{vehicleAddInfo.F08?"Si":"No"}}</td>
-              <th *ngIf="vehicleAddInfo.F08">N</th>
+              <th *ngIf="vehicleAddInfo.F08">Nro.</th>
               <td *ngIf="vehicleAddInfo.F08">{{vehicleAddInfo.F08Num}}</td>
             </tr>
             <tr>
               <th>Informe de Dominio</th>
               <td>{{vehicleAddInfo.domainReport?"Si":"No"}}</td>
+            </tr>
+            <tr>
+              <th>Observaciones</th>
+              <td>{{vehicleAddInfo.domainReportInfo}}</td>
             </tr>
             <tr>
               <th>Informe 13</th>
@@ -195,7 +190,7 @@
               <td>
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Compador:</h5>
+                    <h5 class="card-title">Comprador:</h5>
                     <div class="row">
                       <div class="{{vehicle.buyerId?'col-sm-11':'col'}}">
                         <div *ngIf="vehicle.buyerId">
@@ -365,6 +360,11 @@
           <div class="row">
             <div class="col-sm-3">
               <mat-checkbox name="domainReport" [(ngModel)]="vehicleAddInfo.domainReport">Informe de Dominio</mat-checkbox>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <input matInput placeholder="Observaciones" required name="domainReportInfo" [(ngModel)]="vehicleAddInfo.domainReportInfo"/>
             </div>
           </div>
           <hr>

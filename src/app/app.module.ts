@@ -29,7 +29,7 @@ import {
   MatAutocompleteModule,
   MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule,
   MatIconModule,
-  MatInputModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule,
+  MatInputModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule,
   MatSelectModule,
   MatSnackBarModule,
   MatTableModule, MatTabsModule,
@@ -68,69 +68,75 @@ import {ProviderService} from './services/provider.service';
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDUq4SZwj8eaLkUJ-_qKDGw6PiV3ryOOw4",
-    authDomain: "premiumgarage-c0f80.firebaseapp.com",
-    databaseURL: "https://premiumgarage-c0f80.firebaseio.com",
-    projectId: "premiumgarage-c0f80",
-    storageBucket: "premiumgarage-c0f80.appspot.com",
-    messagingSenderId: "224048404997"
+    apiKey: 'AIzaSyDUq4SZwj8eaLkUJ-_qKDGw6PiV3ryOOw4',
+    authDomain: 'premiumgarage-c0f80.firebaseapp.com',
+    databaseURL: 'https://premiumgarage-c0f80.firebaseio.com',
+    projectId: 'premiumgarage-c0f80',
+    storageBucket: 'premiumgarage-c0f80.appspot.com',
+    messagingSenderId: '224048404997'
   }
 };
 
-const appRoutes:Routes = [
+const appRoutes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
     component: HomeComponent,
-    children:[]
+    children: []
   },
   {
     path: 'users',
     canActivate: [AuthGuard],
     component: UserComponent,
-    children:[]
+    children: []
   },
   {
     path: 'vehicles',
     canActivate: [AuthGuard],
     component: VehicleComponent,
-    children:[]
+    children: []
+  },
+  {
+    path: 'listVehicles/:type',
+    canActivate: [AuthGuard],
+    component: VehicleComponent,
+    children: []
   },
   {
     path: 'vehicles/:id',
     canActivate: [AuthGuard],
     component: VehicleDetailComponent,
-    children:[]
+    children: []
   },
   {
     path: 'providers',
     canActivate: [AuthGuard],
     component: ProvidersComponent,
-    children:[]
+    children: []
   },
   {
     path: 'providers/:id',
     canActivate: [AuthGuard],
     component: ProviderDetailComponent,
-    children:[]
+    children: []
   },
   {
     path: 'contacts',
     canActivate: [AuthGuard],
     component: ContactComponent,
-    children:[]
+    children: []
   },
   {
     path: 'user-login',
     canActivate: [AuthGuard],
     component: UserLoginComponent,
-    children:[]
+    children: []
   },
   {
     path: 'in-construction',
     canActivate: [AuthGuard],
     component: InConstructionComponent,
-    children:[]
+    children: []
   },
   {
     path: '**',
@@ -199,6 +205,7 @@ const appRoutes:Routes = [
     MatMomentDateModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatRadioModule,
     GooglePlaceModule
   ],
   entryComponents: [
@@ -221,7 +228,7 @@ const appRoutes:Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private dateAdapter:DateAdapter<Date>) {
+  constructor(private dateAdapter: DateAdapter<Date>) {
     dateAdapter.setLocale('en-in'); // DD/MM/YYYY
   }
 }

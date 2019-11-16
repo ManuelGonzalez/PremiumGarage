@@ -17,7 +17,8 @@ export class ExpertiseComponent implements OnInit {
 
   vehicleExpertise: any = {};
   expertises: any[] = [];
-  expertisesType: String[] = ['Carrocería','Interior de vehículo','Mecánica'];
+  expertisesType: string[] = ['Carrocería', 'Interior de vehículo', 'Mecánica'];
+  types: string[] = ['A Ingresar', 'Ingresado', 'Standby'];
 
   constructor(private vehicleService: VehicleService,
               private experticeServise: ExpertiseService,
@@ -27,24 +28,24 @@ export class ExpertiseComponent implements OnInit {
               public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.experticeServise.getExpertises().valueChanges().subscribe(expertisesResp=>{
-      this.expertises=expertisesResp;
+    this.experticeServise.getExpertises().valueChanges().subscribe(expertisesResp => {
+      this.expertises = expertisesResp;
       console.log(this.expertises);
     });
-    this.vehicleService.getVehicleContent(this.vehicle.id,'expertise').valueChanges().subscribe(expertiseResp=>{
-      this.vehicleExpertise=!!expertiseResp[0]?expertiseResp[0]:{}
+    this.vehicleService.getVehicleContent(this.vehicle.id, 'expertise').valueChanges().subscribe(expertiseResp=>{
+      this.vehicleExpertise = !!expertiseResp[0] ? expertiseResp[0] : {};
     });
   }
 
   setType(val) {
-    this.vehicleExpertise.type=val
+    this.vehicleExpertise.type = val;
   }
 
   createExpertise() {
-    if(!this.vehicleExpertise.id){
-      this.vehicleExpertise.id=Date.now();
-    }else {
-      this.vehicleExpertise.updateDate=Date.now();
+    if (!this.vehicleExpertise.id) {
+      this.vehicleExpertise.id = Date.now();
+    } else {
+      this.vehicleExpertise.updateDate = Date.now();
     }
     Promise.all([
       this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id,this.vehicleExpertise,'expertise'),
