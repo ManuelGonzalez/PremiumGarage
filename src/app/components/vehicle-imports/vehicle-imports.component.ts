@@ -55,8 +55,8 @@ export class VehicleImportsComponent implements OnInit {
   }
 
   totalEarnings(listImports){
-    let totalImport = this.sum(listImports)
-    return new NumeralPipe(totalImport).multiply(this.sumPer(listImports)).divide(100).add(totalImport).value()
+    let totalImport = this.sum(listImports);
+    return new NumeralPipe(totalImport).multiply(this.sumPer(listImports)).divide(100).add(totalImport).value();
   }
 
   percentage(importVal,percentage){

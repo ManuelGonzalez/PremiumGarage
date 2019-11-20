@@ -13,19 +13,19 @@ export class HeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    $("#sidebarToggle").on('click', function(e) {
+    $('#sidebarToggle').on('click', (e) => {
       e.preventDefault();
-      $("body").toggleClass("sidebar-toggled");
-      $(".sidebar").toggleClass("toggled");
+      $('body').toggleClass('sidebar-toggled');
+      $('.sidebar').toggleClass('toggled');
     });
-    this.prepareInstall()
+    this.prepareInstall();
   }
 
-  prepareInstall(){
-    window.addEventListener("beforeinstallprompt", e=>{
+  prepareInstall() {
+    window.addEventListener('beforeinstallprompt', e => {
       this.promptEvent = e;
-      let button = document.getElementById("installButton");
-      button.addEventListener("click", ()=>{
+      const button = document.getElementById('installButton');
+      button.addEventListener('click', () => {
         this.promptEvent.prompt();
       });
     });

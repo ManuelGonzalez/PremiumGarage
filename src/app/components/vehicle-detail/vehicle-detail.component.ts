@@ -83,12 +83,12 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.statesForm = this.fb.group({
+    /*this.statesForm = this.fb.group({
       state: ['', [Validators.required]],
       provider: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      kms: ['', [Validators.required]],
-    }/*,{ validator: this.validateKMS}*/);
+      kms: ['', [Validators.max(1000000)]],
+    },{ validator: this.validateKMS});*/
     this.getInfoVehicle();
     this.date = new Date();
   }
