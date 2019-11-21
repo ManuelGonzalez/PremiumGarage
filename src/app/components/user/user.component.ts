@@ -20,13 +20,13 @@ export class UserComponent implements OnInit {
 
   user: any = {};
   file: any = {};
-  cuilData: any ={};
+  cuilData: any = {};
   userData: any = [];
-  users: any[]= [];
-  files: any[]= [];
-  provinces: any[]= [];
-  selectedProvince: any={};
-  locales: any[]= [];
+  users: any[] = [];
+  files: any[] = [];
+  provinces: any[] = [];
+  selectedProvince: any = {};
+  locales: any[] = [];
   dataSource;
   isUpdate=false;
   displayedColumns: string[] = [];

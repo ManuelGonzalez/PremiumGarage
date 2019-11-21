@@ -218,7 +218,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput [matDatepicker]="picker" placeholder="Fecha de Ingreso" name="dateAdmission" [(ngModel)]="vehicle.dateAdmission">
+                <input matInput [matDatepicker]="picker" placeholder="Fecha de Ingreso" name="dateAdmission" [value]="date" [(ngModel)]="date">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>

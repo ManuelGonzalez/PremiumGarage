@@ -183,6 +183,7 @@ export class VehicleComponent implements OnInit {
   setVehicle(vehicle) {
     this.isUpdate = true;
     this.vehicle = vehicle;
+    this.date = new Date(this.vehicle.dateAdmission);
     this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files => {
       this.files = files;
     });

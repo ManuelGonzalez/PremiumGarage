@@ -38,6 +38,10 @@
             <tr>
               <th>Radicacion</th>
               <td>{{vehicle.radication}}</td>
+              <th>Fecha de Ingreso</th>
+              <td>{{ISOStringToLocalDateString(vehicle.dateAdmission)}}</td>
+              <th>Fecha de Egreso</th>
+              <td>{{ISOStringToLocalDateString(vehicle.departureDate)}}</td>
             </tr>
             <tr>
               <th>Titular</th>
@@ -308,6 +312,22 @@
           <div class="row">
             <div class="col">
               <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="dateAdmissionPicker" placeholder="Fecha de Ingreso" required name="date" [value]="dateAdmission" [(ngModel)]="dateAdmission">
+                <mat-datepicker-toggle matSuffix [for]="dateAdmissionPicker"></mat-datepicker-toggle>
+                <mat-datepicker #dateAdmissionPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="departureDatePicker" placeholder="Fecha de Egreso" required name="date" [value]="departureDate" [(ngModel)]="departureDate">
+                <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #departureDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
                 <input matInput placeholder="Titular" required name="titular" [(ngModel)]="vehicleAddInfo.titular"/>
               </mat-form-field>
             </div>
@@ -379,7 +399,7 @@
             </div>
             <div class="col">
               <mat-form-field *ngIf="vehicleAddInfo.report13" class="example-full-width">
-                <input matInput [matDatepicker]="report13Picker" placeholder="Fecha" required name="date" [value]="date" [(ngModel)]="vehicleAddInfo.report13Date">
+                <input matInput [matDatepicker]="report13Picker" placeholder="Fecha" required name="date" [value]="report13Date" [(ngModel)]="report13Date">
                 <mat-datepicker-toggle matSuffix [for]="report13Picker"></mat-datepicker-toggle>
                 <mat-datepicker #report13Picker></mat-datepicker>
               </mat-form-field>
@@ -397,7 +417,7 @@
             </div>
             <div class="col">
               <mat-form-field *ngIf="vehicleAddInfo.patentReport" class="example-full-width">
-                <input matInput [matDatepicker]="patentReportPicker" placeholder="Fecha" required name="date" [value]="date" [(ngModel)]="vehicleAddInfo.patentReportdDate">
+                <input matInput [matDatepicker]="patentReportPicker" placeholder="Fecha" required name="date" [value]="patentReportdDate" [(ngModel)]="patentReportdDate">
                 <mat-datepicker-toggle matSuffix [for]="patentReportPicker"></mat-datepicker-toggle>
                 <mat-datepicker #patentReportPicker></mat-datepicker>
               </mat-form-field>
@@ -410,7 +430,7 @@
             </div>
             <div class="col">
               <mat-form-field *ngIf="vehicleAddInfo.policeCheck" class="example-full-width">
-                <input matInput [matDatepicker]="policeCheckPicker" placeholder="Fecha" required name="date" [value]="date" [(ngModel)]="vehicleAddInfo.policeCheckDate">
+                <input matInput [matDatepicker]="policeCheckPicker" placeholder="Fecha" required name="date" [value]="policeCheckDate" [(ngModel)]="policeCheckDate">
                 <mat-datepicker-toggle matSuffix [for]="policeCheckPicker"></mat-datepicker-toggle>
                 <mat-datepicker #policeCheckPicker></mat-datepicker>
               </mat-form-field>
@@ -429,7 +449,7 @@
             </div>
             <div class="col">
               <mat-form-field *ngIf="vehicleAddInfo.vtv" class="example-full-width">
-                <input matInput [matDatepicker]="VTVPicker" placeholder="Fecha" required name="date" [value]="date" [(ngModel)]="vehicleAddInfo.VTVDate">
+                <input matInput [matDatepicker]="VTVPicker" placeholder="Fecha" required name="date" [value]="VTVDate" [(ngModel)]="VTVDate">
                 <mat-datepicker-toggle matSuffix [for]="VTVPicker"></mat-datepicker-toggle>
                 <mat-datepicker #VTVPicker></mat-datepicker>
               </mat-form-field>
