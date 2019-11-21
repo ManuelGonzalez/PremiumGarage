@@ -83,6 +83,8 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    // @ts-ignore
+    hidesnow();
     this.statesForm = this.fb.group({
       state: ['', [Validators.required]],
       provider: ['', [Validators.required]],

@@ -62,6 +62,8 @@ export class ProvidersComponent implements OnInit {
   }
 
   ngOnInit() {
+    // @ts-ignore
+    hidesnow();
   }
 
   filter(value: string): string[] {

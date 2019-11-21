@@ -110,6 +110,8 @@ export class VehicleComponent implements OnInit {
   }
 
   ngOnInit() {
+    // @ts-ignore
+    hidesnow();
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
