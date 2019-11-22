@@ -11,7 +11,7 @@
           <i class="fas fa-plus"></i>
         </button>
         <button *ngIf="vehicle.expertise" mat-mini-fab color="primary"
-                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#additionalInfoReport"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#expertise-report"
                 matTooltip="Imprimir">
           <i class="fas fa-print"></i>
         </button>
@@ -110,3 +110,6 @@
     </div>
   </div>
 </div>
+
+<!-- Expertise modal -->
+<app-expertise-report *ngIf="vehicle" [vehicle]="vehicle"></app-expertise-report>

@@ -30,7 +30,6 @@ export class ExpertiseComponent implements OnInit {
   ngOnInit() {
     this.experticeServise.getExpertises().valueChanges().subscribe(expertisesResp => {
       this.expertises = expertisesResp;
-      console.log(this.expertises);
     });
     this.vehicleService.getVehicleContent(this.vehicle.id, 'expertise').valueChanges().subscribe(expertiseResp=>{
       this.vehicleExpertise = !!expertiseResp[0] ? expertiseResp[0] : {};

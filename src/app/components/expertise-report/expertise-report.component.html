@@ -1,0 +1,107 @@
+<div class="modal white-modal fade" id="expertise-report" tabindex="-1" role="dialog" aria-labelledby="expertiseReportLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid withe-modal">
+          <div class="text-right margin-btn">
+            <button mat-mini-fab color="primary"
+                    (click)="donwloadPdf()"
+                    matTooltip="Imprimir">
+              <i class="fas fa-print"></i>
+            </button>
+          </div>
+        </div>
+        <div #report class="container-fluid withe-modal">
+          <div class="row">
+            <div class="col">
+              <img src="../../../assets/images/Logo_GP-Devoto.png" class="img-fluid" alt="">
+            </div>
+            <div class="col">
+              <table class="table">
+                <tr><th>Orden de Reparacion</th><td></td></tr>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <tr>
+                    <th>Dominio</th><td>{{vehicle.id}}</td>
+                    <th>Marca</th><td>{{vehicle.brand}}</td>
+                    <th>Modelo</th><td>{{vehicle.model}}</td>
+                  </tr>
+                  <tr>
+                    <th>Año</th><td>{{vehicle.year}}</td>
+                    <th>Color</th><td>{{vehicle.color}}</td>
+                    <th>KMS</th><td>{{vehicle.kms}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="accordion" id="accordionExample">
+                <div class="card" *ngFor="let expertise of expertises ; let i = index">
+                  <div class="card-header" id="{{i}}">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#option'+i" aria-expanded="false" [attr.aria-controls]="'option'+i">
+                        {{expertisesType[i]}}
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div [id]="'option'+i" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-sm">
+                          <tr>
+                            <th>Seccion</th>
+                            <th>Compra Repuestos</th>
+                            <th>Costos Repuestos</th>
+                            <th>Reparaciones a Realizar</th>
+                            <th>Costos Reparaciones</th>
+                            <th>Costos Estimados</th>
+                          </tr>
+                          <tr *ngFor="let exp of expertise">
+                            <td *ngIf="vehicleExpertise[exp]">
+                              {{exp}}
+                            </td>
+                            <td *ngIf="vehicleExpertise[exp]">
+                              {{vehicleExpertise[exp+'CR']}}
+                            </td>
+                            <td *ngIf="vehicleExpertise[exp]">
+                              {{vehicleExpertise[exp+'CoR']}}
+                            </td>
+                            <td *ngIf="vehicleExpertise[exp]">
+                              {{vehicleExpertise[exp+'R']}}
+                            </td>
+                            <td *ngIf="vehicleExpertise[exp]">
+                              {{vehicleExpertise[exp+'C']}}
+                            </td>
+                            <td *ngIf="vehicleExpertise[exp]">
+                              {{utilService.sum([vehicleExpertise[exp+'CR'],vehicleExpertise[exp+'CoR'],vehicleExpertise[exp+'R'],vehicleExpertise[exp+'C']])}}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
