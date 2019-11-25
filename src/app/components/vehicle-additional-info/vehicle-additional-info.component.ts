@@ -77,7 +77,6 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     } else {
       this.vehicleAddInfo.updateDate = Date.now();
     }
-
     this.vehicle.dateAdmission = this.dateAdmission.toISOString();
     this.vehicle.departureDate = this.departureDate.toISOString();
     this.vehicleAddInfo.report13Date = this.report13Date.toISOString();
@@ -85,9 +84,9 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     this.vehicleAddInfo.policeCheckDate = this.policeCheckDate.toISOString();
     this.vehicleAddInfo.VTVDate = this.VTVDate.toISOString();
     Promise.all([
-      this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id, this.vehicleAddInfo, 'addInfo'),
+      this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
-      this.vehicleService.createOrUpdateVehicle(this.vehicle).then( ()=> {
+      this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id, this.vehicleAddInfo, 'addInfo').then( () => {
         this.snackbar.open('La informacion adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
           duration: 5000
         });

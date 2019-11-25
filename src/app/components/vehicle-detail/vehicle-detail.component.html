@@ -439,80 +439,79 @@
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Upload Files Vehicle Modal-->
-  <div class="modal fade" id="filesVehicleStateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titleFilesVehicleModalLabel">Archivos</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
+<!-- Upload Files Vehicle Modal-->
+<div class="modal fade" id="filesVehicleStateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleFilesVehicleModalLabel">Archivos</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
-          <mat-tab-group *ngIf="files.length>0">
-            <mat-tab *ngFor="let file of files" label="{{file.name}}">
-              <mat-card class="example-card">
-                <mat-card-header>
-                  <mat-card-title>{{file.name}}</mat-card-title>
-                  <mat-card-subtitle>{{file.type}}</mat-card-subtitle>
-                </mat-card-header>
-                <img mat-card-image *ngIf="file.type.includes('image')" [src]="file.url | safe" alt="">
-                <iframe *ngIf="file.type.includes('pdf')" width="100%" height="100%" [src]="file.url | safe"></iframe>
-                <div *ngIf="!file.type.includes('pdf')&&!file.type.includes('image')">
-                  <h5>Vista previa no disponible para el tipo de archivo</h5>
-                  <br>
-                </div>
-                <mat-card-content>
+        <mat-tab-group *ngIf="files.length>0">
+          <mat-tab *ngFor="let file of files" label="{{file.name}}">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>{{file.name}}</mat-card-title>
+                <mat-card-subtitle>{{file.type}}</mat-card-subtitle>
+              </mat-card-header>
+              <img mat-card-image *ngIf="file.type.includes('image')" [src]="file.url | safe" alt="">
+              <iframe *ngIf="file.type.includes('pdf')" width="100%" height="100%" [src]="file.url | safe"></iframe>
+              <div *ngIf="!file.type.includes('pdf')&&!file.type.includes('image')">
+                <h5>Vista previa no disponible para el tipo de archivo</h5>
+                <br>
+              </div>
+              <mat-card-content>
 
-                </mat-card-content>
-                <mat-card-actions>
-                  <a *ngIf="file.type.includes('pdf')||file.type.includes('image')" target="_blank" href="{{file.url}}" mat-button>
-                    <i class="fas fa-eye"></i>
-                    <span>Ver</span>
-                  </a>
-                  <a *ngIf="!file.type.includes('pdf')&&!file.type.includes('image')" href="{{file.url}}" mat-button>
-                    <i class="fas fa-eye"></i>
-                    <span>Descargar</span>
-                  </a>
-                  <a mat-button (click)="setFile(file);openDialogDeleteFile()">
-                    <i class="fas fa-trash"></i>
-                    <span>Eliminar</span>
-                  </a>
-                </mat-card-actions>
-              </mat-card>
-            </mat-tab>
-          </mat-tab-group>
-          <div *ngIf="currentUpload&&loadFiles">
-            <div class="progress">
-              <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
-            </div>
-            Progreso: {{currentUpload?.progress}}% Completado
+              </mat-card-content>
+              <mat-card-actions>
+                <a *ngIf="file.type.includes('pdf')||file.type.includes('image')" target="_blank" href="{{file.url}}" mat-button>
+                  <i class="fas fa-eye"></i>
+                  <span>Ver</span>
+                </a>
+                <a *ngIf="!file.type.includes('pdf')&&!file.type.includes('image')" href="{{file.url}}" mat-button>
+                  <i class="fas fa-eye"></i>
+                  <span>Descargar</span>
+                </a>
+                <a mat-button (click)="setFile(file);openDialogDeleteFile()">
+                  <i class="fas fa-trash"></i>
+                  <span>Eliminar</span>
+                </a>
+              </mat-card-actions>
+            </mat-card>
+          </mat-tab>
+        </mat-tab-group>
+        <div *ngIf="currentUpload&&loadFiles">
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
           </div>
-          <hr>
-          <div class="input-group mb-3">
-            <div class="custom-file">
-              <input #myInput type="file" class="custom-file-input" lang="es" (change)="detectFiles($event)" multiple>
-              <label class="custom-file-label" data-browse="Adjuntar Archivo">{{numberFiles}} archivos seleccionados</label>
-            </div>
+          Progreso: {{currentUpload?.progress}}% Completado
+        </div>
+        <hr>
+        <div class="input-group mb-3">
+          <div class="custom-file">
+            <input #myInput type="file" class="custom-file-input" lang="es" (change)="detectFiles($event)" multiple>
+            <label class="custom-file-label" data-browse="Adjuntar Archivo">{{numberFiles}} archivos seleccionados</label>
           </div>
+        </div>
 
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-          <button
-            class="btn btn-primary" type="button"
-            [disabled]="numberFiles==0"
-            (click)="createStateVehicle()">
-            Subir Archivos
-          </button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+        <button
+          class="btn btn-primary" type="button"
+          [disabled]="numberFiles==0"
+          (click)="createStateVehicle()">
+          Subir Archivos
+        </button>
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- Create reports-->
