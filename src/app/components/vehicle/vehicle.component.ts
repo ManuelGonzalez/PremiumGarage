@@ -176,6 +176,7 @@ export class VehicleComponent implements OnInit {
       if (fbVeh != null) {
         this.isUpdate = true;
         this.vehicle = fbVeh;
+        this.vehicle.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : new Date();
       }
     });
   }
@@ -183,7 +184,7 @@ export class VehicleComponent implements OnInit {
   setVehicle(vehicle) {
     this.isUpdate = true;
     this.vehicle = vehicle;
-    this.date = new Date(this.vehicle.dateAdmission);
+    this.vehicle.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : new Date();
     this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files => {
       this.files = files;
     });
@@ -195,7 +196,7 @@ export class VehicleComponent implements OnInit {
     } else {
       this.vehicle.creationDate = Date.now();
     }
-    this.vehicle.dateAdmission = this.date.toISOString();
+    this.vehicle.dateAdmission = this.vehicle.dateAdmission.toISOString();
     this.vehicle.addressRadicaction = this.address;
     Promise.all([
       this.uploadMulti(this.vehicle.id),
