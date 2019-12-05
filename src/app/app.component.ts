@@ -8,25 +8,28 @@ import {CookieService} from 'ngx-cookie-service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'PremiumGarage';
-  message: any={};
+  message: any = {};
   logedin = false;
   loading = true;
 
-  constructor(private swUpdate: SwUpdate, /*private messagingService: MessagingService,*/ private auth: AuthService, private cookieService:CookieService){
+  constructor(private swUpdate: SwUpdate,
+              /*private messagingService: MessagingService,*/
+              private auth: AuthService,
+              private cookieService: CookieService) {
     /*if (this.messagingService.isSupoorted){
       this.messagingService.getPermission();
       this.messagingService.receiveMessage();
       this.message=this.messagingService.currentMessage;
     }*/
-    this.auth.getAuthState().subscribe(log=>{
-      this.logedin=log!==null;
+    this.auth.getAuthState().subscribe(log => {
+      this.logedin = log !== null;
     });
-    this.loading=false;
+    this.loading = false;
   }
 
-  getLoginCookie():boolean{
+  getLoginCookie(): boolean {
     return this.cookieService.check('user');
   }
   ngOnInit(): void {

@@ -50,6 +50,10 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     }
     this.vehicleService.getVehicleContent(this.vehicle.id, 'addInfo').valueChanges().subscribe(vehImportsResp => {
       this.vehicleAddInfo = !!vehImportsResp[0] ? vehImportsResp[0] : {};
+      this.policeCheckDate = this.vehicleAddInfo.policeCheckDate ? new Date(this.vehicleAddInfo.policeCheckDate) : new Date();
+      this.report13Date = this.vehicleAddInfo.report13Date ? new Date(this.vehicleAddInfo.report13Date) : new Date();
+      this.patentReportdDate = this.vehicleAddInfo.patentReportdDate ? new Date(this.vehicleAddInfo.patentReportdDate) : new Date();
+      this.VTVDate = this.vehicleAddInfo.VTVDate ? new Date(this.vehicleAddInfo.VTVDate) : new Date();
     });
     this.userService.getUsers().valueChanges().subscribe(fbUsers => {
       this.users = fbUsers;
@@ -58,12 +62,8 @@ export class VehicleAdditionalInfoComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
-    this.dateAdmission = new Date();
-    this.departureDate = new Date();
-    this.policeCheckDate = new Date();
-    this.report13Date = new Date();
-    this.patentReportdDate = new Date();
-    this.VTVDate = new Date();
+    this.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : new Date();
+    this.departureDate = this.vehicle.departureDate ? new Date(this.vehicle.departureDate) : new Date();
   }
 
   applyFilter(filterValue: string) {
