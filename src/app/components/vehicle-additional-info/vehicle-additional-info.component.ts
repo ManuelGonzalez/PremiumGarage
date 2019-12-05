@@ -50,10 +50,10 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     }
     this.vehicleService.getVehicleContent(this.vehicle.id, 'addInfo').valueChanges().subscribe(vehImportsResp => {
       this.vehicleAddInfo = !!vehImportsResp[0] ? vehImportsResp[0] : {};
-      this.policeCheckDate = this.vehicleAddInfo.policeCheckDate ? new Date(this.vehicleAddInfo.policeCheckDate) : new Date();
-      this.report13Date = this.vehicleAddInfo.report13Date ? new Date(this.vehicleAddInfo.report13Date) : new Date();
-      this.patentReportdDate = this.vehicleAddInfo.patentReportdDate ? new Date(this.vehicleAddInfo.patentReportdDate) : new Date();
-      this.VTVDate = this.vehicleAddInfo.VTVDate ? new Date(this.vehicleAddInfo.VTVDate) : new Date();
+      this.policeCheckDate = this.vehicleAddInfo.policeCheckDate ? new Date(this.vehicleAddInfo.policeCheckDate) : null;
+      this.report13Date = this.vehicleAddInfo.report13Date ? new Date(this.vehicleAddInfo.report13Date) : null;
+      this.patentReportdDate = this.vehicleAddInfo.patentReportdDate ? new Date(this.vehicleAddInfo.patentReportdDate) : null;
+      this.VTVDate = this.vehicleAddInfo.VTVDate ? new Date(this.vehicleAddInfo.VTVDate) : null;
     });
     this.userService.getUsers().valueChanges().subscribe(fbUsers => {
       this.users = fbUsers;
@@ -62,8 +62,8 @@ export class VehicleAdditionalInfoComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
-    this.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : new Date();
-    this.departureDate = this.vehicle.departureDate ? new Date(this.vehicle.departureDate) : new Date();
+    this.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : null;
+    this.departureDate = this.vehicle.departureDate ? new Date(this.vehicle.departureDate) : null;
   }
 
   applyFilter(filterValue: string) {
@@ -77,12 +77,12 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     } else {
       this.vehicleAddInfo.updateDate = Date.now();
     }
-    this.vehicle.dateAdmission = this.dateAdmission.toISOString();
-    this.vehicle.departureDate = this.departureDate.toISOString();
-    this.vehicleAddInfo.report13Date = this.report13Date.toISOString();
-    this.vehicleAddInfo.patentReportdDate = this.patentReportdDate.toISOString();
-    this.vehicleAddInfo.policeCheckDate = this.policeCheckDate.toISOString();
-    this.vehicleAddInfo.VTVDate = this.VTVDate.toISOString();
+    this.vehicle.dateAdmission = this.dateAdmission ? this.dateAdmission.toISOString() : null;
+    this.vehicle.departureDate = this.departureDate ? this.departureDate.toISOString() : null;
+    this.vehicleAddInfo.report13Date = this.report13Date ? this.report13Date.toISOString() : null;
+    this.vehicleAddInfo.patentReportdDate = this.patentReportdDate ? this.patentReportdDate.toISOString() : null;
+    this.vehicleAddInfo.policeCheckDate = this.policeCheckDate ? this.policeCheckDate.toISOString() : null;
+    this.vehicleAddInfo.VTVDate = this.VTVDate ? this.VTVDate.toISOString() : null;
     Promise.all([
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
