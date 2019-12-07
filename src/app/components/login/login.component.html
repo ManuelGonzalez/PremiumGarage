@@ -5,7 +5,7 @@
       <form (submit)="login($event, email.value, password.value)">
         <div class="example-container">
           <mat-form-field>
-            <input matInput #email type="email" id="email" class="form-control" placeholder="correo" required="required">
+            <input matInput #email type="email" id="email" class="form-control" placeholder="E-mail" required="required">
           </mat-form-field>
           <mat-form-field>
             <input matInput #password type="password" id="password" class="form-control" placeholder="contraseña" required="required">
@@ -41,7 +41,7 @@
       <div class="modal-body">
         <form class="example-form" autocomplete="off">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Email" required type="email" name="resetEmail" #resetEmail>
+            <input matInput placeholder="E-mail" required type="email" name="resetEmail" #resetEmail>
           </mat-form-field>
         </form>
       </div>

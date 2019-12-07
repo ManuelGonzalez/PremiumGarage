@@ -13,24 +13,24 @@ export class UserLoginComponent implements OnInit {
   currenUser: any = {};
 
   constructor(private authService: AuthService) {
-    this.authService.user.subscribe(user=>{
-      this.currenUser=user;
-    })
+    this.authService.user.subscribe(user => {
+      this.currenUser = user;
+    });
   }
 
   ngOnInit() {
   }
 
-  blankUser(){
-    this.userLogin={};
+  blankUser() {
+    this.userLogin = {};
   }
 
-  createUserLogin(){
-    this.authService.createUserLogin(this.userLogin.email,this.userLogin.password,this.userLogin.name);
-    this.userLogin={};
+  createUserLogin() {
+    this.authService.createUserLogin(this.userLogin.email, this.userLogin.password, this.userLogin.name);
+    this.userLogin = {};
   }
 
-  updateUserLogin(name,email,password){
-    this.authService.updateUser(name,email,password)
+  updateUserLogin(name, email, password) {
+    this.authService.updateUser(name, email, password);
   }
 }

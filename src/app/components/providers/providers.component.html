@@ -34,22 +34,22 @@
         </ng-container>
 
         <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
           <td mat-cell *matCellDef="let element"> {{element.description}} </td>
         </ng-container>
 
         <ng-container matColumnDef="address">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
           <td mat-cell *matCellDef="let element"> {{element.address}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
           <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> E-mail </th>
           <td mat-cell *matCellDef="let element"> {{element.mail}} </td>
         </ng-container>
 
@@ -118,7 +118,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Descripcion o Referencia" required name="description" [(ngModel)]="provider.description">
+                <input matInput placeholder="Descripción o Referencia" required name="description" [(ngModel)]="provider.description">
               </mat-form-field>
             </div>
             <div class="col">
@@ -128,7 +128,7 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Direccion" required name="location" [(ngModel)]="provider.location" (onAddressChange)="handleAddressChange($event)"/>
+                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Dirección" required name="location" [(ngModel)]="provider.location" (onAddressChange)="handleAddressChange($event)"/>
               </mat-form-field>
             </div>
             <div class="col">
@@ -138,12 +138,12 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Telefono" required name="phone" [(ngModel)]="provider.phone"/>
+                <input matInput placeholder="Teléfono" required name="phone" [(ngModel)]="provider.phone"/>
               </mat-form-field>
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Correo" required name="mail" [(ngModel)]="provider.mail"/>
+                <input matInput placeholder="E-mail" required name="mail" [(ngModel)]="provider.mail"/>
               </mat-form-field>
             </div>
             <div class="col">

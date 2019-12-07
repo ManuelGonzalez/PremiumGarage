@@ -100,7 +100,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Vehiculos - GP Devoto</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Vehículos - GP Devoto</h5>
         <button class="close" type="button" data-dismiss="modal" (click)="blankVehicle()" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -219,7 +219,7 @@
           <div class="row">
             <div class="col">
               <mat-form-field>
-                <mat-label>Situación de Entrada del Vehiculo</mat-label>
+                <mat-label>Situación de Entrada del Vehículo</mat-label>
                 <select matNativeControl  name="stateIn" [(ngModel)]="vehicle.stateIn">
                   <option *ngFor="let vs of vehicleStatesIn" value="{{vs}}">{{vs}}</option>
                 </select>
@@ -237,7 +237,7 @@
             <div class="col">
               <mat-checkbox name="manual" [(ngModel)]="vehicle.manual">Manual</mat-checkbox>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Manual Descripcion" required name="manualDesc" [(ngModel)]="vehicle.manualDesc"/>
+                <input matInput placeholder="Manual Descripción" required name="manualDesc" [(ngModel)]="vehicle.manualDesc"/>
               </mat-form-field>
             </div>
           </div>
@@ -245,7 +245,7 @@
             <div class="col">
               <mat-checkbox name="additionalKeys" [(ngModel)]="vehicle.additionalKeys">Juego de llaves adicional</mat-checkbox>
               <mat-form-field class="example-full-width">
-                <input matInput placeholder="Juego de llaves adicional Descripcion" required name="additionalKeysDesc" [(ngModel)]="vehicle.additionalKeysDesc"/>
+                <input matInput placeholder="Juego de llaves adicional Descripción" required name="additionalKeysDesc" [(ngModel)]="vehicle.additionalKeysDesc"/>
               </mat-form-field>
             </div>
           </div>

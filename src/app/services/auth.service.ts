@@ -100,8 +100,8 @@ export class AuthService {
       const config = {
         url: 'https://premiumgarage-c0f80.firebaseapp.com/'
       };
-      res.user.sendEmailVerification(config).then(res => {
-        this.snackbar.open( 'El usuario se ha creado con exito, verifique su correo para activar su cuenta.',
+      res.user.sendEmailVerification(config).then( () => {
+        this.snackbar.open( 'El usuario se ha creado con exito, verifique su dirección de E-mail para activar su cuenta.',
           'Error', {
           duration: 5000
         });

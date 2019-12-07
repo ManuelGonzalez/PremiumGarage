@@ -87,7 +87,7 @@ export class VehicleAdditionalInfoComponent implements OnInit {
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
       this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id, this.vehicleAddInfo, 'addInfo').then( () => {
-        this.snackbar.open('La informacion adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
+        this.snackbar.open('La información adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
           duration: 5000
         });
       }).catch(err => {
@@ -138,7 +138,7 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     Promise.all([
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
-      this.snackbar.open('La informacion adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
+      this.snackbar.open('La información adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
         duration: 5000
       });
     }).catch(err => {

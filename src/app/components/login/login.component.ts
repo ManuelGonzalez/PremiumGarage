@@ -7,7 +7,7 @@ import {AuthService} from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit{
-  @ViewChild("email") mailField: ElementRef;
+  @ViewChild('email') mailField: ElementRef;
 
   constructor(public auth: AuthService) {
   }
@@ -15,12 +15,12 @@ export class LoginComponent implements OnInit{
   ngOnInit() {
   }
 
-  login(event,email,password) {
-    this.auth.login(event,email,password);
+  login(event, email, password) {
+    this.auth.login(event, email, password);
   }
 
   resetPassword(email) {
-    this.auth.resetPassword(email)
+    this.auth.resetPassword(email);
   }
 
 
