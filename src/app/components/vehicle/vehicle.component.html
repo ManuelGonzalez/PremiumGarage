@@ -76,14 +76,14 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="expertise">
+        <!--ng-container matColumnDef="expertise">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Peritaje </th>
           <td mat-cell *matCellDef="let element">
             <button class="btn btn-link" *ngIf="element.expertise" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#expertise-report" (click)="searchVehicle(element.id)">
               <i class="fas fa-print"></i>
             </button>
           </td>
-        </ng-container>
+        </ng-container-->
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -34,8 +34,8 @@ export class VehicleDetailComponent implements OnInit {
   vehicleImportsFilter: any[] = [];
   provider: any = {};
   providers: any[] = [];
+  vehicleStatus = ['Reparacion', 'Mantenimiento', 'Transporte', 'Bodega', 'GP Devoto', 'Venta', 'Devolución de Consignación', 'Préstamo'];
   options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-  vehicleStatus: string[] = ['Reparacion', 'Mantenimiento', 'Transporte', 'Bodega', 'GP Devoto', 'Venta'];
   selectedFiles: FileList;
   currentUpload: Upload;
   numberFiles = 0;
@@ -48,7 +48,10 @@ export class VehicleDetailComponent implements OnInit {
   importTypes: string[] = ['Operativos', 'Administrativos', 'Legales'];
   kms;
   isNewState = false;
-  tabMenu: String;
+  tabMenu: string;
+  isUpdate = false;
+  address: any = {};
+  vehicleStatesIn: string[] = ['Consignación', 'Permuta', 'Unidad Externa', 'Compra por inversión', 'Compra propia', 'Por reparación'];
 
   constructor(private route: ActivatedRoute,
               public fb: FormBuilder,
@@ -83,8 +86,6 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    // @ts-ignore
-    hidesnow();
     /*this.statesForm = this.fb.group({
       state: ['', [Validators.required]],
       provider: ['', [Validators.required]],
@@ -271,6 +272,12 @@ export class VehicleDetailComponent implements OnInit {
       case 'Bodega':
         icon = 'fa-warehouse';
         break;
+      case 'Devolución de Consignación':
+        icon = 'fas fa-undo';
+        break;
+      case 'Préstamo':
+        icon = 'fas fa-handshake';
+        break;
     }
     return icon;
   }
@@ -347,5 +354,53 @@ export class VehicleDetailComponent implements OnInit {
 
   donwloadPdf() {
     window.print();
+  }
+
+  searchVehicle(id) {
+    this.vehicleService.getVehicle(this.vehicle.id).valueChanges().subscribe(fbVeh => {
+      if (fbVeh != null) {
+        this.isUpdate = true;
+        this.vehicle = fbVeh;
+        this.vehicle.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : new Date();
+      }
+    });
+  }
+
+  setVehicle(vehicle) {
+    this.isUpdate = true;
+    this.vehicle = vehicle;
+    this.vehicle.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : new Date();
+    this.vehicleService.getVehicleFiles(vehicle.id).subscribe(files => {
+      this.files = files;
+    });
+  }
+
+  createVehicle() {
+    if (this.isUpdate) {
+      this.vehicle.lastUpdate = Date.now();
+    } else {
+      this.vehicle.creationDate = Date.now();
+    }
+    this.vehicle.dateAdmission = this.vehicle.dateAdmission ? this.vehicle.dateAdmission.toISOString() : '';
+    this.vehicle.addressRadicaction = this.address;
+    Promise.all([
+      this.uploadMulti(this.vehicle.id),
+      this.vehicleService.createOrUpdateVehicle(this.vehicle),
+    ]).then(() => {
+      this.snackbar.open('El vehiculo: ' + this.vehicle.id + ' a sido guardado con exito', 'Registro Guerdado', {
+        duration: 5000
+      });
+      this.blankVehicle();
+    }).catch(err => {
+      this.snackbar.open(err.toLocaleString(), 'Error', {
+        duration: 5000
+      });
+    }).finally(() => {
+      this.blanckInputfiles();
+    });
+  }
+
+  blankVehicle() {
+    this.blanckInputfiles();
   }
 }

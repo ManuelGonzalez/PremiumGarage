@@ -75,8 +75,6 @@ export class UserComponent implements OnInit {
 
 
   ngOnInit() {
-    // @ts-ignore
-    hidesnow();
   }
 
   setupTable() {
