@@ -87,7 +87,7 @@ export class VehicleImportsComponent implements OnInit {
     Promise.all([
       this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id, this.vehicleImport, 'imports'),
     ]).then(() => {
-      this.snackbar.open('El importe: ' + this.vehicleImport.id + ' a sido guardado con exito', 'Registro Guerdado', {
+      this.snackbar.open('El importe: ' + this.vehicleImport.id + ' a sido guardado con exito', 'Registro Guardado', {
         duration: 5000
       });
     }).catch(err => {

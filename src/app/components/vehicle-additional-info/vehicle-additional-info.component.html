@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="vehicleAddInfo">
   <div class="container">
     <br>
     <div class="row">
@@ -7,6 +7,11 @@
       </div>
       <div class="col">
         <div class="text-right margin-btn" *ngIf="!isReport">
+          <button mat-mini-fab color="primary"
+                  data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehiclesAddInfoModal"
+                  matTooltip="Archivos">
+            <i class="fas fa-file-upload"></i>
+          </button>
           <button mat-mini-fab color="primary"
                   data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#additionalInfoReport"
                   matTooltip="Imprimir">
@@ -32,20 +37,46 @@
               <td>{{vehicle.brand}}</td>
               <th>Modelo</th>
               <td>{{vehicle.model}}</td>
+              <th>Tipo</th>
+              <td>{{vehicle.tipe}}</td>
               <th>Año</th>
               <td>{{vehicle.year}}</td>
             </tr>
             <tr>
               <th>Radicación</th>
               <td>{{vehicle.radication}}</td>
-              <th>Fecha de Ingreso</th>
-              <td>{{ISOStringToLocalDateString(vehicle.dateAdmission)}}</td>
-              <th>Fecha de Egreso</th>
-              <td>{{ISOStringToLocalDateString(vehicle.departureDate)}}</td>
+              <td></td>
+              <td></td>
+              <th>Dirección</th>
+              <td>{{vehicle.address}}</td>
+              <td></td>
+              <td></td>
+              <th>Telefono</th>
+              <td>{{vehicle.phone}}</td>
             </tr>
             <tr>
               <th>Titular</th>
               <td>{{vehicleAddInfo.titular}}</td>
+              <th>Porcentaje</th>
+              <td>{{vehicleAddInfo.percentage}}</td>
+              <th></th>
+              <td></td>
+              <th></th>
+              <td></td>
+              <th></th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Dni</th>
+              <td>{{vehicleAddInfo.titularDni}}</td>
+              <th>Estado civil</th>
+              <td>{{vehicleAddInfo.titularCivilStatus}}</td>
+              <th *ngIf="vehicleAddInfo.titularCivilStatus === 'Casado'">Conyuge</th>
+              <td *ngIf="vehicleAddInfo.titularCivilStatus === 'Casado'">{{vehicleAddInfo.titularSpouse}}</td>
+              <th *ngIf="vehicleAddInfo.titularCivilStatus === 'Casado'">Dni</th>
+              <td *ngIf="vehicleAddInfo.titularCivilStatus === 'Casado'">{{vehicleAddInfo.titularSpouseDni}}</td>
+              <th></th>
+              <td></td>
             </tr>
           </table>
         </div>
@@ -151,9 +182,13 @@
                         <div *ngIf="vehicle.sellerId">
                           <div class="table-responsive">
                             <table class="table table-sm table-hover">
-                              <tr>
+                              <tr *ngIf="!vehicle.sellerIsProvider">
                                 <th>Dni</th>
-                                <td>{{seller.id}}</td>
+                                <td>{{seller.dni}}</td>
+                              </tr>
+                              <tr *ngIf="seller.type">
+                                <th>Tipo</th>
+                                <td>{{seller.type}}</td>
                               </tr>
                               <tr>
                                 <th>Nombre y Apellido</th>
@@ -161,11 +196,11 @@
                               </tr>
                               <tr>
                                 <th>Teléfono</th>
-                                <td>{{seller.movilPhone}}</td>
+                                <td>{{seller.movilPhone}} {{seller.phone}}</td>
                               </tr>
                               <tr>
                                 <th>Fecha de Ingreso</th>
-                                <td></td>
+                                <td>{{ISOStringToLocalDateString(vehicle.dateAdmission)}}</td>
                               </tr>
                             </table>
                           </div>
@@ -199,9 +234,13 @@
                       <div class="{{vehicle.buyerId?'col-sm-11':'col'}}">
                         <div *ngIf="vehicle.buyerId">
                           <table class="table table-sm table-hover">
-                            <tr>
+                            <tr *ngIf="!vehicle.buyerIsProvider">
                               <th>Dni</th>
-                              <td>{{buyer.id}}</td>
+                              <td>{{buyer.dni}}</td>
+                            </tr>
+                            <tr *ngIf="buyer.type">
+                              <th>Tipo</th>
+                              <td>{{buyer.type}}</td>
                             </tr>
                             <tr>
                               <th>Nombre y Apellido</th>
@@ -209,11 +248,11 @@
                             </tr>
                             <tr>
                               <th>Teléfono</th>
-                              <td>{{buyer.movilPhone}}</td>
+                              <td>{{buyer.movilPhone}} {{buyer.phone}}</td>
                             </tr>
                             <tr>
                               <th>Fecha de Egreso</th>
-                              <td></td>
+                              <td>{{ISOStringToLocalDateString(vehicle.departureDate)}}</td>
                             </tr>
                           </table>
                         </div>
@@ -255,44 +294,80 @@
         </button>
       </div>
       <div class="modal-body">
-        <div *ngIf="users.length>0">
-          <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-            <a matSuffix mat-button target="_BLACK" routerLink="/users">Usuarios</a>
-          </mat-form-field>
+        <div class="row">
+          <div class="col">
+            <div *ngIf="users.length>0">
+              <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                <a matSuffix mat-button target="_BLACK" routerLink="/users">Usuarios</a>
+              </mat-form-field>
 
-          <table mat-table [dataSource]="dataSource" *ngIf="finding" matSort class="mat-elevation-z8 table">
+              <table mat-table [dataSource]="dataSource" *ngIf="finding" matSort class="mat-elevation-z8 table">
 
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
-              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Dni </th>
+                  <td mat-cell *matCellDef="let element"> {{element.dni}} </td>
+                </ng-container>
 
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
 
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-dismiss="modal" (click)="saveSellerOrBuyer(element)">
-                  <i class="fas fa-check-circle"></i>
-                  <span>Seleccionar</span>
-                </button>
-              </td>
-              <td mat-footer-cell *matFooterCellDef></td>
-            </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-dismiss="modal" (click)="saveSellerOrBuyer(element, false)">
+                      <i class="fas fa-check-circle"></i>
+                      <span>Seleccionar</span>
+                    </button>
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
 
+            </div>
+          </div>
+          <div class="col">
+            <div *ngIf="providers.length>0">
+              <mat-form-field>
+                <input matInput (keyup)="applyFilterProvider($event.target.value)" placeholder="Buscar">
+                <a matSuffix mat-button target="_BLACK" routerLink="/providers">Proveedores</a>
+              </mat-form-field>
+
+              <table mat-table [dataSource]="dataSourceProvider" *ngIf="findingProvider" matSort class="mat-elevation-z8 table">
+
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                  <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-dismiss="modal" (click)="saveSellerOrBuyer(element, true)">
+                      <i class="fas fa-check-circle"></i>
+                      <span>Seleccionar</span>
+                    </button>
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createVehicleAddInfo()">Guardar</button>
       </div>
     </div>
   </div>
@@ -329,6 +404,38 @@
             <div class="col">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Titular" required name="titular" [(ngModel)]="vehicleAddInfo.titular"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Porcentaje" type="number" required name="percentage" [(ngModel)]="vehicleAddInfo.percentage"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dni" required name="titularDni" [(ngModel)]="vehicleAddInfo.titularDni"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field>
+                <mat-label>Estado Civil</mat-label>
+                <select matNativeControl required name="titularCivilStatus" [(ngModel)]="vehicleAddInfo.titularCivilStatus">
+                  <option *ngFor="let cs of civilStatus" value="{{cs}}">{{cs}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="vehicleAddInfo.titularCivilStatus === 'Casado'">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Coyuge" required name="titularSpouse" [(ngModel)]="vehicleAddInfo.titularSpouse"/>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Dni Coyuge" required name="titularSpouseDni" [(ngModel)]="vehicleAddInfo.titularSpouseDni"/>
               </mat-form-field>
             </div>
           </div>
@@ -468,6 +575,23 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
         <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createVehicleAddInfo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Files AddInfo Modal-->
+<div *ngIf="vehicleAddInfo" class="modal fade" id="filesVehiclesAddInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filesVehiclesAddInfoModalLabel">Archivos</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-files [id]="vehicleAddInfo.id" path="vehicles/{{vehicle.id}}/addInfo"></app-files>
       </div>
     </div>
   </div>

@@ -1,120 +1,98 @@
-<div class="container-fluid">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a routerLink="">Inicio</a>
-    </li>
-    <li class="breadcrumb-item active">Vehiculos</li>
-  </ol>
-
-  <div class="text-right">
-    <button mat-mini-fab color="primary"
-            data-toggle="modal" data-backdrop="static" data-keyboard="false"
-            data-target="#createVehicleModal"
-            matTooltip="Agregar Vehiculos">
-      <i class="fas fa-plus"></i>
-    </button>
-    <br>
-  </div>
-
-  <div class="table-responsive">
-    <loading-spinner *ngIf="vehicles.length==0"></loading-spinner>
-    <div *ngIf="vehicles.length>0">
-      <mat-form-field>
-        <input matInput [ngModel]="globalFilter" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-      </mat-form-field>
-
-      <table *ngIf="finding" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
-
-        <ng-container matColumnDef="domain">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dominio </th>
-          <td mat-cell *matCellDef="let element"> <a routerLink="/vehicles/{{element.id}}">{{element.id}}</a> </td>
-        </ng-container>
-
-        <ng-container matColumnDef="model">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
-          <td mat-cell *matCellDef="let element"> {{element.model}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="brand">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-          <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="year">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Año </th>
-          <td mat-cell *matCellDef="let element"> {{element.year}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </th>
-          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="isSold">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
-          <td mat-cell *matCellDef="let element">
-            <i *ngIf="element.departureDate" class="fas fa-money-check-alt"></i>
-            {{element.departureDate? 'vendido': ''}}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
-              <i class="fas fa-bars"></i>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item routerLink="/vehicles/{{element.id}}">
-                <i class="fas fa-eye"></i>
-                <span>Detalle</span>
-              </button>
-              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleModal" (click)="searchVehicle(element.id)">
-                <i class="fas fa-pen"></i>
-                <span>Editar</span>
-              </button>
-              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehicleModal" (click)="setVehicle(element)">
-                <i class="fas fa-file-upload"></i>
-                <span>Archivos</span>
-              </button>
-              <button mat-menu-item data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#regVehicleModal" (click)="setVehicle(element)">
-                <i class="fas fa-file-upload"></i>
-                <span>Radicación</span>
-              </button>
-              <button mat-menu-item (click)="setVehicle(element);openDialogDeleteVehicle()">
-                <i class="fas fa-trash"></i>
-                <span>Eliminar</span>
-              </button>
-            </mat-menu>
-          </td>
-        </ng-container>
-
-        <!--ng-container matColumnDef="expertise">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Peritaje </th>
-          <td mat-cell *matCellDef="let element">
-            <button class="btn btn-link" *ngIf="element.expertise" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#expertise-report" (click)="searchVehicle(element.id)">
-              <i class="fas fa-print"></i>
-            </button>
-          </td>
-        </ng-container-->
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-
+<div class="container-fluid" *ngIf="vehicle">
+  <br>
+  <div class="row">
+    <div class="col" *ngIf="isReport">
+      <h3>Detalle del vehiculo:</h3>
     </div>
-    <mat-paginator *ngIf="finding" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <div class="col">
+      <div class="text-right margin-btn" *ngIf="!isReport">
+        <button mat-mini-fab color="primary"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#filesVehiclesModal"
+                matTooltip="Archivos">
+          <i class="fas fa-file-upload"></i>
+        </button>
+        <button mat-mini-fab color="primary"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#detailReport"
+                matTooltip="Imprimir">
+          <i class="fas fa-print"></i>
+        </button>
+        <button mat-mini-fab color="primary"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleModalDetail"
+                (click)="searchVehicle()"
+                matTooltip="Editar">
+          <i class="fas fa-pen"></i>
+        </button>
+        <br>
+      </div>
+    </div>
   </div>
-
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive">
+        <table class="table table-sm table-hover table-white">
+          <tr>
+            <th>Dominio</th>
+            <td>{{vehicle.id}}</td>
+            <th>Marca</th>
+            <td>{{vehicle.brand}}</td>
+            <th>Modelo</th>
+            <td>{{vehicle.model}}</td>
+            <th></th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Año</th>
+            <td>{{vehicle.year}}</td>
+            <th>Tipo</th>
+            <td>{{vehicle.tipe}}</td>
+            <th>Uso</th>
+            <td>{{vehicle.use}}</td>
+            <th></th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Marca Motor</th>
+            <td>{{vehicle.engineBrand}}</td>
+            <th>Nro Motor</th>
+            <td>{{vehicle.brandNumber}}</td>
+            <th>Marca Chasis</th>
+            <td>{{vehicle.chasisBrand}}</td>
+            <th>Nro Chasis</th>
+            <td>{{vehicle.chasisNumber}}</td>
+          </tr>
+          <tr>
+            <th>Kms al Ingreso</th>
+            <td>{{vehicle.km}}</td>
+            <th>Combustible</th>
+            <td>{{vehicle.gasoline}}</td>
+            <th>Color</th>
+            <td>{{vehicle.color}}</td>
+            <th>Estatus</th>
+            <td>{{vehicle.status}}</td>
+          </tr>
+          <tr>
+            <th>Fecha de Ingreso</th>
+            <td>{{ISOStringToLocalDateString(vehicle.dateAdmission)}}</td>
+            <th>Ubicación Física</th>
+            <td>{{vehicle.location}}</td>
+            <th>Valor Toma</th>
+            <td>{{vehicle.costValue  | numeral:'$0,0.00'}}</td>
+            <th>Valor Venta</th>
+            <td>{{vehicle.publicValue  | numeral:'$0,0.00'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Create Vehicle Modal-->
-<div class="modal fade" id="createVehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createVehicleModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Vehículos - GP Devoto</h5>
-        <button class="close" type="button" data-dismiss="modal" (click)="blankVehicle()" aria-label="Close">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -240,9 +218,9 @@
             </div>
             <div class="col">
               <mat-form-field class="example-full-width">
-                <input matInput [matDatepicker]="picker" placeholder="Fecha de Ingreso" name="dateAdmission" [value]="vehicle.dateAdmission" [(ngModel)]="vehicle.dateAdmission">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <input matInput [matDatepicker]="pickerDetail2" placeholder="Fecha de Ingreso" name="dateAdmissionDetail" [value]="vehicle.dateAdmission" [(ngModel)]="vehicle.dateAdmission">
+                <mat-datepicker-toggle matSuffix [for]="pickerDetail2"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDetail2></mat-datepicker>
               </mat-form-field>
             </div>
           </div>
@@ -353,26 +331,18 @@
 </div>
 
 <!-- Upload Files Vehicle Modal-->
-<div class="modal fade" id="regVehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="filesVehiclesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="titleRegVehicleModalLabel">Archivos</h5>
+        <h5 class="modal-title" id="filesVehiclesModalLabel">Archivos</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-
-        <iframe id="iframeDom" width="100%" height=700 [src]="'https://www.dnrpa.gov.ar/portal_dnrpa/radicacion2.php' | safe"></iframe>
-
-      </div>
-      <div class="modal-footer">
-
+        <app-files [id]="vehicle.id" path="vehicles"></app-files>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Expertise modal -->
-<app-expertise-report *ngIf="vehicle" [vehicle]="vehicle"></app-expertise-report>

@@ -68,6 +68,13 @@ export class VehicleComponent implements OnInit {
           this.finding = true;
           break;
         }
+        case 'stock' : {
+          this.vehicles = this.vehicles.filter(v => v.location
+            && (v.location.toLowerCase() === 'gp devoto' || v.location.toLowerCase() === 'garage')
+          );
+          this.finding = true;
+          break;
+        }
       }
       this.dataSource = new MatTableDataSource(this.vehicles);
       this.dataSource = new MatTableDataSource(this.vehicles);
@@ -139,27 +146,26 @@ export class VehicleComponent implements OnInit {
     if (this.vehicle) {
       this.vehicle.modelo = '';
     }
-    this.selectedBrand = this.brands.find(p => p.id == this.vehicle.brand);
+    this.selectedBrand = this.brands.find(p => p.id === this.vehicle.brand);
     this.models = this.selectedBrand.modelos;
-    console.log(this.models);
   }
 
   setupTable() {
     switch (this.currentScreenWidth) {
       case 'xs':
-        this.displayedColumns = ['cuil', 'domain', 'brand', 'actions'/*, 'expertise'*/];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'isSold', 'actions'/*, 'expertise'*/];
         this.displayedColumns.shift();
         break;
       case 'sm':
-        this.displayedColumns = ['cuil', 'domain', 'brand', 'model', 'actions'/*, 'expertise'*/];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'model', 'isSold', 'actions'/*, 'expertise'*/];
         this.displayedColumns.shift();
         break;
       case 'md':
-        this.displayedColumns = ['cuil', 'domain', 'brand', 'model' , 'year', 'actions'/*, 'expertise'*/];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'model' , 'year', 'status', 'isSold', 'actions'/*, 'expertise'*/];
         this.displayedColumns.shift();
         break;
       default:
-        this.displayedColumns = ['cuil', 'domain', 'brand', 'model' , 'year', 'actions'/*, 'expertise'*/];
+        this.displayedColumns = ['cuil', 'domain', 'brand', 'model' , 'year', 'status', 'isSold', 'actions'/*, 'expertise'*/];
         this.displayedColumns.shift();
     }
   }
@@ -200,7 +206,7 @@ export class VehicleComponent implements OnInit {
       this.uploadMulti(this.vehicle.id),
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
-      this.snackbar.open('El vehiculo: ' + this.vehicle.id + ' a sido guardado con exito', 'Registro Guerdado', {
+      this.snackbar.open('El vehiculo: ' + this.vehicle.id + ' a sido guardado con exito', 'Registro Guardado', {
         duration: 5000
       });
       this.blankVehicle();

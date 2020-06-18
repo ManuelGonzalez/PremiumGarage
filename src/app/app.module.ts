@@ -65,6 +65,8 @@ import { ExpertiseComponent } from './components/expertise/expertise.component';
 import {ExpertiseService} from './services/expertise.service';
 import {ProviderService} from './services/provider.service';
 import { ExpertiseReportComponent } from './components/expertise-report/expertise-report.component';
+import { DetailComponent } from './components/detail/detail.component';
+import { FilesComponent } from './components/files/files.component';
 
 export const environment = {
   production: false,
@@ -172,6 +174,8 @@ const appRoutes: Routes = [
     ImportsReportComponent,
     ExpertiseComponent,
     ExpertiseReportComponent,
+    DetailComponent,
+    FilesComponent,
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import {VehicleService} from '../../services/vehicle.service';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {UserService} from '../../services/user.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import {ProviderService} from '../../services/provider.service';
 
 @Component({
   selector: 'app-vehicle-additional-info',
@@ -13,15 +14,20 @@ export class VehicleAdditionalInfoComponent implements OnInit {
 
   @Input() vehicle: any;
   @Input() isReport: boolean;
+  @ViewChild(MatSort) sortProvider: MatSort;
+  @ViewChild(MatPaginator) paginatorProvider: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   dataSource;
-  vehicleAddInfo: any = {};
+  dataSourceProvider;
+  vehicleAddInfo: any = null;
   users: any[] = [];
+  providers: any[] = [];
   seller: any = {};
   buyer: any = {};
   finding = false;
+  findingProvider = false;
   displayedColumns = ['id', 'name', 'actions'];
   isSeller = false;
   dateAdmission: any = {};
@@ -30,23 +36,37 @@ export class VehicleAdditionalInfoComponent implements OnInit {
   report13Date: any = {};
   patentReportdDate: any = {};
   VTVDate: any = {};
+  civilStatus: string[] = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
 
   constructor(private vehicleService: VehicleService,
               private userService: UserService,
+              private providerService: ProviderService,
               private snackbar: MatSnackBar,
               public dialog: MatDialog) {
   }
 
   ngOnInit() {
     if (this.vehicle.sellerId) {
-      this.userService.getUser(this.vehicle.sellerId).valueChanges().subscribe(userResp => {
-        this.seller = userResp;
-      });
+      if (this.vehicle.sellerIsProvider) {
+        this.providerService.getProvider(this.vehicle.sellerId).valueChanges().subscribe(providerResp => {
+          this.seller = providerResp;
+        });
+      } else {
+        this.userService.getUser(this.vehicle.sellerId).valueChanges().subscribe(userResp => {
+          this.seller = userResp;
+        });
+      }
     }
     if (this.vehicle.buyerId) {
-      this.userService.getUser(this.vehicle.buyerId).valueChanges().subscribe(userResp => {
-        this.buyer = userResp;
-      });
+      if (this.vehicle.buyerIsProvider) {
+        this.providerService.getProvider(this.vehicle.buyerId).valueChanges().subscribe(providerResp => {
+          this.buyer = providerResp;
+        });
+      } else {
+        this.userService.getUser(this.vehicle.sellerId).valueChanges().subscribe(userResp => {
+          this.buyer = userResp;
+        });
+      }
     }
     this.vehicleService.getVehicleContent(this.vehicle.id, 'addInfo').valueChanges().subscribe(vehImportsResp => {
       this.vehicleAddInfo = !!vehImportsResp[0] ? vehImportsResp[0] : {};
@@ -58,17 +78,27 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     this.userService.getUsers().valueChanges().subscribe(fbUsers => {
       this.users = fbUsers;
       this.dataSource = new MatTableDataSource(this.users);
-      this.dataSource = new MatTableDataSource(this.users);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+    });
+    this.providerService.getProviders().valueChanges().subscribe(fbProviders => {
+      this.providers = fbProviders;
+      this.dataSourceProvider = new MatTableDataSource(this.providers);
+      this.dataSourceProvider.sort = this.sortProvider;
+      this.dataSourceProvider.paginator = this.paginatorProvider;
     });
     this.dateAdmission = this.vehicle.dateAdmission ? new Date(this.vehicle.dateAdmission) : null;
     this.departureDate = this.vehicle.departureDate ? new Date(this.vehicle.departureDate) : null;
   }
 
   applyFilter(filterValue: string) {
-    this.finding = filterValue != '';
+    this.finding = filterValue !== '';
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyFilterProvider(filterValue: string) {
+    this.findingProvider = filterValue !== '';
+    this.dataSourceProvider.filter = filterValue.trim().toLowerCase();
   }
 
   createVehicleAddInfo() {
@@ -87,7 +117,7 @@ export class VehicleAdditionalInfoComponent implements OnInit {
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
       this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id, this.vehicleAddInfo, 'addInfo').then( () => {
-        this.snackbar.open('La información adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
+        this.snackbar.open('La información adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guardado', {
           duration: 5000
         });
       }).catch(err => {
@@ -107,7 +137,7 @@ export class VehicleAdditionalInfoComponent implements OnInit {
   }
 
   clearSellerOrBuyer() {
-    this.saveSellerOrBuyer(null);
+    this.saveSellerOrBuyer(null, false);
   }
 
   openDialogClearSellerOrBuyer(): void {
@@ -127,18 +157,20 @@ export class VehicleAdditionalInfoComponent implements OnInit {
     return date !== 'Invalid Date' ? date : '';
   }
 
-  saveSellerOrBuyer(user) {
+  saveSellerOrBuyer(user, isProvider) {
     if (this.isSeller) {
       this.vehicle.sellerId = user !== null ? user.id : null;
       this.seller = user;
+      this.vehicle.sellerIsProvider = isProvider;
     } else {
       this.vehicle.buyerId = user !== null ? user.id : null;
       this.buyer = user;
+      this.vehicle.buyerIsProvider = isProvider;
     }
     Promise.all([
       this.vehicleService.createOrUpdateVehicle(this.vehicle),
     ]).then(() => {
-      this.snackbar.open('La información adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guerdado', {
+      this.snackbar.open('La información adicional para el vehivulo: ' + this.vehicle.id + ' a sido guardada con exito', 'Registro Guardado', {
         duration: 5000
       });
     }).catch(err => {

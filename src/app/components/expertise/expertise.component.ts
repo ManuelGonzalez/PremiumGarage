@@ -49,7 +49,7 @@ export class ExpertiseComponent implements OnInit {
     Promise.all([
       this.vehicleService.createOrUpdateVehicleContent(this.vehicle.id,this.vehicleExpertise,'expertise'),
     ]).then(()=>{
-      this.snackbar.open('El peritaje para el vehivulo: '+ this.vehicle.id + ' a sido guardado con exito', 'Registro Guerdado', {
+      this.snackbar.open('El peritaje para el vehivulo: '+ this.vehicle.id + ' a sido guardado con exito', 'Registro Guardado', {
         duration: 5000
       });
     }).catch(err=>{

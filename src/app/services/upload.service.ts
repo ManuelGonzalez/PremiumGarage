@@ -12,7 +12,8 @@ export class UploadService {
 
   constructor(private af: AngularFireModule, private db: AngularFireDatabase) { }
 
-  private basePath = '/uploads/';
+  private basePathPre = '/uploads/';
+  private basePathPos = '/files';
   uploads: FirebaseListObservable<Upload[]>;
 
   static formatFileName(name: string): string {
@@ -22,7 +23,7 @@ export class UploadService {
   pushUpload(upload: Upload, path: string) {
     const storageRef = firebase.storage().ref();
     const name = UploadService.formatFileName(upload.file.name);
-    const uploadTask = storageRef.child(`${this.basePath}${path}/${name}`).put(upload.file);
+    const uploadTask = storageRef.child(`${this.basePathPre}${path}${this.basePathPos}/${name}`).put(upload.file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) =>  {
@@ -48,25 +49,25 @@ export class UploadService {
 
   // Writes the file details to the realtime db
   private saveFileData(upload: Upload, path: string) {
-    this.db.list(`${this.basePath}${path}`).query.ref.child(upload.id).set(upload)
+    this.db.list(`${this.basePathPre}${path}${this.basePathPos}`).query.ref.child(upload.id).set(upload);
   }
 
-  deleteUpload(path: string){
+  deleteUpload(path: string) {
     const storageRef = firebase.storage().ref();
-    return storageRef.child(`${this.basePath}${path}`).delete()
+    return storageRef.child(`${this.basePathPre}${path}`).delete();
   }
 
-  deleteAllUploads(path: string){
+  deleteAllUploads(path: string) {
     const storageRef = firebase.storage().ref();
-    return storageRef.child(`${this.basePath}${path}`).delete()
+    return storageRef.child(`${this.basePathPre}${path}`).delete();
   }
 
   deleteFileData(path: string) {
-    return this.db.list(`${this.basePath}${path}`).remove();
+    return this.db.list(`${this.basePathPre}${path}`).remove();
   }
 
   getFiles(path: string) {
-    return this.db.list(`${this.basePath}${path}`);
+    return this.db.list(`${this.basePathPre}${path}${this.basePathPos}`);
   }
 
 }

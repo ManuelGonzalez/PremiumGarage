@@ -58,15 +58,6 @@ export class VehicleService {
     ]);
   }
 
-  deleteAllUserFile(id: string) {
-    this.getVehicleFiles(id).subscribe(files => {
-      this.currentFiles = files;
-      this.currentFiles.map(file => {
-        this.deleteVehicleFile(id, file);
-      });
-    });
-  }
-
   createOrUpdateVehicleContent(vehicleId, vehicleContent, pathContent) {
     return this.afDB.database.ref(`/vehicles/${vehicleId}/${pathContent}/${vehicleContent.id}`).set(vehicleContent);
   }

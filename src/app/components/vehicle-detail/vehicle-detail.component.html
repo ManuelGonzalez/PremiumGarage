@@ -36,100 +36,7 @@
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
-      <div class="container-fluid" *ngIf="vehicle">
-        <br>
-        <div class="row">
-          <div class="col">
-            <div class="text-right margin-btn">
-              <button mat-mini-fab color="primary"
-                      data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#createVehicleModalDetail"
-                      (click)="searchVehicle()"
-                      matTooltip="Editar">
-                <i class="fas fa-pen"></i>
-              </button>
-              <br>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="table-responsive">
-              <table class="table table-sm table-hover table-white">
-                <tr>
-                  <th>Dominio</th>
-                  <td>{{vehicle.id}}</td>
-                  <th>Marca</th>
-                  <td>{{vehicle.brand}}</td>
-                  <th>Modelo</th>
-                  <td>{{vehicle.model}}</td>
-                  <th>Año</th>
-                  <td>{{vehicle.year}}</td>
-                </tr>
-                <tr>
-                  <th>Marca Motor</th>
-                  <td>{{vehicle.engineBrand}}</td>
-                  <th>Nro Motor</th>
-                  <td>{{vehicle.brandNumber}}</td>
-                  <th>Marca Chasis</th>
-                  <td>{{vehicle.chasisBrand}}</td>
-                  <th>Nro Chasis</th>
-                  <td>{{vehicle.chasisNumber}}</td>
-                </tr>
-                <tr>
-                  <th>Kms al Ingreso</th>
-                  <td>{{vehicle.km}}</td>
-                  <th>Combustible</th>
-                  <td>{{vehicle.gasoline}}</td>
-                  <th>Color</th>
-                  <td>{{vehicle.color}}</td>
-                  <th>Estatus</th>
-                  <td>{{vehicle.status}}</td>
-                </tr>
-                <tr>
-                  <th>Tipo</th>
-                  <td>{{vehicle.tipe}}</td>
-                  <th>Uso</th>
-                  <td>{{vehicle.use}}</td>
-                  <th>Fecha de Ingreso</th>
-                  <td>{{ISOStringToLocalDateString(vehicle.dateAdmission)}}</td>
-                  <th>Ubicación Física</th>
-                  <td>{{vehicle.location}}</td>
-                </tr>
-                <tr>
-                  <th>Valor Toma</th>
-                  <td>{{vehicle.costValue}}</td>
-                  <th>Valor Venta</th>
-                  <td>{{vehicle.publicValue}}</td>
-                  <th>Duplicado de llaves</th>
-                  <td>{{vehicle.additionalKeys?'Si':'No'}} {{'- '+vehicle.additionalKeysDesc}}</td>
-                  <th>Manual</th>
-                  <td>{{vehicle.manual?'Si':'No'}} {{'- '+vehicle.manualDesc}}</td>
-                </tr>
-                <tr>
-                  <th>Registro Seccional</th>
-                  <td>{{vehicle.radication}}</td>
-                  <th></th>
-                  <td></td>
-                  <th></th>
-                  <td></td>
-                  <th></th>
-                  <td></td>
-                </tr>
-                <tr>
-                  <th>Observaciones</th>
-                  <td>{{vehicle.coment}}</td>
-                  <th></th>
-                  <td></td>
-                  <th></th>
-                  <td></td>
-                  <th></th>
-                  <td></td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-detail [vehicle]="vehicle"></app-detail>
     </div>
     <div *ngIf="vehicle" class="tab-pane fade" id="additional-data" role="tabpanel" aria-labelledby="additional-data-tab">
       <app-vehicle-additional-info [vehicle]="vehicle"></app-vehicle-additional-info>
@@ -536,8 +443,7 @@
         <div class="container-fluid withe-modal">
           <div class="text-right margin-btn">
             <button mat-mini-fab color="primary"
-                    (click)="donwloadPdf()"
-                    matTooltip="Imprimir">
+                    (click)="donwloadPdf()">
               <i class="fas fa-print"></i>
             </button>
           </div>
@@ -553,172 +459,25 @@
   </div>
 </div>
 
-<!-- Create Vehicle Modal-->
-<div class="modal fade" id="createVehicleModalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Detail reports-->
+<div *ngIf="vehicle" class="modal white-modal fade" id="detailReport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Vehículos - GP Devoto</h5>
+        <div class="container-fluid withe-modal">
+          <div class="text-right margin-btn">
+            <button mat-mini-fab color="primary"
+                    (click)="donwloadPdf()">
+              <i class="fas fa-print"></i>
+            </button>
+          </div>
+        </div>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form class="example-form" autocomplete="off">
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Dominio" required name="domain" [(ngModel)]="vehicle.id">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Marca" required name="brand" [(ngModel)]="vehicle.brand">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Tipo" required name="tipe" [(ngModel)]="vehicle.tipe">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Modelo" required name="model" [(ngModel)]="vehicle.model">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Marca Motor" required name="engineBrand" [(ngModel)]="vehicle.engineBrand">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nro de Motor" required name="brandNumber" [(ngModel)]="vehicle.brandNumber">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Marca de Chasis" required name="chasisBrand" [(ngModel)]="vehicle.chasisBrand">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nro de Chasis" required name="chasisNumber" [(ngModel)]="vehicle.chasisNumber">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Uso" required name="use" [(ngModel)]="vehicle.use">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Año" required name="year" [(ngModel)]="vehicle.year">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" placeholder="Ubicación Física" required name="location" [(ngModel)]="vehicle.location" (onAddressChange)="handleAddressChange($event)">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Color" required name="color" [(ngModel)]="vehicle.color">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Estatus" required name="status" [(ngModel)]="vehicle.status">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Kms al Ingreso" required name="km" [(ngModel)]="vehicle.km">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Valor de Toma" required name="costValue" [(ngModel)]="vehicle.costValue">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Valor de Venta" required name="publicValue" [(ngModel)]="vehicle.publicValue">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Combustible" required name="gasoline" [(ngModel)]="vehicle.gasoline">
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Registro Seccional" required name="radication" [(ngModel)]="vehicle.radication"/>
-                <a matSuffix mat-button target="_BLACK" href="https://www.dnrpa.gov.ar/portal_dnrpa/radicacion2.php">Consultar</a>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field>
-                <mat-label>Situación de Entrada del Vehículo</mat-label>
-                <select matNativeControl  name="stateIn" [(ngModel)]="vehicle.stateIn">
-                  <option *ngFor="let vs of vehicleStatesIn" value="{{vs}}">{{vs}}</option>
-                </select>
-              </mat-form-field>
-            </div>
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <input matInput [matDatepicker]="pickerDetail2" placeholder="Fecha de Ingreso" name="dateAdmissionDetail" [value]="vehicle.dateAdmission" [(ngModel)]="vehicle.dateAdmission">
-                <mat-datepicker-toggle matSuffix [for]="pickerDetail2"></mat-datepicker-toggle>
-                <mat-datepicker #pickerDetail2></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="manual" [(ngModel)]="vehicle.manual">Manual</mat-checkbox>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Manual Descripción" required name="manualDesc" [(ngModel)]="vehicle.manualDesc"/>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-checkbox name="additionalKeys" [(ngModel)]="vehicle.additionalKeys">Juego de llaves adicional</mat-checkbox>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Juego de llaves adicional Descripción" required name="additionalKeysDesc" [(ngModel)]="vehicle.additionalKeysDesc"/>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Observaciones" required name="coment" [(ngModel)]="vehicle.coment"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="blankVehicle()">Cancelar</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="createVehicle()">Guardar</button>
+        <app-detail [vehicle]="vehicle" [isReport]="true"></app-detail>
       </div>
     </div>
   </div>
