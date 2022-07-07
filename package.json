@@ -36,7 +36,7 @@
     "html2canvas": "^1.0.0-rc.3",
     "jquery": "^3.4.1",
     "lodash": "^4.17.11",
-    "moment": "^2.14.1",
+    "moment": "^2.29.4",
     "ng2-datepicker": "^3.1.1",
     "ngx-cookie-service": "^2.1.0",
     "ngx-google-places-autocomplete": "^2.0.4",
